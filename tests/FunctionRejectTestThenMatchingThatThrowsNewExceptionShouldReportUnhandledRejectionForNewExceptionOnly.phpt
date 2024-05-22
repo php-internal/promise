@@ -18,6 +18,6 @@ reject(new RuntimeException('foo'))->then(null, function () {
 --EXPECTF--
 Unhandled promise rejection with RuntimeException: bar in %s:%d
 Stack trace:
-#0 %s/src/Internal/RejectedPromise.php(%d): {closure}(%S)
+#0 %s/src/Internal/RejectedPromise.php(%d): {closure%S}(%S)
 #1 %s(%d): React\Promise\Internal\RejectedPromise->then(%S)
 #2 %A{main}

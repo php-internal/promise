@@ -20,7 +20,7 @@ any([
 --EXPECTF--
 Unhandled promise rejection with React\Promise\Exception\CompositeException: All promises rejected. in %s:%d
 Stack trace:
-#0 %s/src/Promise.php(%d): React\Promise\{closure}(%S)
+#0 %s/src/Promise.php(%d): %S{closure%S}(%S)
 #1 %s/src/Promise.php(%d): React\Promise\Promise->call(%S)
 #2 %s/src/functions.php(%d): React\Promise\Promise->__construct(%S)
 #3 %s(%d): React\Promise\any(%S)

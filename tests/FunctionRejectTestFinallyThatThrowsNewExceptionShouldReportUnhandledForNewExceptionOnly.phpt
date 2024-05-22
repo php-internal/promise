@@ -18,8 +18,8 @@ reject(new RuntimeException('foo'))->finally(function (): void {
 --EXPECTF--
 Unhandled promise rejection with RuntimeException: Finally! in %s:%d
 Stack trace:
-#0 %s/src/Internal/RejectedPromise.php(%d): {closure}(%S)
-#1 %s/src/Internal/RejectedPromise.php(%d): React\Promise\Internal\RejectedPromise->React\Promise\Internal\{closure}(%S)
+#0 %s/src/Internal/RejectedPromise.php(%d): {closure%S}(%S)
+#1 %s/src/Internal/RejectedPromise.php(%d): React\Promise\Internal\RejectedPromise->%S{closure%S}(%S)
 #2 %s/src/Internal/RejectedPromise.php(%d): React\Promise\Internal\RejectedPromise->then(%S)
 #3 %s(%d): React\Promise\Internal\RejectedPromise->finally(%S)
 #4 %A{main}
