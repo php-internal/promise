@@ -27,9 +27,9 @@ echo 'NEVER';
 --EXPECTF--
 Fatal error: Uncaught OverflowException from unhandled promise rejection handler: This function should never throw in %s:%d
 Stack trace:
-#0 [internal function]: {closure}(%S)
+#0 [internal function]: {closure%S}(%S)
 #1 %s(%d): trigger_error(%S)
-#2 %s/src/Internal/RejectedPromise.php(%d): {closure}(%S)
+#2 %s/src/Internal/RejectedPromise.php(%d): {closure%S}(%S)
 #3 %s/src/functions.php(%d): React\Promise\Internal\RejectedPromise->__destruct()
 #4 %s(%d): React\Promise\reject(%S)
 #5 %A{main}
