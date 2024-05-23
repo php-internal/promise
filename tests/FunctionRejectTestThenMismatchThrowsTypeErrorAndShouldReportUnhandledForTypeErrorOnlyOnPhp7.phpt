@@ -18,7 +18,7 @@ reject(new RuntimeException('foo'))->then(null, function (UnexpectedValueExcepti
 
 ?>
 --EXPECTF--
-Unhandled promise rejection with TypeError: Argument 1 passed to {closure}() must be an instance of UnexpectedValueException, instance of RuntimeException given, called in %s/src/Internal/RejectedPromise.php on line %d in %s:%d
+Unhandled promise rejection with TypeError: Argument 1 passed to {closure}() must be an instance of UnexpectedValueException, instance of RuntimeException given, called in %s/src/Internal/RejectedPromise.php on line %d and defined in %s:%d
 Stack trace:
 #0 %s/src/Internal/RejectedPromise.php(%d): {closure}(%S)
 #1 %s(%d): React\Promise\Internal\RejectedPromise->then(%S)
