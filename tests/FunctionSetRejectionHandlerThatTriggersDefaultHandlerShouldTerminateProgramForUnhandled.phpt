@@ -1,5 +1,7 @@
 --TEST--
 The callback given to set_rejection_handler() may trigger a fatal error for unhandled rejection
+--SKIPIF--
+<?php if (PHP_VERSION_ID >= 80400) die("Skipped: PHP < 8.4 only."); ?>
 --INI--
 # suppress legacy PHPUnit 7 warning for Xdebug 3
 xdebug.default_enable=
