@@ -18,9 +18,9 @@ class RejectedPromise implements ExtendedPromiseInterface, CancellablePromiseInt
         $this->reason = $reason;
     }
 
-    public function then(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null)
+    public function then(?callable $onFulfilled = null, ?callable $onRejected = null, ?callable $onProgress = null)
     {
-        if (null === $onRejected) {
+        if ($onRejected === null) {
             return $this;
         }
 
@@ -33,9 +33,9 @@ class RejectedPromise implements ExtendedPromiseInterface, CancellablePromiseInt
         }
     }
 
-    public function done(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null)
+    public function done(?callable $onFulfilled = null, ?callable $onRejected = null, ?callable $onProgress = null)
     {
-        if (null === $onRejected) {
+        if ($onRejected === null) {
             throw UnhandledRejectionException::resolve($this->reason);
         }
 
@@ -73,7 +73,5 @@ class RejectedPromise implements ExtendedPromiseInterface, CancellablePromiseInt
         return $this;
     }
 
-    public function cancel()
-    {
-    }
+    public function cancel() {}
 }

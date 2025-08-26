@@ -175,10 +175,10 @@ function some($promisesOrValues, $howMany)
                         \sprintf(
                             'Input array must contain at least %d item%s but contains only %s item%s.',
                             $howMany,
-                            1 === $howMany ? '' : 's',
+                            $howMany === 1 ? '' : 's',
                             $len,
-                            1 === $len ? '' : 's'
-                        )
+                            $len === 1 ? '' : 's',
+                        ),
                     );
                 }
 
@@ -195,7 +195,7 @@ function some($promisesOrValues, $howMany)
 
                         $values[$i] = $val;
 
-                        if (0 === --$toResolve) {
+                        if (--$toResolve === 0) {
                             $resolve($values);
                         }
                     };
@@ -207,7 +207,7 @@ function some($promisesOrValues, $howMany)
 
                         $reasons[$i] = $reason;
 
-                        if (0 === --$toReject) {
+                        if (--$toReject === 0) {
                             $reject($reasons);
                         }
                     };
@@ -229,7 +229,6 @@ function some($promisesOrValues, $howMany)
  * value of a promise or value in `$promisesOrValues`.
  *
  * @param array $promisesOrValues
- * @param callable $mapFunc
  * @return PromiseInterface
  */
 function map($promisesOrValues, callable $mapFunc)
@@ -258,12 +257,12 @@ function map($promisesOrValues, callable $mapFunc)
                             function ($mapped) use ($i, &$values, &$toResolve, $resolve) {
                                 $values[$i] = $mapped;
 
-                                if (0 === --$toResolve) {
+                                if (--$toResolve === 0) {
                                     $resolve($values);
                                 }
                             },
                             $reject,
-                            $notify
+                            $notify,
                         );
                 }
             }, $reject, $notify);
@@ -277,7 +276,6 @@ function map($promisesOrValues, callable $mapFunc)
  * value.
  *
  * @param array $promisesOrValues
- * @param callable $reduceFunc
  * @param mixed $initialValue
  * @return PromiseInterface
  */
@@ -320,6 +318,7 @@ function reduce($promisesOrValues, callable $reduceFunc, $initialValue = null)
 
 /**
  * @internal
+ * @param mixed $object
  */
 function _checkTypehint(callable $callback, $object)
 {
@@ -366,6 +365,7 @@ function _checkTypehint(callable $callback, $object)
             break;
         case $type instanceof \ReflectionIntersectionType:
             $isTypeUnion = false;
+            // no break
         case $type instanceof \ReflectionUnionType:
             $types = $type->getTypes();
             break;

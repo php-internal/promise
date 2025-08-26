@@ -14,12 +14,10 @@ interface ExtendedPromiseInterface extends PromiseInterface
      * Since the purpose of `done()` is consumption rather than transformation,
      * `done()` always returns `null`.
      *
-     * @param callable|null $onFulfilled
-     * @param callable|null $onRejected
      * @param callable|null $onProgress This argument is deprecated and should not be used anymore.
      * @return void
      */
-    public function done(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null);
+    public function done(?callable $onFulfilled = null, ?callable $onRejected = null, ?callable $onProgress = null);
 
     /**
      * Registers a rejection handler for promise. It is a shortcut for:
@@ -31,7 +29,6 @@ interface ExtendedPromiseInterface extends PromiseInterface
      * Additionally, you can type hint the `$reason` argument of `$onRejected` to catch
      * only specific errors.
      *
-     * @param callable $onRejected
      * @return ExtendedPromiseInterface
      */
     public function otherwise(callable $onRejected);
@@ -78,7 +75,6 @@ interface ExtendedPromiseInterface extends PromiseInterface
      *     ->always('cleanup');
      * ```
      *
-     * @param callable $onFulfilledOrRejected
      * @return ExtendedPromiseInterface
      */
     public function always(callable $onFulfilledOrRejected);
@@ -90,7 +86,6 @@ interface ExtendedPromiseInterface extends PromiseInterface
      * $promise->then(null, null, $onProgress);
      * ```
      *
-     * @param callable $onProgress
      * @return ExtendedPromiseInterface
      * @deprecated 2.6.0 Progress support is deprecated and should not be used anymore.
      */

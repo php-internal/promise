@@ -10,14 +10,14 @@ class Deferred implements PromisorInterface
     private $notifyCallback;
     private $canceller;
 
-    public function __construct(callable $canceller = null)
+    public function __construct(?callable $canceller = null)
     {
         $this->canceller = $canceller;
     }
 
     public function promise()
     {
-        if (null === $this->promise) {
+        if ($this->promise === null) {
             $this->promise = new Promise(function ($resolve, $reject, $notify) {
                 $this->resolveCallback = $resolve;
                 $this->rejectCallback  = $reject;
@@ -45,9 +45,8 @@ class Deferred implements PromisorInterface
 
     /**
      * @deprecated 2.6.0 Progress support is deprecated and should not be used anymore.
-     * @param mixed $update
      */
-    public function notify($update = null)
+    public function notify(mixed $update = null)
     {
         $this->promise();
 
@@ -58,7 +57,7 @@ class Deferred implements PromisorInterface
      * @deprecated 2.2.0
      * @see Deferred::notify()
      */
-    public function progress($update = null)
+    public function progress(mixed $update = null)
     {
         $this->notify($update);
     }
