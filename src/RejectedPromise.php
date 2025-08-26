@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 /**
@@ -59,7 +61,7 @@ class RejectedPromise implements ExtendedPromiseInterface, CancellablePromiseInt
 
     public function always(callable $onFulfilledOrRejected)
     {
-        return $this->then(null, fn($reason) => resolve($onFulfilledOrRejected())->then(fn() => new RejectedPromise($reason)));
+        return $this->then(null, static fn($reason) => resolve($onFulfilledOrRejected())->then(static fn() => new RejectedPromise($reason)));
     }
 
     public function progress(callable $onProgress)

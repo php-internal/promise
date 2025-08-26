@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 class CancellationQueue
@@ -32,7 +34,7 @@ class CancellationQueue
 
     private function drain()
     {
-        for ($i = key($this->queue); isset($this->queue[$i]); $i++) {
+        for ($i = \key($this->queue); isset($this->queue[$i]); $i++) {
             $cancellable = $this->queue[$i];
 
             $exception = null;

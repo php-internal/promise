@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
@@ -82,7 +84,7 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
 
     public function always(callable $onFulfilledOrRejected)
     {
-        return $this->then(static fn($value) => resolve($onFulfilledOrRejected())->then(fn() => $value), static fn($reason) => resolve($onFulfilledOrRejected())->then(fn() => new RejectedPromise($reason)));
+        return $this->then(static fn($value) => resolve($onFulfilledOrRejected())->then(static fn() => $value), static fn($reason) => resolve($onFulfilledOrRejected())->then(static fn() => new RejectedPromise($reason)));
     }
 
     public function progress(callable $onProgress)
@@ -127,7 +129,7 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
         };
     }
 
-    private function reject($reason = null)
+    private function reject($reason = null): void
     {
         if ($this->result !== null) {
             return;
@@ -136,7 +138,7 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
         $this->settle(reject($reason));
     }
 
-    private function settle(ExtendedPromiseInterface $promise)
+    private function settle(ExtendedPromiseInterface $promise): void
     {
         $promise = $this->unwrap($promise);
 
@@ -177,7 +179,7 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
         return $promise;
     }
 
-    private function call(callable $cb)
+    private function call(callable $cb): void
     {
         // Explicitly overwrite argument with null value. This ensure that this
         // argument does not show up in the stack trace in PHP 7+ only.

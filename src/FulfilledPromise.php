@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 /**
@@ -51,7 +53,7 @@ class FulfilledPromise implements ExtendedPromiseInterface, CancellablePromiseIn
 
     public function always(callable $onFulfilledOrRejected)
     {
-        return $this->then(fn($value) => resolve($onFulfilledOrRejected())->then(fn() => $value));
+        return $this->then(static fn($value) => resolve($onFulfilledOrRejected())->then(static fn() => $value));
     }
 
     public function progress(callable $onProgress)
