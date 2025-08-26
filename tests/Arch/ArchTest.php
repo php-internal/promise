@@ -12,15 +12,13 @@ final class ArchTest extends TestCase
     use ArchitectureAsserts;
 
     protected array $excludedPaths = [
-        'resources',
         'tests',
         'vendor',
-        'src/Test',
     ];
 
     public function testForgottenDebugFunctions(): void
     {
-        $functions = ['dd', 'exit', 'die', 'var_dump', 'echo', 'print', 'dump', 'tr', 'td'];
+        $functions = ['dd', 'exit', 'die', 'var_dump', 'echo', 'print', 'dump', 'tr', 'td', 'error_log', 'trap'];
         $layer = $this->layer();
 
         foreach ($layer as $object) {
