@@ -1,5 +1,6 @@
 /.*
 !/.github/
+!/.php-cs-fixer.dist.php
 /runtime/
 /vendor/
 /.env
