@@ -31,7 +31,7 @@ function resolve($promiseOrValue = null)
             $canceller = [$promiseOrValue, 'cancel'];
         }
 
-        return new Promise(function ($resolve, $reject, $notify) use ($promiseOrValue) {
+        return new Promise(function ($resolve, $reject, $notify) use ($promiseOrValue): void {
             $promiseOrValue->then($resolve, $reject, $notify);
         }, $canceller);
     }
@@ -58,9 +58,7 @@ function resolve($promiseOrValue = null)
 function reject($promiseOrValue = null)
 {
     if ($promiseOrValue instanceof PromiseInterface) {
-        return resolve($promiseOrValue)->then(function ($value) {
-            return new RejectedPromise($value);
-        });
+        return resolve($promiseOrValue)->then(fn($value) => new RejectedPromise($value));
     }
 
     return new RejectedPromise($promiseOrValue);
@@ -77,9 +75,7 @@ function reject($promiseOrValue = null)
  */
 function all($promisesOrValues)
 {
-    return map($promisesOrValues, function ($val) {
-        return $val;
-    });
+    return map($promisesOrValues, fn($val) => $val);
 }
 
 /**
@@ -97,9 +93,9 @@ function race($promisesOrValues)
     $cancellationQueue = new CancellationQueue();
     $cancellationQueue->enqueue($promisesOrValues);
 
-    return new Promise(function ($resolve, $reject, $notify) use ($promisesOrValues, $cancellationQueue) {
+    return new Promise(function ($resolve, $reject, $notify) use ($promisesOrValues, $cancellationQueue): void {
         resolve($promisesOrValues)
-            ->done(function ($array) use ($cancellationQueue, $resolve, $reject, $notify) {
+            ->done(function ($array) use ($cancellationQueue, $resolve, $reject, $notify): void {
                 if (!is_array($array) || !$array) {
                     $resolve();
                     return;
@@ -132,9 +128,7 @@ function race($promisesOrValues)
 function any($promisesOrValues)
 {
     return some($promisesOrValues, 1)
-        ->then(function ($val) {
-            return \array_shift($val);
-        });
+        ->then(fn($val) => \array_shift($val));
 }
 
 /**
@@ -160,9 +154,9 @@ function some($promisesOrValues, $howMany)
     $cancellationQueue = new CancellationQueue();
     $cancellationQueue->enqueue($promisesOrValues);
 
-    return new Promise(function ($resolve, $reject, $notify) use ($promisesOrValues, $howMany, $cancellationQueue) {
+    return new Promise(function ($resolve, $reject, $notify) use ($promisesOrValues, $howMany, $cancellationQueue): void {
         resolve($promisesOrValues)
-            ->done(function ($array) use ($howMany, $cancellationQueue, $resolve, $reject, $notify) {
+            ->done(function ($array) use ($howMany, $cancellationQueue, $resolve, $reject, $notify): void {
                 if (!\is_array($array) || $howMany < 1) {
                     $resolve([]);
                     return;
@@ -188,7 +182,7 @@ function some($promisesOrValues, $howMany)
                 $reasons   = [];
 
                 foreach ($array as $i => $promiseOrValue) {
-                    $fulfiller = function ($val) use ($i, &$values, &$toResolve, $toReject, $resolve) {
+                    $fulfiller = function ($val) use ($i, &$values, &$toResolve, $toReject, $resolve): void {
                         if ($toResolve < 1 || $toReject < 1) {
                             return;
                         }
@@ -200,7 +194,7 @@ function some($promisesOrValues, $howMany)
                         }
                     };
 
-                    $rejecter = function ($reason) use ($i, &$reasons, &$toReject, $toResolve, $reject) {
+                    $rejecter = function ($reason) use ($i, &$reasons, &$toReject, $toResolve, $reject): void {
                         if ($toResolve < 1 || $toReject < 1) {
                             return;
                         }
@@ -236,9 +230,9 @@ function map($promisesOrValues, callable $mapFunc)
     $cancellationQueue = new CancellationQueue();
     $cancellationQueue->enqueue($promisesOrValues);
 
-    return new Promise(function ($resolve, $reject, $notify) use ($promisesOrValues, $mapFunc, $cancellationQueue) {
+    return new Promise(function ($resolve, $reject, $notify) use ($promisesOrValues, $mapFunc, $cancellationQueue): void {
         resolve($promisesOrValues)
-            ->done(function ($array) use ($mapFunc, $cancellationQueue, $resolve, $reject, $notify) {
+            ->done(function ($array) use ($mapFunc, $cancellationQueue, $resolve, $reject, $notify): void {
                 if (!\is_array($array) || !$array) {
                     $resolve([]);
                     return;
@@ -254,7 +248,7 @@ function map($promisesOrValues, callable $mapFunc)
                     resolve($promiseOrValue)
                         ->then($mapFunc)
                         ->done(
-                            function ($mapped) use ($i, &$values, &$toResolve, $resolve) {
+                            function ($mapped) use ($i, &$values, &$toResolve, $resolve): void {
                                 $values[$i] = $mapped;
 
                                 if (--$toResolve === 0) {
@@ -284,9 +278,9 @@ function reduce($promisesOrValues, callable $reduceFunc, $initialValue = null)
     $cancellationQueue = new CancellationQueue();
     $cancellationQueue->enqueue($promisesOrValues);
 
-    return new Promise(function ($resolve, $reject, $notify) use ($promisesOrValues, $reduceFunc, $initialValue, $cancellationQueue) {
+    return new Promise(function ($resolve, $reject, $notify) use ($promisesOrValues, $reduceFunc, $initialValue, $cancellationQueue): void {
         resolve($promisesOrValues)
-            ->done(function ($array) use ($reduceFunc, $initialValue, $cancellationQueue, $resolve, $reject, $notify) {
+            ->done(function ($array) use ($reduceFunc, $initialValue, $cancellationQueue, $resolve, $reject, $notify): void {
                 if (!\is_array($array)) {
                     $array = [];
                 }

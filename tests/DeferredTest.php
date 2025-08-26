@@ -15,11 +15,11 @@ class DeferredTest extends TestCase
         $d = new Deferred($canceller);
 
         return new CallbackPromiseAdapter([
-            'promise' => [$d, 'promise'],
-            'resolve' => [$d, 'resolve'],
-            'reject'  => [$d, 'reject'],
-            'notify'  => [$d, 'progress'],
-            'settle'  => [$d, 'resolve'],
+            'promise' => $d->promise(...),
+            'resolve' => $d->resolve(...),
+            'reject'  => $d->reject(...),
+            'notify'  => $d->progress(...),
+            'settle'  => $d->resolve(...),
         ]);
     }
 

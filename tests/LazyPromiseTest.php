@@ -14,18 +14,14 @@ class LazyPromiseTest extends TestCase
     {
         $d = new Deferred($canceller);
 
-        $factory = static function () use ($d) {
-            return $d->promise();
-        };
+        $factory = (static fn() => $d->promise());
 
         return new CallbackPromiseAdapter([
-            'promise'  => static function () use ($factory) {
-                return new LazyPromise($factory);
-            },
-            'resolve' => [$d, 'resolve'],
-            'reject'  => [$d, 'reject'],
-            'notify'  => [$d, 'progress'],
-            'settle'  => [$d, 'resolve'],
+            'promise'  => static fn() => new LazyPromise($factory),
+            'resolve' => $d->resolve(...),
+            'reject'  => $d->reject(...),
+            'notify'  => $d->progress(...),
+            'settle'  => $d->resolve(...),
         ]);
     }
 
@@ -82,7 +78,7 @@ class LazyPromiseTest extends TestCase
             ->will($this->returnValue(null));
 
         $p = new LazyPromise($factory);
-        $this->assertInstanceOf('React\\Promise\\PromiseInterface', $p->then());
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $p->then());
     }
 
     #[\PHPUnit\Framework\Attributes\Test]

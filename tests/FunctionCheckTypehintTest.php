@@ -72,8 +72,8 @@ class FunctionCheckTypehintTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Test]
     public function shouldAcceptStaticClassCallbackWithUnionTypehint(): void
     {
-        self::assertTrue(_checkTypehint([\React\Promise\CallbackWithUnionTypehintClass::class, 'testCallbackStatic'], new \InvalidArgumentException()));
-        self::assertFalse(_checkTypehint([\React\Promise\CallbackWithUnionTypehintClass::class, 'testCallbackStatic'], new \Exception()));
+        self::assertTrue(_checkTypehint(\React\Promise\CallbackWithUnionTypehintClass::testCallbackStatic(...), new \InvalidArgumentException()));
+        self::assertFalse(_checkTypehint(\React\Promise\CallbackWithUnionTypehintClass::testCallbackStatic(...), new \Exception()));
     }
 
     #[\PHPUnit\Framework\Attributes\RequiresPhp('8.1')]
@@ -98,9 +98,9 @@ class FunctionCheckTypehintTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Test]
     public function shouldAcceptStaticClassCallbackWithIntersectionTypehint(): void
     {
-        self::assertFalse(_checkTypehint([\React\Promise\CallbackWithIntersectionTypehintClass::class, 'testCallbackStatic'], new \RuntimeException()));
-        self::assertFalse(_checkTypehint([\React\Promise\CallbackWithIntersectionTypehintClass::class, 'testCallbackStatic'], new CountableNonException()));
-        self::assertTrue(_checkTypehint([\React\Promise\CallbackWithIntersectionTypehintClass::class, 'testCallbackStatic'], new CountableException()));
+        self::assertFalse(_checkTypehint(\React\Promise\CallbackWithIntersectionTypehintClass::testCallbackStatic(...), new \RuntimeException()));
+        self::assertFalse(_checkTypehint(\React\Promise\CallbackWithIntersectionTypehintClass::testCallbackStatic(...), new CountableNonException()));
+        self::assertTrue(_checkTypehint(\React\Promise\CallbackWithIntersectionTypehintClass::testCallbackStatic(...), new CountableException()));
     }
 
     #[\PHPUnit\Framework\Attributes\RequiresPhp('8.2')]
@@ -125,9 +125,9 @@ class FunctionCheckTypehintTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Test]
     public function shouldAcceptStaticClassCallbackWithDNFTypehint(): void
     {
-        self::assertFalse(_checkTypehint([\React\Promise\CallbackWithDNFTypehintClass::class, 'testCallbackStatic'], new \RuntimeException()));
-        self::assertTrue(_checkTypehint([\React\Promise\CallbackWithDNFTypehintClass::class, 'testCallbackStatic'], new CountableException()));
-        self::assertTrue(_checkTypehint([\React\Promise\CallbackWithDNFTypehintClass::class, 'testCallbackStatic'], new ArrayAccessibleException()));
+        self::assertFalse(_checkTypehint(\React\Promise\CallbackWithDNFTypehintClass::testCallbackStatic(...), new \RuntimeException()));
+        self::assertTrue(_checkTypehint(\React\Promise\CallbackWithDNFTypehintClass::testCallbackStatic(...), new CountableException()));
+        self::assertTrue(_checkTypehint(\React\Promise\CallbackWithDNFTypehintClass::testCallbackStatic(...), new ArrayAccessibleException()));
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
@@ -157,7 +157,7 @@ class FunctionCheckTypehintTest extends TestCase
     #[\PHPUnit\Framework\Attributes\Test]
     public function shouldAcceptStaticClassCallbackWithoutTypehint(): void
     {
-        $this->assertTrue(_checkTypehint([\React\Promise\CallbackWithoutTypehintClass::class, 'testCallbackStatic'], new \InvalidArgumentException()));
+        $this->assertTrue(_checkTypehint(\React\Promise\CallbackWithoutTypehintClass::testCallbackStatic(...), new \InvalidArgumentException()));
     }
 }
 

@@ -160,17 +160,13 @@ trait CancelTestTrait
         $adapter = $this->getPromiseTestAdapter($mock);
 
         $promise = $adapter->promise()
-            ->then(static function () {
-                return new Promise\Promise(static function (): void {});
-            })
+            ->then(static fn() => new Promise\Promise(static function (): void {}))
             ->then(static function () {
                 $d = new Promise\Deferred();
 
                 return $d->promise();
             })
-            ->then(static function () {
-                return new Promise\Promise(static function (): void {});
-            });
+            ->then(static fn() => new Promise\Promise(static function (): void {}));
 
         $promise->cancel();
     }

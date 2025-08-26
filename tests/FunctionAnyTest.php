@@ -16,10 +16,8 @@ class FunctionAnyTest extends TestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with(
-                $this->callback(static function ($exception) {
-                    return $exception instanceof LengthException &&
-                           $exception->getMessage() === 'Input array must contain at least 1 item but contains only 0 items.';
-                }),
+                $this->callback(static fn($exception) => $exception instanceof LengthException &&
+                       $exception->getMessage() === 'Input array must contain at least 1 item but contains only 0 items.'),
             );
 
         any([])

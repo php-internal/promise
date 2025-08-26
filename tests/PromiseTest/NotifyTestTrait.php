@@ -152,9 +152,7 @@ trait NotifyTestTrait
         $adapter->resolve();
 
         $adapter->promise()
-            ->then(static function () use ($promise2) {
-                return $promise2;
-            })
+            ->then(static fn() => $promise2)
             ->then(
                 $this->expectCallableNever(),
                 $this->expectCallableNever(),
@@ -181,9 +179,7 @@ trait NotifyTestTrait
             ->with($sentinel);
 
         $adapter->promise()
-            ->then(static function () use ($promise2) {
-                return $promise2;
-            })
+            ->then(static fn() => $promise2)
             ->then(
                 $this->expectCallableNever(),
                 $this->expectCallableNever(),

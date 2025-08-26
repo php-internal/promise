@@ -6,12 +6,7 @@ namespace React\Promise\PromiseAdapter;
 
 class CallbackPromiseAdapter implements PromiseAdapterInterface
 {
-    private $callbacks;
-
-    public function __construct(array $callbacks)
-    {
-        $this->callbacks = $callbacks;
-    }
+    public function __construct(private array $callbacks) {}
 
     public function promise()
     {

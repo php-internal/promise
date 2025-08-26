@@ -86,9 +86,7 @@ trait PromiseFulfilledTestTrait
         $adapter->resolve(1);
         $adapter->promise()
             ->then(
-                static function ($val) {
-                    return $val + 1;
-                },
+                static fn($val) => $val + 1,
                 $this->expectCallableNever(),
             )
             ->then(
@@ -111,9 +109,7 @@ trait PromiseFulfilledTestTrait
         $adapter->resolve(1);
         $adapter->promise()
             ->then(
-                static function ($val) {
-                    return \React\Promise\resolve($val + 1);
-                },
+                static fn($val) => \React\Promise\resolve($val + 1),
                 $this->expectCallableNever(),
             )
             ->then(
@@ -136,9 +132,7 @@ trait PromiseFulfilledTestTrait
         $adapter->resolve(1);
         $adapter->promise()
             ->then(
-                static function ($val) {
-                    return \React\Promise\reject($val + 1);
-                },
+                static fn($val) => \React\Promise\reject($val + 1),
                 $this->expectCallableNever(),
             )
             ->then(
@@ -234,9 +228,7 @@ trait PromiseFulfilledTestTrait
         $this->setExpectedException(\React\Promise\UnhandledRejectionException::class);
 
         $adapter->resolve(1);
-        $this->assertNull($adapter->promise()->done(static function () {
-            return \React\Promise\reject();
-        }));
+        $this->assertNull($adapter->promise()->done(static fn() => \React\Promise\reject()));
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
@@ -282,9 +274,7 @@ trait PromiseFulfilledTestTrait
 
         $adapter->resolve($value);
         $adapter->promise()
-            ->always(static function () {
-                return 1;
-            })
+            ->always(static fn() => 1)
             ->then($mock);
     }
 
@@ -303,9 +293,7 @@ trait PromiseFulfilledTestTrait
 
         $adapter->resolve($value);
         $adapter->promise()
-            ->always(static function () {
-                return \React\Promise\resolve(1);
-            })
+            ->always(static fn() => \React\Promise\resolve(1))
             ->then($mock);
     }
 
@@ -345,9 +333,7 @@ trait PromiseFulfilledTestTrait
 
         $adapter->resolve(1);
         $adapter->promise()
-            ->always(static function () use ($exception) {
-                return \React\Promise\reject($exception);
-            })
+            ->always(static fn() => \React\Promise\reject($exception))
             ->then(null, $mock);
     }
 }

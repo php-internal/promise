@@ -194,9 +194,7 @@ trait ResolveTestTrait
 
         $this->setExpectedException(\React\Promise\UnhandledRejectionException::class);
 
-        $this->assertNull($adapter->promise()->done(static function () {
-            return \React\Promise\reject();
-        }));
+        $this->assertNull($adapter->promise()->done(static fn() => \React\Promise\reject()));
         $adapter->resolve(1);
     }
 
@@ -234,9 +232,7 @@ trait ResolveTestTrait
             ->with($this->identicalTo($value));
 
         $adapter->promise()
-            ->always(static function () {
-                return 1;
-            })
+            ->always(static fn() => 1)
             ->then($mock);
 
         $adapter->resolve($value);
@@ -256,9 +252,7 @@ trait ResolveTestTrait
             ->with($this->identicalTo($value));
 
         $adapter->promise()
-            ->always(static function () {
-                return \React\Promise\resolve(1);
-            })
+            ->always(static fn() => \React\Promise\resolve(1))
             ->then($mock);
 
         $adapter->resolve($value);
@@ -300,9 +294,7 @@ trait ResolveTestTrait
             ->with($this->identicalTo($exception));
 
         $adapter->promise()
-            ->always(static function () use ($exception) {
-                return \React\Promise\reject($exception);
-            })
+            ->always(static fn() => \React\Promise\reject($exception))
             ->then(null, $mock);
 
         $adapter->resolve(1);

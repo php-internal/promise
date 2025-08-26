@@ -95,9 +95,7 @@ trait PromiseRejectedTestTrait
         $adapter->promise()
             ->then(
                 $this->expectCallableNever(),
-                static function ($val) {
-                    return $val + 1;
-                },
+                static fn($val) => $val + 1,
             )
             ->then(
                 $mock,
@@ -120,9 +118,7 @@ trait PromiseRejectedTestTrait
         $adapter->promise()
             ->then(
                 $this->expectCallableNever(),
-                static function ($val) {
-                    return \React\Promise\resolve($val + 1);
-                },
+                static fn($val) => \React\Promise\resolve($val + 1),
             )
             ->then(
                 $mock,
@@ -176,9 +172,7 @@ trait PromiseRejectedTestTrait
         $adapter->promise()
             ->then(
                 $this->expectCallableNever(),
-                static function ($val) {
-                    return \React\Promise\reject($val + 1);
-                },
+                static fn($val) => \React\Promise\reject($val + 1),
             )
             ->then(
                 $this->expectCallableNever(),
@@ -252,9 +246,7 @@ trait PromiseRejectedTestTrait
         $this->setExpectedException(\React\Promise\UnhandledRejectionException::class);
 
         $adapter->reject(1);
-        $this->assertNull($adapter->promise()->done(null, static function () {
-            return \React\Promise\reject();
-        }));
+        $this->assertNull($adapter->promise()->done(null, static fn() => \React\Promise\reject()));
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
@@ -265,9 +257,7 @@ trait PromiseRejectedTestTrait
         $this->setExpectedException('\Exception', 'UnhandledRejectionException');
 
         $adapter->reject(1);
-        $this->assertNull($adapter->promise()->done(null, static function () {
-            return \React\Promise\reject(new \Exception('UnhandledRejectionException'));
-        }));
+        $this->assertNull($adapter->promise()->done(null, static fn() => \React\Promise\reject(new \Exception('UnhandledRejectionException'))));
     }
 
     #[\PHPUnit\Framework\Attributes\Test]
@@ -419,9 +409,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->always(static function () {
-                return 1;
-            })
+            ->always(static fn() => 1)
             ->then(null, $mock);
     }
 
@@ -440,9 +428,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->always(static function () {
-                return \React\Promise\resolve(1);
-            })
+            ->always(static fn() => \React\Promise\resolve(1))
             ->then(null, $mock);
     }
 
@@ -484,9 +470,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception1);
         $adapter->promise()
-            ->always(static function () use ($exception2) {
-                return \React\Promise\reject($exception2);
-            })
+            ->always(static fn() => \React\Promise\reject($exception2))
             ->then(null, $mock);
     }
 

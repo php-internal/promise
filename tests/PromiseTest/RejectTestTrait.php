@@ -177,9 +177,7 @@ trait RejectTestTrait
 
         $this->setExpectedException(\React\Promise\UnhandledRejectionException::class);
 
-        $this->assertNull($adapter->promise()->done(null, static function () {
-            return \React\Promise\reject();
-        }));
+        $this->assertNull($adapter->promise()->done(null, static fn() => \React\Promise\reject()));
         $adapter->reject(1);
     }
 
@@ -190,9 +188,7 @@ trait RejectTestTrait
 
         $this->setExpectedException('\Exception', 'UnhandledRejectionException');
 
-        $this->assertNull($adapter->promise()->done(null, static function () {
-            return \React\Promise\reject(new \Exception('UnhandledRejectionException'));
-        }));
+        $this->assertNull($adapter->promise()->done(null, static fn() => \React\Promise\reject(new \Exception('UnhandledRejectionException'))));
         $adapter->reject(1);
     }
 
@@ -206,9 +202,7 @@ trait RejectTestTrait
         $d = new Deferred();
         $promise = $d->promise();
 
-        $this->assertNull($adapter->promise()->done(null, static function () use ($promise) {
-            return $promise;
-        }));
+        $this->assertNull($adapter->promise()->done(null, static fn() => $promise));
         $adapter->reject(1);
         $d->reject(1);
     }
@@ -292,9 +286,7 @@ trait RejectTestTrait
             ->with($this->identicalTo($exception));
 
         $adapter->promise()
-            ->always(static function () {
-                return 1;
-            })
+            ->always(static fn() => 1)
             ->then(null, $mock);
 
         $adapter->reject($exception);
@@ -314,9 +306,7 @@ trait RejectTestTrait
             ->with($this->identicalTo($exception));
 
         $adapter->promise()
-            ->always(static function () {
-                return \React\Promise\resolve(1);
-            })
+            ->always(static fn() => \React\Promise\resolve(1))
             ->then(null, $mock);
 
         $adapter->reject($exception);
@@ -358,9 +348,7 @@ trait RejectTestTrait
             ->with($this->identicalTo($exception));
 
         $adapter->promise()
-            ->always(static function () use ($exception) {
-                return \React\Promise\reject($exception);
-            })
+            ->always(static fn() => \React\Promise\reject($exception))
             ->then(null, $mock);
 
         $adapter->reject($exception);

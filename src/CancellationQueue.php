@@ -39,8 +39,7 @@ class CancellationQueue
 
             try {
                 $cancellable->cancel();
-            } catch (\Throwable $exception) {
-            } catch (\Exception $exception) {
+            } catch (\Throwable|\Exception $exception) {
             }
 
             unset($this->queue[$i]);

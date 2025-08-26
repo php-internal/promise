@@ -186,15 +186,11 @@ class FunctionMapTest extends TestCase
 
     protected function mapper()
     {
-        return static function ($val) {
-            return $val * 2;
-        };
+        return static fn($val) => $val * 2;
     }
 
     protected function promiseMapper()
     {
-        return static function ($val) {
-            return resolve($val * 2);
-        };
+        return static fn($val) => resolve($val * 2);
     }
 }

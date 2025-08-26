@@ -43,7 +43,7 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
 
         return new static(
             $this->resolver($onFulfilled, $onRejected, $onProgress),
-            static function () use (&$parent) {
+            static function () use (&$parent): void {
                 if (++$parent->cancelRequests >= $parent->requiredCancelRequests) {
                     $parent->cancel();
                 }
@@ -59,7 +59,7 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
             return $this->result->done($onFulfilled, $onRejected, $onProgress);
         }
 
-        $this->handlers[] = static function (ExtendedPromiseInterface $promise) use ($onFulfilled, $onRejected) {
+        $this->handlers[] = static function (ExtendedPromiseInterface $promise) use ($onFulfilled, $onRejected): void {
             $promise
                 ->done($onFulfilled, $onRejected);
         };
@@ -82,15 +82,7 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
 
     public function always(callable $onFulfilledOrRejected)
     {
-        return $this->then(static function ($value) use ($onFulfilledOrRejected) {
-            return resolve($onFulfilledOrRejected())->then(function () use ($value) {
-                return $value;
-            });
-        }, static function ($reason) use ($onFulfilledOrRejected) {
-            return resolve($onFulfilledOrRejected())->then(function () use ($reason) {
-                return new RejectedPromise($reason);
-            });
-        });
+        return $this->then(static fn($value) => resolve($onFulfilledOrRejected())->then(fn() => $value), static fn($reason) => resolve($onFulfilledOrRejected())->then(fn() => new RejectedPromise($reason)));
     }
 
     public function progress(callable $onProgress)
@@ -112,14 +104,12 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
 
     private function resolver(?callable $onFulfilled = null, ?callable $onRejected = null, ?callable $onProgress = null)
     {
-        return function ($resolve, $reject, $notify) use ($onFulfilled, $onRejected, $onProgress) {
+        return function ($resolve, $reject, $notify) use ($onFulfilled, $onRejected, $onProgress): void {
             if ($onProgress) {
-                $progressHandler = static function ($update) use ($notify, $onProgress) {
+                $progressHandler = static function ($update) use ($notify, $onProgress): void {
                     try {
                         $notify($onProgress($update));
-                    } catch (\Throwable $e) {
-                        $notify($e);
-                    } catch (\Exception $e) {
+                    } catch (\Throwable|\Exception $e) {
                         $notify($e);
                     }
                 };
@@ -127,7 +117,7 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
                 $progressHandler = $notify;
             }
 
-            $this->handlers[] = static function (ExtendedPromiseInterface $promise) use ($onFulfilled, $onRejected, $resolve, $reject, $progressHandler) {
+            $this->handlers[] = static function (ExtendedPromiseInterface $promise) use ($onFulfilled, $onRejected, $resolve, $reject, $progressHandler): void {
                 $promise
                     ->then($onFulfilled, $onRejected)
                     ->done($resolve, $reject, $progressHandler);
@@ -224,29 +214,26 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
                 $progressHandlers = & $this->progressHandlers;
 
                 $callback(
-                    static function ($value = null) use (&$target) {
+                    static function ($value = null) use (&$target): void {
                         if ($target !== null) {
                             $target->settle(resolve($value));
                             $target = null;
                         }
                     },
-                    static function ($reason = null) use (&$target) {
+                    static function ($reason = null) use (&$target): void {
                         if ($target !== null) {
                             $target->reject($reason);
                             $target = null;
                         }
                     },
-                    static function ($update = null) use (&$progressHandlers) {
+                    static function ($update = null) use (&$progressHandlers): void {
                         foreach ($progressHandlers as $handler) {
                             $handler($update);
                         }
                     },
                 );
             }
-        } catch (\Throwable $e) {
-            $target = null;
-            $this->reject($e);
-        } catch (\Exception $e) {
+        } catch (\Throwable|\Exception $e) {
             $target = null;
             $this->reject($e);
         }

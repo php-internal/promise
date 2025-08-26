@@ -14,9 +14,7 @@ class SimpleRejectedTestPromise implements PromiseInterface
             }
 
             return new self();
-        } catch (\Throwable $exception) {
-            return new RejectedPromise($exception);
-        } catch (\Exception $exception) {
+        } catch (\Throwable|\Exception $exception) {
             return new RejectedPromise($exception);
         }
     }

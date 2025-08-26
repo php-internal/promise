@@ -16,10 +16,8 @@ class FunctionSomeTest extends TestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with(
-                $this->callback(static function ($exception) {
-                    return $exception instanceof LengthException &&
-                           $exception->getMessage() === 'Input array must contain at least 1 item but contains only 0 items.';
-                }),
+                $this->callback(static fn($exception) => $exception instanceof LengthException &&
+                       $exception->getMessage() === 'Input array must contain at least 1 item but contains only 0 items.'),
             );
 
         some(
@@ -36,10 +34,8 @@ class FunctionSomeTest extends TestCase
             ->expects($this->once())
             ->method('__invoke')
             ->with(
-                $this->callback(static function ($exception) {
-                    return $exception instanceof LengthException &&
-                           $exception->getMessage() === 'Input array must contain at least 4 items but contains only 3 items.';
-                }),
+                $this->callback(static fn($exception) => $exception instanceof LengthException &&
+                       $exception->getMessage() === 'Input array must contain at least 4 items but contains only 3 items.'),
             );
 
         some(
@@ -187,7 +183,7 @@ class FunctionSomeTest extends TestCase
     public function shouldCancelInputPromise(): void
     {
         $mock = $this
-            ->getMockBuilder('React\Promise\CancellablePromiseInterface')
+            ->getMockBuilder(\React\Promise\CancellablePromiseInterface::class)
             ->getMock();
         $mock
             ->expects($this->once())
@@ -200,14 +196,14 @@ class FunctionSomeTest extends TestCase
     public function shouldCancelInputArrayPromises(): void
     {
         $mock1 = $this
-            ->getMockBuilder('React\Promise\CancellablePromiseInterface')
+            ->getMockBuilder(\React\Promise\CancellablePromiseInterface::class)
             ->getMock();
         $mock1
             ->expects($this->once())
             ->method('cancel');
 
         $mock2 = $this
-            ->getMockBuilder('React\Promise\CancellablePromiseInterface')
+            ->getMockBuilder(\React\Promise\CancellablePromiseInterface::class)
             ->getMock();
         $mock2
             ->expects($this->once())
@@ -228,7 +224,7 @@ class FunctionSomeTest extends TestCase
         $deferred->resolve();
 
         $mock2 = $this
-            ->getMockBuilder('React\Promise\CancellablePromiseInterface')
+            ->getMockBuilder(\React\Promise\CancellablePromiseInterface::class)
             ->getMock();
         $mock2
             ->expects($this->never())
@@ -249,7 +245,7 @@ class FunctionSomeTest extends TestCase
         $deferred->reject();
 
         $mock2 = $this
-            ->getMockBuilder('React\Promise\CancellablePromiseInterface')
+            ->getMockBuilder(\React\Promise\CancellablePromiseInterface::class)
             ->getMock();
         $mock2
             ->expects($this->never())

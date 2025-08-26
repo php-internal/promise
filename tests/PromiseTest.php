@@ -21,9 +21,7 @@ class PromiseTest extends TestCase
         }, $canceller);
 
         return new CallbackPromiseAdapter([
-            'promise' => static function () use ($promise) {
-                return $promise;
-            },
+            'promise' => static fn() => $promise,
             'resolve' => $resolveCallback,
             'reject'  => $rejectCallback,
             'notify'  => $progressCallback,

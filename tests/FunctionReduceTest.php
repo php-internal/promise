@@ -335,15 +335,11 @@ class FunctionReduceTest extends TestCase
 
     protected function plus()
     {
-        return static function ($sum, $val) {
-            return $sum + $val;
-        };
+        return static fn($sum, $val) => $sum + $val;
     }
 
     protected function append()
     {
-        return static function ($sum, $val) {
-            return $sum . $val;
-        };
+        return static fn($sum, $val) => $sum . $val;
     }
 }

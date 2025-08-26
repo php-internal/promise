@@ -26,9 +26,7 @@ class RejectedPromise implements ExtendedPromiseInterface, CancellablePromiseInt
 
         try {
             return resolve($onRejected($this->reason));
-        } catch (\Throwable $exception) {
-            return new RejectedPromise($exception);
-        } catch (\Exception $exception) {
+        } catch (\Throwable|\Exception $exception) {
             return new RejectedPromise($exception);
         }
     }
@@ -61,11 +59,7 @@ class RejectedPromise implements ExtendedPromiseInterface, CancellablePromiseInt
 
     public function always(callable $onFulfilledOrRejected)
     {
-        return $this->then(null, function ($reason) use ($onFulfilledOrRejected) {
-            return resolve($onFulfilledOrRejected())->then(function () use ($reason) {
-                return new RejectedPromise($reason);
-            });
-        });
+        return $this->then(null, fn($reason) => resolve($onFulfilledOrRejected())->then(fn() => new RejectedPromise($reason)));
     }
 
     public function progress(callable $onProgress)
