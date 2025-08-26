@@ -1,14 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 /**
+ * @template T
+ * @implements ExtendedPromiseInterface<T>
+ * @implements CancellablePromiseInterface<T>
+ *
  * @deprecated 2.8.0 External usage of FulfilledPromise is deprecated, use `resolve()` instead.
  */
 class FulfilledPromise implements ExtendedPromiseInterface, CancellablePromiseInterface
 {
-    private $value;
+    /** @var T */
+    private mixed $value;
 
+    /**
+     * @param T $value
+     */
     public function __construct($value = null)
     {
         if ($value instanceof PromiseInterface) {
@@ -18,24 +28,22 @@ class FulfilledPromise implements ExtendedPromiseInterface, CancellablePromiseIn
         $this->value = $value;
     }
 
-    public function then(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null)
+    public function then(?callable $onFulfilled = null, ?callable $onRejected = null, ?callable $onProgress = null)
     {
-        if (null === $onFulfilled) {
+        if ($onFulfilled === null) {
             return $this;
         }
 
         try {
             return resolve($onFulfilled($this->value));
-        } catch (\Throwable $exception) {
-            return new RejectedPromise($exception);
-        } catch (\Exception $exception) {
+        } catch (\Throwable|\Exception $exception) {
             return new RejectedPromise($exception);
         }
     }
 
-    public function done(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null)
+    public function done(?callable $onFulfilled = null, ?callable $onRejected = null, ?callable $onProgress = null)
     {
-        if (null === $onFulfilled) {
+        if ($onFulfilled === null) {
             return;
         }
 
@@ -53,11 +61,7 @@ class FulfilledPromise implements ExtendedPromiseInterface, CancellablePromiseIn
 
     public function always(callable $onFulfilledOrRejected)
     {
-        return $this->then(function ($value) use ($onFulfilledOrRejected) {
-            return resolve($onFulfilledOrRejected())->then(function () use ($value) {
-                return $value;
-            });
-        });
+        return $this->then(static fn($value) => resolve($onFulfilledOrRejected())->then(static fn() => $value));
     }
 
     public function progress(callable $onProgress)
@@ -65,7 +69,5 @@ class FulfilledPromise implements ExtendedPromiseInterface, CancellablePromiseIn
         return $this;
     }
 
-    public function cancel()
-    {
-    }
+    public function cancel() {}
 }

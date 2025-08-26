@@ -1,10 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 class UnhandledRejectionException extends \RuntimeException
 {
-    private $reason;
+    public function __construct(private $reason)
+    {
+        $message = \sprintf('Unhandled Rejection: %s', \json_encode($reason));
+
+        parent::__construct($message, 0);
+    }
 
     public static function resolve($reason)
     {
@@ -13,15 +20,6 @@ class UnhandledRejectionException extends \RuntimeException
         }
 
         return new static($reason);
-    }
-
-    public function __construct($reason)
-    {
-        $this->reason = $reason;
-
-        $message = \sprintf('Unhandled Rejection: %s', \json_encode($reason));
-
-        parent::__construct($message, 0);
     }
 
     public function getReason()

@@ -1,8 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 /**
+ * @template T
+ * @implements ExtendedPromiseInterface<T>
+ * @implements CancellablePromiseInterface<T>
+ *
  * @deprecated 2.8.0 External usage of RejectedPromise is deprecated, use `reject()` instead.
  */
 class RejectedPromise implements ExtendedPromiseInterface, CancellablePromiseInterface
@@ -18,24 +24,22 @@ class RejectedPromise implements ExtendedPromiseInterface, CancellablePromiseInt
         $this->reason = $reason;
     }
 
-    public function then(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null)
+    public function then(?callable $onFulfilled = null, ?callable $onRejected = null, ?callable $onProgress = null)
     {
-        if (null === $onRejected) {
+        if ($onRejected === null) {
             return $this;
         }
 
         try {
             return resolve($onRejected($this->reason));
-        } catch (\Throwable $exception) {
-            return new RejectedPromise($exception);
-        } catch (\Exception $exception) {
+        } catch (\Throwable|\Exception $exception) {
             return new RejectedPromise($exception);
         }
     }
 
-    public function done(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null)
+    public function done(?callable $onFulfilled = null, ?callable $onRejected = null, ?callable $onProgress = null)
     {
-        if (null === $onRejected) {
+        if ($onRejected === null) {
             throw UnhandledRejectionException::resolve($this->reason);
         }
 
@@ -61,11 +65,7 @@ class RejectedPromise implements ExtendedPromiseInterface, CancellablePromiseInt
 
     public function always(callable $onFulfilledOrRejected)
     {
-        return $this->then(null, function ($reason) use ($onFulfilledOrRejected) {
-            return resolve($onFulfilledOrRejected())->then(function () use ($reason) {
-                return new RejectedPromise($reason);
-            });
-        });
+        return $this->then(null, static fn($reason) => resolve($onFulfilledOrRejected())->then(static fn() => new RejectedPromise($reason)));
     }
 
     public function progress(callable $onProgress)
@@ -73,7 +73,5 @@ class RejectedPromise implements ExtendedPromiseInterface, CancellablePromiseInt
         return $this;
     }
 
-    public function cancel()
-    {
-    }
+    public function cancel() {}
 }

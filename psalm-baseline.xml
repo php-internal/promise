@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="6.13.1@1e3b7f0a8ab32b23197b91107adc0a7ed8a05b51">
+  <file src="src/CancellationQueue.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[CancellationQueue]]></code>
+    </ClassMustBeFinal>
+    <MissingParamType>
+      <code><![CDATA[$cancellable]]></code>
+    </MissingParamType>
+    <MissingPropertyType>
+      <code><![CDATA[$queue]]></code>
+      <code><![CDATA[$started]]></code>
+    </MissingPropertyType>
+    <MissingReturnType>
+      <code><![CDATA[drain]]></code>
+      <code><![CDATA[enqueue]]></code>
+    </MissingReturnType>
+    <MixedArgument>
+      <code><![CDATA[$this->queue]]></code>
+      <code><![CDATA[$this->queue]]></code>
+    </MixedArgument>
+    <MixedArrayAssignment>
+      <code><![CDATA[$cancellable]]></code>
+    </MixedArrayAssignment>
+    <MixedArrayOffset>
+      <code><![CDATA[$this->queue[$i]]]></code>
+    </MixedArrayOffset>
+    <MixedAssignment>
+      <code><![CDATA[$cancellable]]></code>
+    </MixedAssignment>
+    <MixedMethodCall>
+      <code><![CDATA[cancel]]></code>
+    </MixedMethodCall>
+    <MixedOperand>
+      <code><![CDATA[$i]]></code>
+    </MixedOperand>
+    <PossiblyNullOperand>
+      <code><![CDATA[$i]]></code>
+    </PossiblyNullOperand>
+  </file>
+  <file src="src/Deferred.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[Deferred]]></code>
+    </ClassMustBeFinal>
+    <DeprecatedMethod>
+      <code><![CDATA[notify]]></code>
+    </DeprecatedMethod>
+    <MissingClosureParamType>
+      <code><![CDATA[$notify]]></code>
+      <code><![CDATA[$reject]]></code>
+      <code><![CDATA[$resolve]]></code>
+    </MissingClosureParamType>
+    <MissingParamType>
+      <code><![CDATA[$reason]]></code>
+      <code><![CDATA[$value]]></code>
+    </MissingParamType>
+    <MissingPropertyType>
+      <code><![CDATA[$notifyCallback]]></code>
+      <code><![CDATA[$rejectCallback]]></code>
+      <code><![CDATA[$resolveCallback]]></code>
+    </MissingPropertyType>
+    <MissingReturnType>
+      <code><![CDATA[notify]]></code>
+      <code><![CDATA[progress]]></code>
+      <code><![CDATA[reject]]></code>
+      <code><![CDATA[resolve]]></code>
+    </MissingReturnType>
+    <MixedFunctionCall>
+      <code><![CDATA[\call_user_func($this->notifyCallback, $update)]]></code>
+      <code><![CDATA[\call_user_func($this->rejectCallback, $reason)]]></code>
+      <code><![CDATA[\call_user_func($this->resolveCallback, $value)]]></code>
+    </MixedFunctionCall>
+  </file>
+  <file src="src/Exception/LengthException.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[LengthException]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="src/FulfilledPromise.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[FulfilledPromise]]></code>
+    </ClassMustBeFinal>
+    <DeprecatedClass>
+      <code><![CDATA[new RejectedPromise($exception)]]></code>
+    </DeprecatedClass>
+    <LessSpecificReturnStatement>
+      <code><![CDATA[$this->then(static fn($value) => resolve($onFulfilledOrRejected())->then(static fn() => $value))]]></code>
+    </LessSpecificReturnStatement>
+    <MissingClosureParamType>
+      <code><![CDATA[$value]]></code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType>
+      <code><![CDATA[static fn() => $value]]></code>
+    </MissingClosureReturnType>
+    <MixedArgumentTypeCoercion>
+      <code><![CDATA[$this->value]]></code>
+    </MixedArgumentTypeCoercion>
+    <MixedAssignment>
+      <code><![CDATA[$result]]></code>
+    </MixedAssignment>
+    <MoreSpecificReturnType>
+      <code><![CDATA[always]]></code>
+    </MoreSpecificReturnType>
+  </file>
+  <file src="src/LazyPromise.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[LazyPromise]]></code>
+    </ClassMustBeFinal>
+    <DeprecatedClass>
+      <code><![CDATA[new RejectedPromise($exception)]]></code>
+    </DeprecatedClass>
+    <InvalidReturnStatement>
+      <code><![CDATA[$this->promise()->cancel()]]></code>
+      <code><![CDATA[$this->promise()->done($onFulfilled, $onRejected, $onProgress)]]></code>
+    </InvalidReturnStatement>
+    <MissingPropertyType>
+      <code><![CDATA[$promise]]></code>
+    </MissingPropertyType>
+    <MissingReturnType>
+      <code><![CDATA[promise]]></code>
+    </MissingReturnType>
+    <MixedMethodCall>
+      <code><![CDATA[always]]></code>
+      <code><![CDATA[cancel]]></code>
+      <code><![CDATA[done]]></code>
+      <code><![CDATA[otherwise]]></code>
+      <code><![CDATA[progress]]></code>
+      <code><![CDATA[then]]></code>
+    </MixedMethodCall>
+    <MixedReturnStatement>
+      <code><![CDATA[$this->promise()->always($onFulfilledOrRejected)]]></code>
+      <code><![CDATA[$this->promise()->otherwise($onRejected)]]></code>
+      <code><![CDATA[$this->promise()->progress($onProgress)]]></code>
+      <code><![CDATA[$this->promise()->then($onFulfilled, $onRejected, $onProgress)]]></code>
+    </MixedReturnStatement>
+  </file>
+  <file src="src/Promise.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[reject($reason)]]></code>
+      <code><![CDATA[resolve($value)]]></code>
+    </ArgumentTypeCoercion>
+    <ClassMustBeFinal>
+      <code><![CDATA[Promise]]></code>
+    </ClassMustBeFinal>
+    <DeprecatedClass>
+      <code><![CDATA[new RejectedPromise(
+                new \LogicException('Cannot resolve a promise with itself.'),
+            )]]></code>
+      <code><![CDATA[new RejectedPromise($reason)]]></code>
+      <code><![CDATA[new RejectedPromise($reason)]]></code>
+    </DeprecatedClass>
+    <InvalidArgument>
+      <code><![CDATA[$onFulfilled]]></code>
+      <code><![CDATA[$onFulfilled]]></code>
+      <code><![CDATA[$onRejected]]></code>
+    </InvalidArgument>
+    <InvalidReturnStatement>
+      <code><![CDATA[$this->result->done($onFulfilled, $onRejected, $onProgress)]]></code>
+    </InvalidReturnStatement>
+    <LessSpecificReturnStatement>
+      <code><![CDATA[$this->then(null, null, $onProgress)]]></code>
+      <code><![CDATA[$this->then(null, static function ($reason) use ($onRejected) {
+            if (!_checkTypehint($onRejected, $reason)) {
+                return new RejectedPromise($reason);
+            }
+
+            return $onRejected($reason);
+        })]]></code>
+      <code><![CDATA[$this->then(static fn($value) => resolve($onFulfilledOrRejected())->then(static fn() => $value), static fn($reason) => resolve($onFulfilledOrRejected())->then(static fn() => new RejectedPromise($reason)))]]></code>
+    </LessSpecificReturnStatement>
+    <MissingClosureParamType>
+      <code><![CDATA[$notify]]></code>
+      <code><![CDATA[$reason]]></code>
+      <code><![CDATA[$reason]]></code>
+      <code><![CDATA[$reason]]></code>
+      <code><![CDATA[$reject]]></code>
+      <code><![CDATA[$resolve]]></code>
+      <code><![CDATA[$update]]></code>
+      <code><![CDATA[$update]]></code>
+      <code><![CDATA[$value]]></code>
+      <code><![CDATA[$value]]></code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType>
+      <code><![CDATA[static fn() => $value]]></code>
+    </MissingClosureReturnType>
+    <MissingParamType>
+      <code><![CDATA[$promise]]></code>
+      <code><![CDATA[$promise]]></code>
+      <code><![CDATA[$reason]]></code>
+    </MissingParamType>
+    <MissingReturnType>
+      <code><![CDATA[extract]]></code>
+      <code><![CDATA[resolver]]></code>
+      <code><![CDATA[unwrap]]></code>
+    </MissingReturnType>
+    <MixedArgument>
+      <code><![CDATA[$promise]]></code>
+      <code><![CDATA[$reason]]></code>
+      <code><![CDATA[$this->resolver($onFulfilled, $onRejected, $onProgress)]]></code>
+      <code><![CDATA[$this->resolver($onFulfilled, $onRejected, $onProgress)]]></code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code><![CDATA[$progressHandler]]></code>
+      <code><![CDATA[$promise]]></code>
+      <code><![CDATA[$promise]]></code>
+      <code><![CDATA[$promise]]></code>
+      <code><![CDATA[$promise]]></code>
+      <code><![CDATA[$this->result]]></code>
+    </MixedAssignment>
+    <MixedFunctionCall>
+      <code><![CDATA[$notify($e)]]></code>
+      <code><![CDATA[$notify($onProgress($update))]]></code>
+    </MixedFunctionCall>
+    <MixedPropertyTypeCoercion>
+      <code><![CDATA[$canceller]]></code>
+      <code><![CDATA[$this->progressHandlers]]></code>
+    </MixedPropertyTypeCoercion>
+    <MoreSpecificReturnType>
+      <code><![CDATA[always]]></code>
+      <code><![CDATA[otherwise]]></code>
+      <code><![CDATA[progress]]></code>
+    </MoreSpecificReturnType>
+    <PossiblyInvalidArgument>
+      <code><![CDATA[$callback]]></code>
+    </PossiblyInvalidArgument>
+    <PossiblyNullOperand>
+      <code><![CDATA[$parent->cancelRequests]]></code>
+    </PossiblyNullOperand>
+    <PossiblyNullPropertyAssignment>
+      <code><![CDATA[$parent]]></code>
+    </PossiblyNullPropertyAssignment>
+    <PossiblyNullPropertyFetch>
+      <code><![CDATA[$parent->cancelRequests]]></code>
+      <code><![CDATA[$parent->requiredCancelRequests]]></code>
+    </PossiblyNullPropertyFetch>
+    <PossiblyNullReference>
+      <code><![CDATA[cancel]]></code>
+      <code><![CDATA[reject]]></code>
+    </PossiblyNullReference>
+    <PropertyTypeCoercion>
+      <code><![CDATA[$this->handlers]]></code>
+      <code><![CDATA[$this->handlers]]></code>
+    </PropertyTypeCoercion>
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[$onProgress]]></code>
+      <code><![CDATA[$onProgress]]></code>
+    </RiskyTruthyFalsyComparison>
+    <TooManyArguments>
+      <code><![CDATA[$callback]]></code>
+    </TooManyArguments>
+    <UndefinedInterfaceMethod>
+      <code><![CDATA[done]]></code>
+      <code><![CDATA[done]]></code>
+    </UndefinedInterfaceMethod>
+    <UnsafeInstantiation>
+      <code><![CDATA[new static(
+            $this->resolver($onFulfilled, $onRejected, $onProgress),
+            static function () use (&$parent): void {
+                if (++$parent->cancelRequests >= $parent->requiredCancelRequests) {
+                    $parent->cancel();
+                }
+
+                $parent = null;
+            },
+        )]]></code>
+      <code><![CDATA[new static($this->resolver($onFulfilled, $onRejected, $onProgress))]]></code>
+    </UnsafeInstantiation>
+    <UnsupportedPropertyReferenceUsage>
+      <code><![CDATA[$progressHandlers = & $this->progressHandlers]]></code>
+    </UnsupportedPropertyReferenceUsage>
+  </file>
+  <file src="src/RejectedPromise.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[RejectedPromise]]></code>
+    </ClassMustBeFinal>
+    <LessSpecificReturnStatement>
+      <code><![CDATA[$this->then(null, $onRejected)]]></code>
+      <code><![CDATA[$this->then(null, static fn($reason) => resolve($onFulfilledOrRejected())->then(static fn() => new RejectedPromise($reason)))]]></code>
+    </LessSpecificReturnStatement>
+    <MissingClosureParamType>
+      <code><![CDATA[$reason]]></code>
+    </MissingClosureParamType>
+    <MissingParamType>
+      <code><![CDATA[$reason]]></code>
+    </MissingParamType>
+    <MissingPropertyType>
+      <code><![CDATA[$reason]]></code>
+      <code><![CDATA[$result->reason]]></code>
+    </MissingPropertyType>
+    <MixedArgument>
+      <code><![CDATA[$this->reason]]></code>
+      <code><![CDATA[$this->reason]]></code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code><![CDATA[$result]]></code>
+    </MixedAssignment>
+    <MoreSpecificReturnType>
+      <code><![CDATA[always]]></code>
+      <code><![CDATA[otherwise]]></code>
+    </MoreSpecificReturnType>
+  </file>
+  <file src="src/UnhandledRejectionException.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[UnhandledRejectionException]]></code>
+    </ClassMustBeFinal>
+    <MissingParamType>
+      <code><![CDATA[$reason]]></code>
+      <code><![CDATA[$reason]]></code>
+    </MissingParamType>
+    <MissingReturnType>
+      <code><![CDATA[getReason]]></code>
+      <code><![CDATA[resolve]]></code>
+    </MissingReturnType>
+    <PossiblyFalseArgument>
+      <code><![CDATA[\json_encode($reason)]]></code>
+    </PossiblyFalseArgument>
+    <UnsafeInstantiation>
+      <code><![CDATA[new static($reason)]]></code>
+    </UnsafeInstantiation>
+  </file>
+  <file src="src/functions.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$type->getName()]]></code>
+      <code><![CDATA[$typeToMatch->getName()]]></code>
+    </ArgumentTypeCoercion>
+    <DeprecatedClass>
+      <code><![CDATA[new FulfilledPromise($promiseOrValue)]]></code>
+      <code><![CDATA[new RejectedPromise($promiseOrValue)]]></code>
+      <code><![CDATA[new RejectedPromise($value)]]></code>
+    </DeprecatedClass>
+    <DocblockTypeContradiction>
+      <code><![CDATA[$type instanceof \ReflectionIntersectionType]]></code>
+    </DocblockTypeContradiction>
+    <InvalidReturnStatement>
+      <code><![CDATA[new FulfilledPromise($promiseOrValue)]]></code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
+      <code><![CDATA[PromiseInterface<T>]]></code>
+    </InvalidReturnType>
+    <MissingClosureParamType>
+      <code><![CDATA[$array]]></code>
+      <code><![CDATA[$array]]></code>
+      <code><![CDATA[$array]]></code>
+      <code><![CDATA[$array]]></code>
+      <code><![CDATA[$c]]></code>
+      <code><![CDATA[$current]]></code>
+      <code><![CDATA[$mapped]]></code>
+      <code><![CDATA[$notify]]></code>
+      <code><![CDATA[$notify]]></code>
+      <code><![CDATA[$notify]]></code>
+      <code><![CDATA[$notify]]></code>
+      <code><![CDATA[$notify]]></code>
+      <code><![CDATA[$reason]]></code>
+      <code><![CDATA[$reject]]></code>
+      <code><![CDATA[$reject]]></code>
+      <code><![CDATA[$reject]]></code>
+      <code><![CDATA[$reject]]></code>
+      <code><![CDATA[$reject]]></code>
+      <code><![CDATA[$resolve]]></code>
+      <code><![CDATA[$resolve]]></code>
+      <code><![CDATA[$resolve]]></code>
+      <code><![CDATA[$resolve]]></code>
+      <code><![CDATA[$resolve]]></code>
+      <code><![CDATA[$val]]></code>
+      <code><![CDATA[$val]]></code>
+      <code><![CDATA[$val]]></code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType>
+      <code><![CDATA[static fn($val) => $val]]></code>
+      <code><![CDATA[static fn($val) => \array_shift($val)]]></code>
+      <code><![CDATA[static function ($current, $val) use ($reduceFunc, $cancellationQueue, $total, &$i) {]]></code>
+    </MissingClosureReturnType>
+    <MissingReturnType>
+      <code><![CDATA[_checkTypehint]]></code>
+    </MissingReturnType>
+    <MixedArgument>
+      <code><![CDATA[$notify]]></code>
+      <code><![CDATA[$reject]]></code>
+      <code><![CDATA[$resolve]]></code>
+      <code><![CDATA[$val]]></code>
+    </MixedArgument>
+    <MixedAssignment>
+      <code><![CDATA[$promiseOrValue]]></code>
+      <code><![CDATA[$promiseOrValue]]></code>
+      <code><![CDATA[$promiseOrValue]]></code>
+      <code><![CDATA[$reasons[$i]]]></code>
+      <code><![CDATA[$values[$i]]]></code>
+      <code><![CDATA[$values[$i]]]></code>
+    </MixedAssignment>
+    <MixedFunctionCall>
+      <code><![CDATA[$reject($reasons)]]></code>
+      <code><![CDATA[$resolve($values)]]></code>
+      <code><![CDATA[$resolve($values)]]></code>
+      <code><![CDATA[$resolve()]]></code>
+      <code><![CDATA[$resolve([])]]></code>
+      <code><![CDATA[$resolve([])]]></code>
+    </MixedFunctionCall>
+    <MixedMethodCall>
+      <code><![CDATA[done]]></code>
+      <code><![CDATA[then]]></code>
+      <code><![CDATA[then]]></code>
+    </MixedMethodCall>
+    <MixedReturnTypeCoercion>
+      <code><![CDATA[$promiseOrValue]]></code>
+      <code><![CDATA[PromiseInterface<array>]]></code>
+      <code><![CDATA[PromiseInterface<never>]]></code>
+      <code><![CDATA[new Promise(static function ($resolve, $reject, $notify) use ($promisesOrValues, $mapFunc, $cancellationQueue): void {
+        resolve($promisesOrValues)
+            ->done(static function ($array) use ($mapFunc, $cancellationQueue, $resolve, $reject, $notify): void {
+                if (!\is_array($array) || !$array) {
+                    $resolve([]);
+                    return;
+                }
+
+                $toResolve = \count($array);
+                $values    = [];
+
+                foreach ($array as $i => $promiseOrValue) {
+                    $cancellationQueue->enqueue($promiseOrValue);
+                    $values[$i] = null;
+
+                    resolve($promiseOrValue)
+                        ->then($mapFunc)
+                        ->done(
+                            static function ($mapped) use ($i, &$values, &$toResolve, $resolve): void {
+                                $values[$i] = $mapped;
+
+                                if (--$toResolve === 0) {
+                                    $resolve($values);
+                                }
+                            },
+                            $reject,
+                            $notify,
+                        );
+                }
+            }, $reject, $notify);
+    }, $cancellationQueue)]]></code>
+      <code><![CDATA[new RejectedPromise($promiseOrValue)]]></code>
+      <code><![CDATA[resolve($promiseOrValue)->then(static fn($value) => new RejectedPromise($value))]]></code>
+    </MixedReturnTypeCoercion>
+    <PossiblyInvalidArgument>
+      <code><![CDATA[$callback]]></code>
+    </PossiblyInvalidArgument>
+    <PossiblyUndefinedMethod>
+      <code><![CDATA[done]]></code>
+    </PossiblyUndefinedMethod>
+    <RedundantCondition>
+      <code><![CDATA[(new \ReflectionClass($type->getName()))->isInstance($object)]]></code>
+    </RedundantCondition>
+    <TypeDoesNotContainType>
+      <code><![CDATA[(new \ReflectionClass($typeToMatch->getName()))->isInstance($object)]]></code>
+    </TypeDoesNotContainType>
+    <UndefinedInterfaceMethod>
+      <code><![CDATA[done]]></code>
+      <code><![CDATA[done]]></code>
+      <code><![CDATA[done]]></code>
+      <code><![CDATA[done]]></code>
+      <code><![CDATA[done]]></code>
+      <code><![CDATA[done]]></code>
+      <code><![CDATA[done]]></code>
+    </UndefinedInterfaceMethod>
+  </file>
+</files>

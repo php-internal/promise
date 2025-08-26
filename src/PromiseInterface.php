@@ -1,7 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
+/**
+ * @note This is a stub interface for better IDE support.
+ *
+ * @yield T
+ * @template-covariant T
+ */
 interface PromiseInterface
 {
     /**
@@ -32,10 +40,12 @@ interface PromiseInterface
      *      than once.
      *  3. `$onProgress` (deprecated) may be called multiple times.
      *
-     * @param callable|null $onFulfilled
-     * @param callable|null $onRejected
-     * @param callable|null $onProgress This argument is deprecated and should not be used anymore.
-     * @return PromiseInterface
+     * @template TFulfilled
+     * @template TRejected
+     * @param null|(callable(mixed): (PromiseInterface<TFulfilled>|TFulfilled)) $onFulfilled
+     * @param null|(callable(\Throwable): (PromiseInterface<TRejected>|TRejected)) $onRejected
+     * @param null|callable $onProgress This argument is deprecated and should not be used anymore.
+     * @return PromiseInterface<($onRejected is null ? ($onFulfilled is null ? T : TFulfilled) : ($onFulfilled is null ? T|TRejected : TFulfilled|TRejected))>
      */
-    public function then(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null);
+    public function then(?callable $onFulfilled = null, ?callable $onRejected = null, ?callable $onProgress = null);
 }

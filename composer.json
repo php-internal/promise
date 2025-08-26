@@ -1,7 +1,11 @@
 {
-    "name": "react/promise",
+    "name": "internal/promise",
     "description": "A lightweight implementation of CommonJS Promises/A for PHP",
     "license": "MIT",
+    "keywords": [
+        "promise",
+        "promises"
+    ],
     "authors": [
         {
             "name": "Jan Sorgalla",
@@ -25,10 +29,18 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0"
+        "php": ">=8.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.6 || ^5.7 || ^4.8.36"
+        "buggregator/trap": "^1.13",
+        "phpunit/phpunit": "^10.5.10",
+        "rector/rector": "^2.1",
+        "spiral/code-style": "^2.2",
+        "ta-tikoma/phpunit-architecture-test": "^0.8.5",
+        "vimeo/psalm": "^6.13"
+    },
+    "replace": {
+        "react/promise": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -40,14 +52,26 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "React\\Promise\\": [
-                "tests/",
-                "tests/fixtures/"
-            ]
+            "React\\Promise\\Tests\\": "tests/"
         }
     },
-    "keywords": [
-        "promise",
-        "promises"
-    ]
+    "config": {
+        "audit": {
+            "abandoned": "report"
+        },
+        "sort-packages": true
+    },
+    "scripts": {
+        "cs:fix": "php-cs-fixer fix -v",
+        "psalm": "psalm",
+        "psalm:baseline": "psalm --set-baseline=psalm-baseline.xml",
+        "psalm:ci": "psalm --output-format=github --shepherd --show-info=false --stats --threads=4",
+        "refactor": "rector process --config=rector.php",
+        "refactor:ci": "rector process --config=rector.php --dry-run --ansi",
+        "test": "phpunit --color=always --testdox",
+        "test:cc": [
+            "@putenv XDEBUG_MODE=coverage",
+            "phpunit --coverage-clover=runtime/phpunit/logs/clover.xml --color=always"
+        ]
+    }
 }

@@ -1,7 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
+/**
+ * @template T
+ * @extends PromiseInterface<T>
+ */
 interface CancellablePromiseInterface extends PromiseInterface
 {
     /**
