@@ -56,7 +56,6 @@
     </MissingParamType>
     <MissingPropertyType>
       <code><![CDATA[$notifyCallback]]></code>
-      <code><![CDATA[$promise]]></code>
       <code><![CDATA[$rejectCallback]]></code>
       <code><![CDATA[$resolveCallback]]></code>
     </MissingPropertyType>
@@ -71,10 +70,6 @@
       <code><![CDATA[\call_user_func($this->rejectCallback, $reason)]]></code>
       <code><![CDATA[\call_user_func($this->resolveCallback, $value)]]></code>
     </MixedFunctionCall>
-    <MixedReturnStatement>
-      <code><![CDATA[$this->promise]]></code>
-      <code><![CDATA[$this->promise]]></code>
-    </MixedReturnStatement>
   </file>
   <file src="src/Exception/LengthException.php">
     <ClassMustBeFinal>
@@ -97,12 +92,9 @@
     <MissingClosureReturnType>
       <code><![CDATA[static fn() => $value]]></code>
     </MissingClosureReturnType>
-    <MissingParamType>
-      <code><![CDATA[$value]]></code>
-    </MissingParamType>
-    <MissingPropertyType>
-      <code><![CDATA[$value]]></code>
-    </MissingPropertyType>
+    <MixedArgumentTypeCoercion>
+      <code><![CDATA[$this->value]]></code>
+    </MixedArgumentTypeCoercion>
     <MixedAssignment>
       <code><![CDATA[$result]]></code>
     </MixedAssignment>
@@ -157,6 +149,11 @@
       <code><![CDATA[new RejectedPromise($reason)]]></code>
       <code><![CDATA[new RejectedPromise($reason)]]></code>
     </DeprecatedClass>
+    <InvalidArgument>
+      <code><![CDATA[$onFulfilled]]></code>
+      <code><![CDATA[$onFulfilled]]></code>
+      <code><![CDATA[$onRejected]]></code>
+    </InvalidArgument>
     <InvalidReturnStatement>
       <code><![CDATA[$this->result->done($onFulfilled, $onRejected, $onProgress)]]></code>
     </InvalidReturnStatement>
@@ -191,64 +188,33 @@
       <code><![CDATA[$promise]]></code>
       <code><![CDATA[$reason]]></code>
     </MissingParamType>
-    <MissingPropertyType>
-      <code><![CDATA[$cancelRequests]]></code>
-      <code><![CDATA[$canceller]]></code>
-      <code><![CDATA[$handlers]]></code>
-      <code><![CDATA[$parent->cancelRequests]]></code>
-      <code><![CDATA[$parent->requiredCancelRequests]]></code>
-      <code><![CDATA[$parent->requiredCancelRequests]]></code>
-      <code><![CDATA[$progressHandlers]]></code>
-      <code><![CDATA[$promise->result]]></code>
-      <code><![CDATA[$requiredCancelRequests]]></code>
-      <code><![CDATA[$result]]></code>
-      <code><![CDATA[$this->handlers]]></code>
-      <code><![CDATA[$this->progressHandlers]]></code>
-    </MissingPropertyType>
     <MissingReturnType>
       <code><![CDATA[extract]]></code>
       <code><![CDATA[resolver]]></code>
       <code><![CDATA[unwrap]]></code>
     </MissingReturnType>
     <MixedArgument>
-      <code><![CDATA[$canceller]]></code>
+      <code><![CDATA[$promise]]></code>
+      <code><![CDATA[$reason]]></code>
       <code><![CDATA[$this->resolver($onFulfilled, $onRejected, $onProgress)]]></code>
       <code><![CDATA[$this->resolver($onFulfilled, $onRejected, $onProgress)]]></code>
     </MixedArgument>
-    <MixedArrayAssignment>
-      <code><![CDATA[$this->handlers[]]]></code>
-      <code><![CDATA[$this->handlers[]]]></code>
-      <code><![CDATA[$this->progressHandlers[]]]></code>
-      <code><![CDATA[$this->progressHandlers[]]]></code>
-    </MixedArrayAssignment>
     <MixedAssignment>
-      <code><![CDATA[$canceller]]></code>
-      <code><![CDATA[$handler]]></code>
-      <code><![CDATA[$handler]]></code>
-      <code><![CDATA[$handlers]]></code>
       <code><![CDATA[$progressHandler]]></code>
       <code><![CDATA[$promise]]></code>
       <code><![CDATA[$promise]]></code>
       <code><![CDATA[$promise]]></code>
       <code><![CDATA[$promise]]></code>
+      <code><![CDATA[$this->result]]></code>
     </MixedAssignment>
     <MixedFunctionCall>
-      <code><![CDATA[$handler($promise)]]></code>
-      <code><![CDATA[$handler($update)]]></code>
       <code><![CDATA[$notify($e)]]></code>
       <code><![CDATA[$notify($onProgress($update))]]></code>
     </MixedFunctionCall>
-    <MixedMethodCall>
-      <code><![CDATA[done]]></code>
-      <code><![CDATA[then]]></code>
-    </MixedMethodCall>
-    <MixedOperand>
-      <code><![CDATA[$parent->cancelRequests]]></code>
-      <code><![CDATA[$parent->requiredCancelRequests]]></code>
-    </MixedOperand>
-    <MixedReturnStatement>
-      <code><![CDATA[$this->result->then($onFulfilled, $onRejected, $onProgress)]]></code>
-    </MixedReturnStatement>
+    <MixedPropertyTypeCoercion>
+      <code><![CDATA[$canceller]]></code>
+      <code><![CDATA[$this->progressHandlers]]></code>
+    </MixedPropertyTypeCoercion>
     <MoreSpecificReturnType>
       <code><![CDATA[always]]></code>
       <code><![CDATA[otherwise]]></code>
@@ -269,11 +235,12 @@
     </PossiblyNullPropertyFetch>
     <PossiblyNullReference>
       <code><![CDATA[cancel]]></code>
-      <code><![CDATA[extract]]></code>
       <code><![CDATA[reject]]></code>
-      <code><![CDATA[settle]]></code>
-      <code><![CDATA[unwrap]]></code>
     </PossiblyNullReference>
+    <PropertyTypeCoercion>
+      <code><![CDATA[$this->handlers]]></code>
+      <code><![CDATA[$this->handlers]]></code>
+    </PropertyTypeCoercion>
     <RiskyTruthyFalsyComparison>
       <code><![CDATA[$onProgress]]></code>
       <code><![CDATA[$onProgress]]></code>
@@ -282,6 +249,7 @@
       <code><![CDATA[$callback]]></code>
     </TooManyArguments>
     <UndefinedInterfaceMethod>
+      <code><![CDATA[done]]></code>
       <code><![CDATA[done]]></code>
     </UndefinedInterfaceMethod>
     <UnsafeInstantiation>
@@ -319,6 +287,10 @@
       <code><![CDATA[$reason]]></code>
       <code><![CDATA[$result->reason]]></code>
     </MissingPropertyType>
+    <MixedArgument>
+      <code><![CDATA[$this->reason]]></code>
+      <code><![CDATA[$this->reason]]></code>
+    </MixedArgument>
     <MixedAssignment>
       <code><![CDATA[$result]]></code>
     </MixedAssignment>
@@ -359,6 +331,12 @@
     <DocblockTypeContradiction>
       <code><![CDATA[$type instanceof \ReflectionIntersectionType]]></code>
     </DocblockTypeContradiction>
+    <InvalidReturnStatement>
+      <code><![CDATA[new FulfilledPromise($promiseOrValue)]]></code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
+      <code><![CDATA[PromiseInterface<T>]]></code>
+    </InvalidReturnType>
     <MissingClosureParamType>
       <code><![CDATA[$array]]></code>
       <code><![CDATA[$array]]></code>
@@ -386,20 +364,19 @@
       <code><![CDATA[$val]]></code>
       <code><![CDATA[$val]]></code>
       <code><![CDATA[$val]]></code>
-      <code><![CDATA[$val]]></code>
-      <code><![CDATA[$value]]></code>
-      <code><![CDATA[$value]]></code>
     </MissingClosureParamType>
     <MissingClosureReturnType>
       <code><![CDATA[static fn($val) => $val]]></code>
       <code><![CDATA[static fn($val) => \array_shift($val)]]></code>
       <code><![CDATA[static function ($current, $val) use ($reduceFunc, $cancellationQueue, $total, &$i) {]]></code>
-      <code><![CDATA[static function ($value) use ($reduceFunc, $total, &$i, $c) {]]></code>
     </MissingClosureReturnType>
     <MissingReturnType>
       <code><![CDATA[_checkTypehint]]></code>
     </MissingReturnType>
     <MixedArgument>
+      <code><![CDATA[$notify]]></code>
+      <code><![CDATA[$reject]]></code>
+      <code><![CDATA[$resolve]]></code>
       <code><![CDATA[$val]]></code>
     </MixedArgument>
     <MixedAssignment>
@@ -421,7 +398,46 @@
     <MixedMethodCall>
       <code><![CDATA[done]]></code>
       <code><![CDATA[then]]></code>
+      <code><![CDATA[then]]></code>
     </MixedMethodCall>
+    <MixedReturnTypeCoercion>
+      <code><![CDATA[$promiseOrValue]]></code>
+      <code><![CDATA[PromiseInterface<array>]]></code>
+      <code><![CDATA[PromiseInterface<never>]]></code>
+      <code><![CDATA[new Promise(static function ($resolve, $reject, $notify) use ($promisesOrValues, $mapFunc, $cancellationQueue): void {
+        resolve($promisesOrValues)
+            ->done(static function ($array) use ($mapFunc, $cancellationQueue, $resolve, $reject, $notify): void {
+                if (!\is_array($array) || !$array) {
+                    $resolve([]);
+                    return;
+                }
+
+                $toResolve = \count($array);
+                $values    = [];
+
+                foreach ($array as $i => $promiseOrValue) {
+                    $cancellationQueue->enqueue($promiseOrValue);
+                    $values[$i] = null;
+
+                    resolve($promiseOrValue)
+                        ->then($mapFunc)
+                        ->done(
+                            static function ($mapped) use ($i, &$values, &$toResolve, $resolve): void {
+                                $values[$i] = $mapped;
+
+                                if (--$toResolve === 0) {
+                                    $resolve($values);
+                                }
+                            },
+                            $reject,
+                            $notify,
+                        );
+                }
+            }, $reject, $notify);
+    }, $cancellationQueue)]]></code>
+      <code><![CDATA[new RejectedPromise($promiseOrValue)]]></code>
+      <code><![CDATA[resolve($promiseOrValue)->then(static fn($value) => new RejectedPromise($value))]]></code>
+    </MixedReturnTypeCoercion>
     <PossiblyInvalidArgument>
       <code><![CDATA[$callback]]></code>
     </PossiblyInvalidArgument>

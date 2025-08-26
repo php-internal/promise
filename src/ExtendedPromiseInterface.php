@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace React\Promise;
 
+/**
+ * @template T
+ * @extends PromiseInterface<T>
+ */
 interface ExtendedPromiseInterface extends PromiseInterface
 {
     /**
@@ -16,7 +20,9 @@ interface ExtendedPromiseInterface extends PromiseInterface
      * Since the purpose of `done()` is consumption rather than transformation,
      * `done()` always returns `null`.
      *
-     * @param callable|null $onProgress This argument is deprecated and should not be used anymore.
+     * @param null|(callable((T is void ? null : T)): mixed) $onFulfilled
+     * @param null|(callable(\Throwable): mixed) $onRejected
+     * @param null|callable $onProgress This argument is deprecated and should not be used anymore.
      * @return void
      */
     public function done(?callable $onFulfilled = null, ?callable $onRejected = null, ?callable $onProgress = null);
@@ -31,7 +37,9 @@ interface ExtendedPromiseInterface extends PromiseInterface
      * Additionally, you can type hint the `$reason` argument of `$onRejected` to catch
      * only specific errors.
      *
-     * @return ExtendedPromiseInterface
+     * @template TRejected
+     * @param callable(\Throwable): (PromiseInterface<TRejected>|TRejected) $onRejected
+     * @return ExtendedPromiseInterface<T|TRejected>
      */
     public function otherwise(callable $onRejected);
 
@@ -77,7 +85,9 @@ interface ExtendedPromiseInterface extends PromiseInterface
      *     ->always('cleanup');
      * ```
      *
-     * @return ExtendedPromiseInterface
+     * @param callable(): (void|PromiseInterface<void>) $onFulfilledOrRejected
+     *
+     * @return ExtendedPromiseInterface<T>
      */
     public function always(callable $onFulfilledOrRejected);
 

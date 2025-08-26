@@ -5,12 +5,20 @@ declare(strict_types=1);
 namespace React\Promise;
 
 /**
+ * @template T
+ * @implements ExtendedPromiseInterface<T>
+ * @implements CancellablePromiseInterface<T>
+ *
  * @deprecated 2.8.0 External usage of FulfilledPromise is deprecated, use `resolve()` instead.
  */
 class FulfilledPromise implements ExtendedPromiseInterface, CancellablePromiseInterface
 {
-    private $value;
+    /** @var T */
+    private mixed $value;
 
+    /**
+     * @param T $value
+     */
     public function __construct($value = null)
     {
         if ($value instanceof PromiseInterface) {

@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace React\Promise;
 
 /**
+ * @template T
+ * @implements ExtendedPromiseInterface<T>
+ * @implements CancellablePromiseInterface<T>
+ *
  * @deprecated 2.8.0 External usage of RejectedPromise is deprecated, use `reject()` instead.
  */
 class RejectedPromise implements ExtendedPromiseInterface, CancellablePromiseInterface

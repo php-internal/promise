@@ -15,10 +15,11 @@ namespace React\Promise;
  *
  * If `$promiseOrValue` is a promise, it will be returned as is.
  *
- * @param mixed $promiseOrValue
- * @return PromiseInterface
+ * @template T
+ * @param PromiseInterface<T>|T $promiseOrValue
+ * @return PromiseInterface<T>
  */
-function resolve($promiseOrValue = null)
+function resolve($promiseOrValue = null): PromiseInterface
 {
     if ($promiseOrValue instanceof ExtendedPromiseInterface) {
         return $promiseOrValue;
@@ -55,9 +56,9 @@ function resolve($promiseOrValue = null)
  * the value of another promise.
  *
  * @param mixed $promiseOrValue
- * @return PromiseInterface
+ * @return PromiseInterface<never>
  */
-function reject($promiseOrValue = null)
+function reject($promiseOrValue = null): PromiseInterface
 {
     if ($promiseOrValue instanceof PromiseInterface) {
         return resolve($promiseOrValue)->then(static fn($value) => new RejectedPromise($value));
@@ -72,10 +73,11 @@ function reject($promiseOrValue = null)
  * will be an array containing the resolution values of each of the items in
  * `$promisesOrValues`.
  *
- * @param array $promisesOrValues
- * @return PromiseInterface
+ * @template T
+ * @param array<PromiseInterface<T>|T> $promisesOrValues
+ * @return PromiseInterface<array<T>>
  */
-function all($promisesOrValues)
+function all($promisesOrValues): PromiseInterface
 {
     return map($promisesOrValues, static fn($val) => $val);
 }
@@ -90,7 +92,7 @@ function all($promisesOrValues)
  * @param array $promisesOrValues
  * @return PromiseInterface
  */
-function race($promisesOrValues)
+function race($promisesOrValues): PromiseInterface
 {
     $cancellationQueue = new CancellationQueue();
     $cancellationQueue->enqueue($promisesOrValues);
@@ -127,7 +129,7 @@ function race($promisesOrValues)
  * @param array $promisesOrValues
  * @return PromiseInterface
  */
-function any($promisesOrValues)
+function any($promisesOrValues): PromiseInterface
 {
     return some($promisesOrValues, 1)
         ->then(static fn($val) => \array_shift($val));
@@ -151,7 +153,7 @@ function any($promisesOrValues)
  * @param int $howMany
  * @return PromiseInterface
  */
-function some($promisesOrValues, $howMany)
+function some($promisesOrValues, $howMany): PromiseInterface
 {
     $cancellationQueue = new CancellationQueue();
     $cancellationQueue->enqueue($promisesOrValues);
@@ -225,9 +227,9 @@ function some($promisesOrValues, $howMany)
  * value of a promise or value in `$promisesOrValues`.
  *
  * @param array $promisesOrValues
- * @return PromiseInterface
+ * @return PromiseInterface<array>
  */
-function map($promisesOrValues, callable $mapFunc)
+function map($promisesOrValues, callable $mapFunc): PromiseInterface
 {
     $cancellationQueue = new CancellationQueue();
     $cancellationQueue->enqueue($promisesOrValues);
@@ -275,7 +277,7 @@ function map($promisesOrValues, callable $mapFunc)
  * @param mixed $initialValue
  * @return PromiseInterface
  */
-function reduce($promisesOrValues, callable $reduceFunc, $initialValue = null)
+function reduce($promisesOrValues, callable $reduceFunc, $initialValue = null): PromiseInterface
 {
     $cancellationQueue = new CancellationQueue();
     $cancellationQueue->enqueue($promisesOrValues);
@@ -296,9 +298,9 @@ function reduce($promisesOrValues, callable $reduceFunc, $initialValue = null)
                     $cancellationQueue->enqueue($val);
 
                     return $current
-                        ->then(static function ($c) use ($reduceFunc, $total, &$i, $val) {
+                        ->then(static function ($c) use ($reduceFunc, $total, &$i, $val): PromiseInterface {
                             return resolve($val)
-                                ->then(static function ($value) use ($reduceFunc, $total, &$i, $c) {
+                                ->then(static function ($value) use ($reduceFunc, $total, &$i, $c): mixed {
                                     return $reduceFunc($c, $value, $i++, $total);
                                 });
                         });

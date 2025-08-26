@@ -4,14 +4,30 @@ declare(strict_types=1);
 
 namespace React\Promise;
 
+/**
+ * @template T
+ * @implements ExtendedPromiseInterface<T>
+ * @implements CancellablePromiseInterface<T>
+ */
 class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
 {
+    /** @var (callable(callable(T): void, callable(\Throwable): void): void)|null */
     private $canceller;
-    private $result;
-    private $handlers = [];
-    private $progressHandlers = [];
-    private $requiredCancelRequests = 0;
-    private $cancelRequests = 0;
+
+    /** @var ?PromiseInterface<T> */
+    private ?PromiseInterface $result = null;
+
+    /** @var list<callable(PromiseInterface<T>): void> */
+    private array $handlers = [];
+
+    /** @var list<callable> */
+    private array $progressHandlers = [];
+
+    /** @var int<0, max> */
+    private int $requiredCancelRequests = 0;
+
+    /** @var int<0, max> */
+    private int $cancelRequests = 0;
 
     public function __construct(callable $resolver, ?callable $canceller = null)
     {

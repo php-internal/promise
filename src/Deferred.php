@@ -4,14 +4,25 @@ declare(strict_types=1);
 
 namespace React\Promise;
 
+/**
+ * @template T
+ */
 class Deferred implements PromisorInterface
 {
-    private $promise;
+    /**
+     * @var null|PromiseInterface<T>
+     */
+    private ?PromiseInterface $promise = null;
     private $resolveCallback;
     private $rejectCallback;
     private $notifyCallback;
+
+    /** @var callable|null */
     private $canceller;
 
+    /**
+     * @param (callable(callable(T):void,callable(\Throwable):void):void)|null $canceller
+     */
     public function __construct(?callable $canceller = null)
     {
         $this->canceller = $canceller;
