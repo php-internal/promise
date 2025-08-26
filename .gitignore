@@ -1,2 +1,7 @@
-/composer.lock
+/.*
+!/.github/
+/runtime/
 /vendor/
+/.env
+/composer.lock
+*.log
