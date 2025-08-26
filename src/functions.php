@@ -90,7 +90,6 @@ function all($promisesOrValues): PromiseInterface
  * contains 0 items.
  *
  * @param array $promisesOrValues
- * @return PromiseInterface
  */
 function race($promisesOrValues): PromiseInterface
 {
@@ -127,7 +126,6 @@ function race($promisesOrValues): PromiseInterface
  * if `$promisesOrValues` contains 0 items.
  *
  * @param array $promisesOrValues
- * @return PromiseInterface
  */
 function any($promisesOrValues): PromiseInterface
 {
@@ -151,7 +149,6 @@ function any($promisesOrValues): PromiseInterface
  *
  * @param array $promisesOrValues
  * @param int $howMany
- * @return PromiseInterface
  */
 function some($promisesOrValues, $howMany): PromiseInterface
 {
@@ -275,7 +272,6 @@ function map($promisesOrValues, callable $mapFunc): PromiseInterface
  *
  * @param array $promisesOrValues
  * @param mixed $initialValue
- * @return PromiseInterface
  */
 function reduce($promisesOrValues, callable $reduceFunc, $initialValue = null): PromiseInterface
 {

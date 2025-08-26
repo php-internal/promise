@@ -13,6 +13,7 @@ class Deferred implements PromisorInterface
      * @var null|PromiseInterface<T>
      */
     private ?PromiseInterface $promise = null;
+
     private $resolveCallback;
     private $rejectCallback;
     private $notifyCallback;
