@@ -1,31 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 use React\Promise\Exception\LengthException;
 
 class FunctionAnyTest extends TestCase
 {
-    /** @test */
-    public function shouldRejectWithLengthExceptionWithEmptyInputArray()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldRejectWithLengthExceptionWithEmptyInputArray(): void
     {
         $mock = $this->createCallableMock();
         $mock
             ->expects($this->once())
             ->method('__invoke')
             ->with(
-                $this->callback(function($exception){
+                $this->callback(static function ($exception) {
                     return $exception instanceof LengthException &&
-                           'Input array must contain at least 1 item but contains only 0 items.' === $exception->getMessage();
-                })
+                           $exception->getMessage() === 'Input array must contain at least 1 item but contains only 0 items.';
+                }),
             );
 
         any([])
             ->then($this->expectCallableNever(), $mock);
     }
 
-    /** @test */
-    public function shouldResolveToNullWithNonArrayInput()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveToNullWithNonArrayInput(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -37,8 +39,8 @@ class FunctionAnyTest extends TestCase
             ->then($mock);
     }
 
-    /** @test */
-    public function shouldResolveWithAnInputValue()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveWithAnInputValue(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -50,8 +52,8 @@ class FunctionAnyTest extends TestCase
             ->then($mock);
     }
 
-    /** @test */
-    public function shouldResolveWithAPromisedInputValue()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveWithAPromisedInputValue(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -63,8 +65,8 @@ class FunctionAnyTest extends TestCase
             ->then($mock);
     }
 
-    /** @test */
-    public function shouldRejectWithAllRejectedInputValuesIfAllInputsAreRejected()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldRejectWithAllRejectedInputValuesIfAllInputsAreRejected(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -76,8 +78,8 @@ class FunctionAnyTest extends TestCase
             ->then($this->expectCallableNever(), $mock);
     }
 
-    /** @test */
-    public function shouldResolveWhenFirstInputPromiseResolves()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveWhenFirstInputPromiseResolves(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -89,8 +91,8 @@ class FunctionAnyTest extends TestCase
             ->then($mock);
     }
 
-    /** @test */
-    public function shouldAcceptAPromiseForAnArray()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldAcceptAPromiseForAnArray(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -102,8 +104,8 @@ class FunctionAnyTest extends TestCase
             ->then($mock);
     }
 
-    /** @test */
-    public function shouldResolveToNullArrayWhenInputPromiseDoesNotResolveToArray()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveToNullArrayWhenInputPromiseDoesNotResolveToArray(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -115,8 +117,8 @@ class FunctionAnyTest extends TestCase
             ->then($mock);
     }
 
-    /** @test */
-    public function shouldNotRelyOnArryIndexesWhenUnwrappingToASingleResolutionValue()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldNotRelyOnArryIndexesWhenUnwrappingToASingleResolutionValue(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -134,8 +136,8 @@ class FunctionAnyTest extends TestCase
         $d1->resolve(1);
     }
 
-    /** @test */
-    public function shouldRejectWhenInputPromiseRejects()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldRejectWhenInputPromiseRejects(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -147,11 +149,11 @@ class FunctionAnyTest extends TestCase
             ->then($this->expectCallableNever(), $mock);
     }
 
-    /** @test */
-    public function shouldCancelInputPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldCancelInputPromise(): void
     {
         $mock = $this
-            ->getMockBuilder('React\Promise\CancellablePromiseInterface')
+            ->getMockBuilder(\React\Promise\CancellablePromiseInterface::class)
             ->getMock();
         $mock
             ->expects($this->once())
@@ -160,18 +162,18 @@ class FunctionAnyTest extends TestCase
         any($mock)->cancel();
     }
 
-    /** @test */
-    public function shouldCancelInputArrayPromises()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldCancelInputArrayPromises(): void
     {
         $mock1 = $this
-            ->getMockBuilder('React\Promise\CancellablePromiseInterface')
+            ->getMockBuilder(\React\Promise\CancellablePromiseInterface::class)
             ->getMock();
         $mock1
             ->expects($this->once())
             ->method('cancel');
 
         $mock2 = $this
-            ->getMockBuilder('React\Promise\CancellablePromiseInterface')
+            ->getMockBuilder(\React\Promise\CancellablePromiseInterface::class)
             ->getMock();
         $mock2
             ->expects($this->once())
@@ -180,8 +182,8 @@ class FunctionAnyTest extends TestCase
         any([$mock1, $mock2])->cancel();
     }
 
-    /** @test */
-    public function shouldNotCancelOtherPendingInputArrayPromisesIfOnePromiseFulfills()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldNotCancelOtherPendingInputArrayPromisesIfOnePromiseFulfills(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -189,11 +191,11 @@ class FunctionAnyTest extends TestCase
             ->method('__invoke');
 
 
-        $deferred = New Deferred($mock);
+        $deferred = new Deferred($mock);
         $deferred->resolve();
 
         $mock2 = $this
-            ->getMockBuilder('React\Promise\CancellablePromiseInterface')
+            ->getMockBuilder(\React\Promise\CancellablePromiseInterface::class)
             ->getMock();
         $mock2
             ->expects($this->never())

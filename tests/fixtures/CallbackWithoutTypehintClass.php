@@ -1,18 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 class CallbackWithoutTypehintClass
 {
-    public function __invoke()
-    {
-    }
+    public static function testCallbackStatic(): void {}
 
-    public function testCallback()
-    {
-    }
+    public function testCallback(): void {}
 
-    public static function testCallbackStatic()
-    {
-    }
+    public function __invoke(): void {}
 }

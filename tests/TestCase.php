@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 class TestCase extends \PHPUnit\Framework\TestCase
@@ -36,18 +38,18 @@ class TestCase extends \PHPUnit\Framework\TestCase
 
     public function createCallableMock()
     {
-        if (method_exists('PHPUnit\Framework\MockObject\MockBuilder', 'addMethods')) {
+        if (\method_exists(\PHPUnit\Framework\MockObject\MockBuilder::class, 'addMethods')) {
             // PHPUnit 10+
-            return $this->getMockBuilder('stdClass')->addMethods(array('__invoke'))->getMock();
-        } else {
-            // legacy PHPUnit 4 - PHPUnit 9
-            return $this->getMockBuilder('stdClass')->setMethods(array('__invoke'))->getMock();
+            return $this->getMockBuilder('stdClass')->addMethods(['__invoke'])->getMock();
         }
+        // legacy PHPUnit 4 - PHPUnit 9
+        return $this->getMockBuilder('stdClass')->getMock();
+
     }
 
-    public function setExpectedException($exception, $exceptionMessage = '', $exceptionCode = null)
+    public function setExpectedException($exception, $exceptionMessage = '', $exceptionCode = null): void
     {
-        if (method_exists($this, 'expectException')) {
+        if (\method_exists($this, 'expectException')) {
             // PHPUnit 5+
             $this->expectException($exception);
             if ($exceptionMessage !== '') {

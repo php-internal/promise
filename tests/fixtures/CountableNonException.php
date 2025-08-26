@@ -1,11 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
-use Countable;
-use RuntimeException;
-
-class CountableNonException implements Countable
+class CountableNonException implements \Countable
 {
     #[\ReturnTypeWillChange]
     public function count()
@@ -13,4 +12,3 @@ class CountableNonException implements Countable
         return 0;
     }
 }
-

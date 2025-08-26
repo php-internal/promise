@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\PromiseTest;
 
 trait NotifyTestTrait
@@ -7,10 +9,10 @@ trait NotifyTestTrait
     /**
      * @return \React\Promise\PromiseAdapter\PromiseAdapterInterface
      */
-    abstract public function getPromiseTestAdapter(callable $canceller = null);
+    abstract public function getPromiseTestAdapter(?callable $canceller = null);
 
-    /** @test */
-    public function notifyShouldProgress()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notifyShouldProgress(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -28,8 +30,8 @@ trait NotifyTestTrait
         $adapter->notify($sentinel);
     }
 
-    /** @test */
-    public function notifyShouldPropagateProgressToDownstreamPromises()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notifyShouldPropagateProgressToDownstreamPromises(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -51,19 +53,19 @@ trait NotifyTestTrait
             ->then(
                 $this->expectCallableNever(),
                 $this->expectCallableNever(),
-                $mock
+                $mock,
             )
             ->then(
                 $this->expectCallableNever(),
                 $this->expectCallableNever(),
-                $mock2
+                $mock2,
             );
 
         $adapter->notify($sentinel);
     }
 
-    /** @test */
-    public function notifyShouldPropagateTransformedProgressToDownstreamPromises()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notifyShouldPropagateTransformedProgressToDownstreamPromises(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -85,19 +87,19 @@ trait NotifyTestTrait
             ->then(
                 $this->expectCallableNever(),
                 $this->expectCallableNever(),
-                $mock
+                $mock,
             )
             ->then(
                 $this->expectCallableNever(),
                 $this->expectCallableNever(),
-                $mock2
+                $mock2,
             );
 
         $adapter->notify(1);
     }
 
-    /** @test */
-    public function notifyShouldPropagateCaughtExceptionValueAsProgress()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notifyShouldPropagateCaughtExceptionValueAsProgress(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -119,19 +121,19 @@ trait NotifyTestTrait
             ->then(
                 $this->expectCallableNever(),
                 $this->expectCallableNever(),
-                $mock
+                $mock,
             )
             ->then(
                 $this->expectCallableNever(),
                 $this->expectCallableNever(),
-                $mock2
+                $mock2,
             );
 
         $adapter->notify(1);
     }
 
-    /** @test */
-    public function notifyShouldForwardProgressEventsWhenIntermediaryCallbackTiedToAResolvedPromiseReturnsAPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notifyShouldForwardProgressEventsWhenIntermediaryCallbackTiedToAResolvedPromiseReturnsAPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
         $adapter2 = $this->getPromiseTestAdapter();
@@ -150,20 +152,20 @@ trait NotifyTestTrait
         $adapter->resolve();
 
         $adapter->promise()
-            ->then(function () use ($promise2) {
+            ->then(static function () use ($promise2) {
                 return $promise2;
             })
             ->then(
                 $this->expectCallableNever(),
                 $this->expectCallableNever(),
-                $mock
+                $mock,
             );
 
         $adapter2->notify($sentinel);
     }
 
-    /** @test */
-    public function notifyShouldForwardProgressEventsWhenIntermediaryCallbackTiedToAnUnresolvedPromiseReturnsAPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notifyShouldForwardProgressEventsWhenIntermediaryCallbackTiedToAnUnresolvedPromiseReturnsAPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
         $adapter2 = $this->getPromiseTestAdapter();
@@ -179,13 +181,13 @@ trait NotifyTestTrait
             ->with($sentinel);
 
         $adapter->promise()
-            ->then(function () use ($promise2) {
+            ->then(static function () use ($promise2) {
                 return $promise2;
             })
             ->then(
                 $this->expectCallableNever(),
                 $this->expectCallableNever(),
-                $mock
+                $mock,
             );
 
         // resolve AFTER attaching progress handler
@@ -193,8 +195,8 @@ trait NotifyTestTrait
         $adapter2->notify($sentinel);
     }
 
-    /** @test */
-    public function notifyShouldForwardProgressWhenResolvedWithAnotherPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notifyShouldForwardProgressWhenResolvedWithAnotherPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
         $adapter2 = $this->getPromiseTestAdapter();
@@ -217,64 +219,80 @@ trait NotifyTestTrait
             ->then(
                 $this->expectCallableNever(),
                 $this->expectCallableNever(),
-                $mock
+                $mock,
             )
             ->then(
                 $this->expectCallableNever(),
                 $this->expectCallableNever(),
-                $mock2
+                $mock2,
             );
 
         $adapter->resolve($adapter2->promise());
         $adapter2->notify($sentinel);
     }
 
-    /** @test */
-    public function notifyShouldAllowResolveAfterProgress()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notifyShouldAllowResolveAfterProgress(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
         $mock = $this->createCallableMock();
-        $mock->expects($this->exactly(2))->method('__invoke')->withConsecutive(
-            array($this->identicalTo(1)),
-            array($this->identicalTo(2))
-        );
+        $mock->expects($this->exactly(2))->method('__invoke')
+            ->with($this->callback(static function ($arg) {
+                static $calls = 0;
+                $calls++;
+                if ($calls === 1) {
+                    return $arg === 1;
+                }
+                if ($calls === 2) {
+                    return $arg === 2;
+                }
+                return false;
+            }));
 
         $adapter->promise()
             ->then(
                 $mock,
                 $this->expectCallableNever(),
-                $mock
+                $mock,
             );
 
         $adapter->notify(1);
         $adapter->resolve(2);
     }
 
-    /** @test */
-    public function notifyShouldAllowRejectAfterProgress()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notifyShouldAllowRejectAfterProgress(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
         $mock = $this->createCallableMock();
-        $mock->expects($this->exactly(2))->method('__invoke')->withConsecutive(
-            array($this->identicalTo(1)),
-            array($this->identicalTo(2))
-        );
+        $mock->expects($this->exactly(2))->method('__invoke')
+            ->with($this->callback(static function ($arg) {
+                static $calls = 0;
+                $calls++;
+                if ($calls === 1) {
+                    return $arg === 1;
+                }
+                if ($calls === 2) {
+                    return $arg === 2;
+                }
+                return false;
+            }));
 
         $adapter->promise()
             ->then(
                 $this->expectCallableNever(),
                 $mock,
-                $mock
+                $mock,
             );
 
         $adapter->notify(1);
         $adapter->reject(2);
     }
 
-    /** @test */
-    public function notifyShouldReturnSilentlyOnProgressWhenAlreadyRejected()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notifyShouldReturnSilentlyOnProgressWhenAlreadyRejected(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -283,8 +301,8 @@ trait NotifyTestTrait
         $this->assertNull($adapter->notify());
     }
 
-    /** @test */
-    public function notifyShouldInvokeProgressHandler()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notifyShouldInvokeProgressHandler(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -298,8 +316,8 @@ trait NotifyTestTrait
         $adapter->notify(1);
     }
 
-    /** @test */
-    public function notifyShouldInvokeProgressHandlerFromDone()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notifyShouldInvokeProgressHandlerFromDone(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -313,14 +331,14 @@ trait NotifyTestTrait
         $adapter->notify(1);
     }
 
-    /** @test */
-    public function notifyShouldThrowExceptionThrownProgressHandlerFromDone()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notifyShouldThrowExceptionThrownProgressHandlerFromDone(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
         $this->setExpectedException('\Exception', 'UnhandledRejectionException');
 
-        $this->assertNull($adapter->promise()->done(null, null, function () {
+        $this->assertNull($adapter->promise()->done(null, null, static function (): void {
             throw new \Exception('UnhandledRejectionException');
         }));
         $adapter->notify(1);

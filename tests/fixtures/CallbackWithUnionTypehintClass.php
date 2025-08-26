@@ -1,21 +1,14 @@
 <?php
 
-namespace React\Promise;
+declare(strict_types=1);
 
-use InvalidArgumentException;
-use RuntimeException;
+namespace React\Promise;
 
 class CallbackWithUnionTypehintClass
 {
-    public function __invoke(RuntimeException|InvalidArgumentException $e)
-    {
-    }
+    public static function testCallbackStatic(\RuntimeException|\InvalidArgumentException $e): void {}
 
-    public function testCallback(RuntimeException|InvalidArgumentException $e)
-    {
-    }
+    public function testCallback(\RuntimeException|\InvalidArgumentException $e): void {}
 
-    public static function testCallbackStatic(RuntimeException|InvalidArgumentException $e)
-    {
-    }
+    public function __invoke(\RuntimeException|\InvalidArgumentException $e): void {}
 }

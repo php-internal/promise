@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\PromiseTest;
 
 trait FullTestTrait
 {
-    use PromisePendingTestTrait,
-        PromiseSettledTestTrait,
-        PromiseFulfilledTestTrait,
-        PromiseRejectedTestTrait,
-        ResolveTestTrait,
-        RejectTestTrait,
-        NotifyTestTrait,
-        CancelTestTrait;
+    use PromisePendingTestTrait;
+    use PromiseSettledTestTrait;
+    use PromiseFulfilledTestTrait;
+    use PromiseRejectedTestTrait;
+    use ResolveTestTrait;
+    use RejectTestTrait;
+    use NotifyTestTrait;
+    use CancelTestTrait;
 }

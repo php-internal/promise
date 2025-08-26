@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\PromiseTest;
 
 trait PromiseSettledTestTrait
@@ -7,28 +9,28 @@ trait PromiseSettledTestTrait
     /**
      * @return \React\Promise\PromiseAdapter\PromiseAdapterInterface
      */
-    abstract public function getPromiseTestAdapter(callable $canceller = null);
+    abstract public function getPromiseTestAdapter(?callable $canceller = null);
 
-    /** @test */
-    public function thenShouldReturnAPromiseForSettledPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function thenShouldReturnAPromiseForSettledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
         $adapter->settle();
-        $this->assertInstanceOf('React\\Promise\\PromiseInterface', $adapter->promise()->then());
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $adapter->promise()->then());
     }
 
-    /** @test */
-    public function thenShouldReturnAllowNullForSettledPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function thenShouldReturnAllowNullForSettledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
         $adapter->settle();
-        $this->assertInstanceOf('React\\Promise\\PromiseInterface', $adapter->promise()->then(null, null, null));
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $adapter->promise()->then(null, null, null));
     }
 
-    /** @test */
-    public function cancelShouldReturnNullForSettledPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function cancelShouldReturnNullForSettledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -37,8 +39,8 @@ trait PromiseSettledTestTrait
         $this->assertNull($adapter->promise()->cancel());
     }
 
-    /** @test */
-    public function cancelShouldHaveNoEffectForSettledPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function cancelShouldHaveNoEffectForSettledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter($this->expectCallableNever());
 
@@ -47,26 +49,26 @@ trait PromiseSettledTestTrait
         $adapter->promise()->cancel();
     }
 
-    /** @test */
-    public function doneShouldReturnNullForSettledPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function doneShouldReturnNullForSettledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
         $adapter->settle();
-        $this->assertNull($adapter->promise()->done(null, function () {}));
+        $this->assertNull($adapter->promise()->done(null, static function (): void {}));
     }
 
-    /** @test */
-    public function doneShouldReturnAllowNullForSettledPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function doneShouldReturnAllowNullForSettledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
         $adapter->settle();
-        $this->assertNull($adapter->promise()->done(null, function () {}, null));
+        $this->assertNull($adapter->promise()->done(null, static function (): void {}, null));
     }
 
-    /** @test */
-    public function progressShouldNotInvokeProgressHandlerForSettledPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function progressShouldNotInvokeProgressHandlerForSettledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -75,12 +77,12 @@ trait PromiseSettledTestTrait
         $adapter->notify();
     }
 
-    /** @test */
-    public function alwaysShouldReturnAPromiseForSettledPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function alwaysShouldReturnAPromiseForSettledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
         $adapter->settle();
-        $this->assertInstanceOf('React\\Promise\\PromiseInterface', $adapter->promise()->always(function () {}));
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $adapter->promise()->always(static function (): void {}));
     }
 }

@@ -1,53 +1,55 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 use React\Promise\Exception\LengthException;
 
 class FunctionSomeTest extends TestCase
 {
-    /** @test */
-    public function shouldRejectWithLengthExceptionWithEmptyInputArray()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldRejectWithLengthExceptionWithEmptyInputArray(): void
     {
         $mock = $this->createCallableMock();
         $mock
             ->expects($this->once())
             ->method('__invoke')
             ->with(
-                $this->callback(function($exception){
+                $this->callback(static function ($exception) {
                     return $exception instanceof LengthException &&
-                           'Input array must contain at least 1 item but contains only 0 items.' === $exception->getMessage();
-                })
+                           $exception->getMessage() === 'Input array must contain at least 1 item but contains only 0 items.';
+                }),
             );
 
         some(
             [],
-            1
+            1,
         )->then($this->expectCallableNever(), $mock);
     }
 
-    /** @test */
-    public function shouldRejectWithLengthExceptionWithInputArrayContainingNotEnoughItems()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldRejectWithLengthExceptionWithInputArrayContainingNotEnoughItems(): void
     {
         $mock = $this->createCallableMock();
         $mock
             ->expects($this->once())
             ->method('__invoke')
             ->with(
-                $this->callback(function($exception){
+                $this->callback(static function ($exception) {
                     return $exception instanceof LengthException &&
-                           'Input array must contain at least 4 items but contains only 3 items.' === $exception->getMessage();
-                })
+                           $exception->getMessage() === 'Input array must contain at least 4 items but contains only 3 items.';
+                }),
             );
 
         some(
             [1, 2, 3],
-            4
+            4,
         )->then($this->expectCallableNever(), $mock);
     }
 
-    /** @test */
-    public function shouldResolveToEmptyArrayWithNonArrayInput()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveToEmptyArrayWithNonArrayInput(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -57,12 +59,12 @@ class FunctionSomeTest extends TestCase
 
         some(
             null,
-            1
+            1,
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldResolveValuesArray()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveValuesArray(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -72,12 +74,12 @@ class FunctionSomeTest extends TestCase
 
         some(
             [1, 2, 3],
-            2
+            2,
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldResolvePromisesArray()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolvePromisesArray(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -87,12 +89,12 @@ class FunctionSomeTest extends TestCase
 
         some(
             [resolve(1), resolve(2), resolve(3)],
-            2
+            2,
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldResolveSparseArrayInput()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveSparseArrayInput(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -102,12 +104,12 @@ class FunctionSomeTest extends TestCase
 
         some(
             [null, 1, null, 2, 3],
-            2
+            2,
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldRejectIfAnyInputPromiseRejectsBeforeDesiredNumberOfInputsAreResolved()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldRejectIfAnyInputPromiseRejectsBeforeDesiredNumberOfInputsAreResolved(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -117,12 +119,12 @@ class FunctionSomeTest extends TestCase
 
         some(
             [resolve(1), reject(2), reject(3)],
-            2
+            2,
         )->then($this->expectCallableNever(), $mock);
     }
 
-    /** @test */
-    public function shouldAcceptAPromiseForAnArray()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldAcceptAPromiseForAnArray(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -132,12 +134,12 @@ class FunctionSomeTest extends TestCase
 
         some(
             resolve([1, 2, 3]),
-            2
+            2,
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldResolveWithEmptyArrayIfHowManyIsLessThanOne()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveWithEmptyArrayIfHowManyIsLessThanOne(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -147,12 +149,12 @@ class FunctionSomeTest extends TestCase
 
         some(
             [1],
-            0
+            0,
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldResolveToEmptyArrayWhenInputPromiseDoesNotResolveToArray()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveToEmptyArrayWhenInputPromiseDoesNotResolveToArray(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -162,12 +164,12 @@ class FunctionSomeTest extends TestCase
 
         some(
             resolve(1),
-            1
+            1,
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldRejectWhenInputPromiseRejects()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldRejectWhenInputPromiseRejects(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -177,12 +179,12 @@ class FunctionSomeTest extends TestCase
 
         some(
             reject(),
-            1
+            1,
         )->then($this->expectCallableNever(), $mock);
     }
 
-    /** @test */
-    public function shouldCancelInputPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldCancelInputPromise(): void
     {
         $mock = $this
             ->getMockBuilder('React\Promise\CancellablePromiseInterface')
@@ -194,8 +196,8 @@ class FunctionSomeTest extends TestCase
         some($mock, 1)->cancel();
     }
 
-    /** @test */
-    public function shouldCancelInputArrayPromises()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldCancelInputArrayPromises(): void
     {
         $mock1 = $this
             ->getMockBuilder('React\Promise\CancellablePromiseInterface')
@@ -214,15 +216,15 @@ class FunctionSomeTest extends TestCase
         some([$mock1, $mock2], 1)->cancel();
     }
 
-    /** @test */
-    public function shouldNotCancelOtherPendingInputArrayPromisesIfEnoughPromisesFulfill()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldNotCancelOtherPendingInputArrayPromisesIfEnoughPromisesFulfill(): void
     {
         $mock = $this->createCallableMock();
         $mock
             ->expects($this->never())
             ->method('__invoke');
 
-        $deferred = New Deferred($mock);
+        $deferred = new Deferred($mock);
         $deferred->resolve();
 
         $mock2 = $this
@@ -235,15 +237,15 @@ class FunctionSomeTest extends TestCase
         some([$deferred->promise(), $mock2], 1);
     }
 
-    /** @test */
-    public function shouldNotCancelOtherPendingInputArrayPromisesIfEnoughPromisesReject()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldNotCancelOtherPendingInputArrayPromisesIfEnoughPromisesReject(): void
     {
         $mock = $this->createCallableMock();
         $mock
             ->expects($this->never())
             ->method('__invoke');
 
-        $deferred = New Deferred($mock);
+        $deferred = new Deferred($mock);
         $deferred->reject();
 
         $mock2 = $this

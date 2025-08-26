@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 class SimpleRejectedTestPromise implements PromiseInterface
 {
-    public function then(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null)
+    public function then(?callable $onFulfilled = null, ?callable $onRejected = null, ?callable $onProgress = null)
     {
         try {
             if ($onRejected) {

@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 class FunctionResolveTest extends TestCase
 {
-    /** @test */
-    public function shouldResolveAnImmediateValue()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveAnImmediateValue(): void
     {
         $expected = 123;
 
@@ -18,12 +20,12 @@ class FunctionResolveTest extends TestCase
         resolve($expected)
             ->then(
                 $mock,
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             );
     }
 
-    /** @test */
-    public function shouldResolveAFulfilledPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveAFulfilledPromise(): void
     {
         $expected = 123;
 
@@ -38,12 +40,12 @@ class FunctionResolveTest extends TestCase
         resolve($resolved)
             ->then(
                 $mock,
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             );
     }
 
-    /** @test */
-    public function shouldResolveAThenable()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveAThenable(): void
     {
         $thenable = new SimpleFulfilledTestThenable();
 
@@ -56,12 +58,12 @@ class FunctionResolveTest extends TestCase
         resolve($thenable)
             ->then(
                 $mock,
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             );
     }
 
-    /** @test */
-    public function shouldResolveACancellableThenable()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveACancellableThenable(): void
     {
         $thenable = new SimpleTestCancellableThenable();
 
@@ -71,8 +73,8 @@ class FunctionResolveTest extends TestCase
         $this->assertTrue($thenable->cancelCalled);
     }
 
-    /** @test */
-    public function shouldRejectARejectedPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldRejectARejectedPromise(): void
     {
         $expected = 123;
 
@@ -87,28 +89,28 @@ class FunctionResolveTest extends TestCase
         resolve($resolved)
             ->then(
                 $this->expectCallableNever(),
-                $mock
+                $mock,
             );
     }
 
-    /** @test */
-    public function shouldSupportDeepNestingInPromiseChains()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldSupportDeepNestingInPromiseChains(): void
     {
         $d = new Deferred();
         $d->resolve(false);
 
-        $result = resolve(resolve($d->promise()->then(function ($val) {
+        $result = resolve(resolve($d->promise()->then(static function ($val) {
             $d = new Deferred();
             $d->resolve($val);
 
-            $identity = function ($val) {
+            $identity = static function ($val) {
                 return $val;
             };
 
             return resolve($d->promise()->then($identity))->then(
-                function ($val) {
+                static function ($val) {
                     return !$val;
-                }
+                },
             );
         })));
 
@@ -121,8 +123,8 @@ class FunctionResolveTest extends TestCase
         $result->then($mock);
     }
 
-    /** @test */
-    public function shouldSupportVeryDeepNestedPromises()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldSupportVeryDeepNestedPromises(): void
     {
         $deferreds = [];
 
@@ -133,7 +135,7 @@ class FunctionResolveTest extends TestCase
 
             $last = $p;
             for ($j = 0; $j < 10; $j++) {
-                $last = $last->then(function($result) {
+                $last = $last->then(static function ($result) {
                     return $result;
                 });
             }
@@ -159,13 +161,13 @@ class FunctionResolveTest extends TestCase
         $deferreds[0]->promise()->then($mock);
     }
 
-    /** @test */
-    public function returnsExtendePromiseForSimplePromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function returnsExtendePromiseForSimplePromise(): void
     {
         $promise = $this
-            ->getMockBuilder('React\Promise\PromiseInterface')
+            ->getMockBuilder(\React\Promise\PromiseInterface::class)
             ->getMock();
 
-        $this->assertInstanceOf('React\Promise\ExtendedPromiseInterface', resolve($promise));
+        $this->assertInstanceOf(\React\Promise\ExtendedPromiseInterface::class, resolve($promise));
     }
 }

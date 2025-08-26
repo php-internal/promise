@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 class FunctionRejectTest extends TestCase
 {
-    /** @test */
-    public function shouldRejectAnImmediateValue()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldRejectAnImmediateValue(): void
     {
         $expected = 123;
 
@@ -18,12 +20,12 @@ class FunctionRejectTest extends TestCase
         reject($expected)
             ->then(
                 $this->expectCallableNever(),
-                $mock
+                $mock,
             );
     }
 
-    /** @test */
-    public function shouldRejectAFulfilledPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldRejectAFulfilledPromise(): void
     {
         $expected = 123;
 
@@ -38,12 +40,12 @@ class FunctionRejectTest extends TestCase
         reject($resolved)
             ->then(
                 $this->expectCallableNever(),
-                $mock
+                $mock,
             );
     }
 
-    /** @test */
-    public function shouldRejectARejectedPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldRejectARejectedPromise(): void
     {
         $expected = 123;
 
@@ -58,7 +60,7 @@ class FunctionRejectTest extends TestCase
         reject($resolved)
             ->then(
                 $this->expectCallableNever(),
-                $mock
+                $mock,
             );
     }
 }

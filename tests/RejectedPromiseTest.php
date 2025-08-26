@@ -1,38 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 use React\Promise\PromiseAdapter\CallbackPromiseAdapter;
 
 class RejectedPromiseTest extends TestCase
 {
-    use PromiseTest\PromiseSettledTestTrait,
-        PromiseTest\PromiseRejectedTestTrait;
+    use PromiseTest\PromiseSettledTestTrait;
+    use PromiseTest\PromiseRejectedTestTrait;
 
-    public function getPromiseTestAdapter(callable $canceller = null)
+    public function getPromiseTestAdapter(?callable $canceller = null)
     {
         $promise = null;
 
         return new CallbackPromiseAdapter([
-            'promise' => function () use (&$promise) {
+            'promise' => static function () use (&$promise) {
                 if (!$promise) {
                     throw new \LogicException('RejectedPromise must be rejected before obtaining the promise');
                 }
 
                 return $promise;
             },
-            'resolve' => function () {
+            'resolve' => static function (): void {
                 throw new \LogicException('You cannot call resolve() for React\Promise\RejectedPromise');
             },
-            'reject' => function ($reason = null) use (&$promise) {
+            'reject' => static function ($reason = null) use (&$promise): void {
                 if (!$promise) {
                     $promise = new RejectedPromise($reason);
                 }
             },
-            'notify' => function () {
+            'notify' => static function (): void {
                 // no-op
             },
-            'settle' => function ($reason = null) use (&$promise) {
+            'settle' => static function ($reason = null) use (&$promise): void {
                 if (!$promise) {
                     $promise = new RejectedPromise($reason);
                 }
@@ -40,7 +42,7 @@ class RejectedPromiseTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function shouldThrowExceptionIfConstructedWithAPromise()
     {
         $this->setExpectedException('\InvalidArgumentException');
@@ -48,29 +50,29 @@ class RejectedPromiseTest extends TestCase
         return new RejectedPromise(new RejectedPromise());
     }
 
-    /** @test */
-    public function shouldNotLeaveGarbageCyclesWhenRemovingLastReferenceToRejectedPromiseWithAlwaysFollowers()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldNotLeaveGarbageCyclesWhenRemovingLastReferenceToRejectedPromiseWithAlwaysFollowers(): void
     {
-        gc_collect_cycles();
+        \gc_collect_cycles();
         $promise = new RejectedPromise(1);
-        $promise->always(function () {
+        $promise->always(static function (): void {
             throw new \RuntimeException();
         });
         unset($promise);
 
-        $this->assertSame(0, gc_collect_cycles());
+        $this->assertSame(0, \gc_collect_cycles());
     }
 
-    /** @test */
-    public function shouldNotLeaveGarbageCyclesWhenRemovingLastReferenceToRejectedPromiseWithThenFollowers()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldNotLeaveGarbageCyclesWhenRemovingLastReferenceToRejectedPromiseWithThenFollowers(): void
     {
-        gc_collect_cycles();
+        \gc_collect_cycles();
         $promise = new RejectedPromise(1);
-        $promise = $promise->then(null, function () {
+        $promise = $promise->then(null, static function (): void {
             throw new \RuntimeException();
         });
         unset($promise);
 
-        $this->assertSame(0, gc_collect_cycles());
+        $this->assertSame(0, \gc_collect_cycles());
     }
 }

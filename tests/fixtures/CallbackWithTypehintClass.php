@@ -1,20 +1,14 @@
 <?php
 
-namespace React\Promise;
+declare(strict_types=1);
 
-use InvalidArgumentException;
+namespace React\Promise;
 
 class CallbackWithTypehintClass
 {
-    public function __invoke(InvalidArgumentException $e)
-    {
-    }
+    public static function testCallbackStatic(\InvalidArgumentException $e): void {}
 
-    public function testCallback(InvalidArgumentException $e)
-    {
-    }
+    public function testCallback(\InvalidArgumentException $e): void {}
 
-    public static function testCallbackStatic(InvalidArgumentException $e)
-    {
-    }
+    public function __invoke(\InvalidArgumentException $e): void {}
 }

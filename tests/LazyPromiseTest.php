@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 use React\Promise\PromiseAdapter\CallbackPromiseAdapter;
@@ -8,16 +10,16 @@ class LazyPromiseTest extends TestCase
 {
     use PromiseTest\FullTestTrait;
 
-    public function getPromiseTestAdapter(callable $canceller = null)
+    public function getPromiseTestAdapter(?callable $canceller = null)
     {
         $d = new Deferred($canceller);
 
-        $factory = function () use ($d) {
+        $factory = static function () use ($d) {
             return $d->promise();
         };
 
         return new CallbackPromiseAdapter([
-            'promise'  => function () use ($factory) {
+            'promise'  => static function () use ($factory) {
                 return new LazyPromise($factory);
             },
             'resolve' => [$d, 'resolve'],
@@ -27,8 +29,8 @@ class LazyPromiseTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function shouldNotCallFactoryIfThenIsNotInvoked()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldNotCallFactoryIfThenIsNotInvoked(): void
     {
         $factory = $this->createCallableMock();
         $factory
@@ -38,8 +40,8 @@ class LazyPromiseTest extends TestCase
         new LazyPromise($factory);
     }
 
-    /** @test */
-    public function shouldCallFactoryIfThenIsInvoked()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldCallFactoryIfThenIsInvoked(): void
     {
         $factory = $this->createCallableMock();
         $factory
@@ -50,8 +52,8 @@ class LazyPromiseTest extends TestCase
         $p->then();
     }
 
-    /** @test */
-    public function shouldReturnPromiseFromFactory()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldReturnPromiseFromFactory(): void
     {
         $factory = $this->createCallableMock();
         $factory
@@ -70,8 +72,8 @@ class LazyPromiseTest extends TestCase
         $p->then($onFulfilled);
     }
 
-    /** @test */
-    public function shouldReturnPromiseIfFactoryReturnsNull()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldReturnPromiseIfFactoryReturnsNull(): void
     {
         $factory = $this->createCallableMock();
         $factory
@@ -83,8 +85,8 @@ class LazyPromiseTest extends TestCase
         $this->assertInstanceOf('React\\Promise\\PromiseInterface', $p->then());
     }
 
-    /** @test */
-    public function shouldReturnRejectedPromiseIfFactoryThrowsException()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldReturnRejectedPromiseIfFactoryThrowsException(): void
     {
         $exception = new \Exception();
 

@@ -1,25 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 class FunctionReduceTest extends TestCase
 {
-    protected function plus()
-    {
-        return function ($sum, $val) {
-            return $sum + $val;
-        };
-    }
-
-    protected function append()
-    {
-        return function ($sum, $val) {
-            return $sum . $val;
-        };
-    }
-
-    /** @test */
-    public function shouldReduceValuesWithoutInitialValue()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldReduceValuesWithoutInitialValue(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -29,12 +17,12 @@ class FunctionReduceTest extends TestCase
 
         reduce(
             [1, 2, 3],
-            $this->plus()
+            $this->plus(),
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldReduceValuesWithInitialValue()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldReduceValuesWithInitialValue(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -45,12 +33,12 @@ class FunctionReduceTest extends TestCase
         reduce(
             [1, 2, 3],
             $this->plus(),
-            1
+            1,
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldReduceValuesWithInitialPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldReduceValuesWithInitialPromise(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -61,12 +49,12 @@ class FunctionReduceTest extends TestCase
         reduce(
             [1, 2, 3],
             $this->plus(),
-            resolve(1)
+            resolve(1),
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldReducePromisedValuesWithoutInitialValue()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldReducePromisedValuesWithoutInitialValue(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -76,12 +64,12 @@ class FunctionReduceTest extends TestCase
 
         reduce(
             [resolve(1), resolve(2), resolve(3)],
-            $this->plus()
+            $this->plus(),
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldReducePromisedValuesWithInitialValue()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldReducePromisedValuesWithInitialValue(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -92,12 +80,12 @@ class FunctionReduceTest extends TestCase
         reduce(
             [resolve(1), resolve(2), resolve(3)],
             $this->plus(),
-            1
+            1,
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldReducePromisedValuesWithInitialPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldReducePromisedValuesWithInitialPromise(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -108,12 +96,12 @@ class FunctionReduceTest extends TestCase
         reduce(
             [resolve(1), resolve(2), resolve(3)],
             $this->plus(),
-            resolve(1)
+            resolve(1),
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldReduceEmptyInputWithInitialValue()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldReduceEmptyInputWithInitialValue(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -124,12 +112,12 @@ class FunctionReduceTest extends TestCase
         reduce(
             [],
             $this->plus(),
-            1
+            1,
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldReduceEmptyInputWithInitialPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldReduceEmptyInputWithInitialPromise(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -140,12 +128,12 @@ class FunctionReduceTest extends TestCase
         reduce(
             [],
             $this->plus(),
-            resolve(1)
+            resolve(1),
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldRejectWhenInputContainsRejection()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldRejectWhenInputContainsRejection(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -156,12 +144,12 @@ class FunctionReduceTest extends TestCase
         reduce(
             [resolve(1), reject(2), resolve(3)],
             $this->plus(),
-            resolve(1)
+            resolve(1),
         )->then($this->expectCallableNever(), $mock);
     }
 
-    /** @test */
-    public function shouldResolveWithNullWhenInputIsEmptyAndNoInitialValueOrPromiseProvided()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveWithNullWhenInputIsEmptyAndNoInitialValueOrPromiseProvided(): void
     {
         // Note: this is different from when.js's behavior!
         // In when.reduce(), this rejects with a TypeError exception (following
@@ -175,12 +163,12 @@ class FunctionReduceTest extends TestCase
 
         reduce(
             [],
-            $this->plus()
+            $this->plus(),
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldAllowSparseArrayInputWithoutInitialValue()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldAllowSparseArrayInputWithoutInitialValue(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -190,12 +178,12 @@ class FunctionReduceTest extends TestCase
 
         reduce(
             [null, null, 1, null, 1, 1],
-            $this->plus()
+            $this->plus(),
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldAllowSparseArrayInputWithInitialValue()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldAllowSparseArrayInputWithInitialValue(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -206,12 +194,12 @@ class FunctionReduceTest extends TestCase
         reduce(
             [null, null, 1, null, 1, 1],
             $this->plus(),
-            1
+            1,
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldReduceInInputOrder()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldReduceInInputOrder(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -222,12 +210,12 @@ class FunctionReduceTest extends TestCase
         reduce(
             [1, 2, 3],
             $this->append(),
-            ''
+            '',
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldAcceptAPromiseForAnArray()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldAcceptAPromiseForAnArray(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -238,12 +226,12 @@ class FunctionReduceTest extends TestCase
         reduce(
             resolve([1, 2, 3]),
             $this->append(),
-            ''
+            '',
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldResolveToInitialValueWhenInputPromiseDoesNotResolveToAnArray()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveToInitialValueWhenInputPromiseDoesNotResolveToAnArray(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -254,14 +242,14 @@ class FunctionReduceTest extends TestCase
         reduce(
             resolve(1),
             $this->plus(),
-            1
+            1,
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldProvideCorrectBasisValue()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldProvideCorrectBasisValue(): void
     {
-        $insertIntoArray = function ($arr, $val, $i) {
+        $insertIntoArray = static function ($arr, $val, $i) {
             $arr[$i] = $val;
 
             return $arr;
@@ -280,7 +268,7 @@ class FunctionReduceTest extends TestCase
         reduce(
             [$d1->promise(), $d2->promise(), $d3->promise()],
             $insertIntoArray,
-            []
+            [],
         )->then($mock);
 
         $d3->resolve(3);
@@ -288,8 +276,8 @@ class FunctionReduceTest extends TestCase
         $d2->resolve(2);
     }
 
-    /** @test */
-    public function shouldRejectWhenInputPromiseRejects()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldRejectWhenInputPromiseRejects(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -300,15 +288,15 @@ class FunctionReduceTest extends TestCase
         reduce(
             reject(),
             $this->plus(),
-            1
+            1,
         )->then($this->expectCallableNever(), $mock);
     }
 
-    /** @test */
-    public function shouldCancelInputPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldCancelInputPromise(): void
     {
         $mock = $this
-            ->getMockBuilder('React\Promise\CancellablePromiseInterface')
+            ->getMockBuilder(\React\Promise\CancellablePromiseInterface::class)
             ->getMock();
         $mock
             ->expects($this->once())
@@ -317,22 +305,22 @@ class FunctionReduceTest extends TestCase
         reduce(
             $mock,
             $this->plus(),
-            1
+            1,
         )->cancel();
     }
 
-    /** @test */
-    public function shouldCancelInputArrayPromises()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldCancelInputArrayPromises(): void
     {
         $mock1 = $this
-            ->getMockBuilder('React\Promise\CancellablePromiseInterface')
+            ->getMockBuilder(\React\Promise\CancellablePromiseInterface::class)
             ->getMock();
         $mock1
             ->expects($this->once())
             ->method('cancel');
 
         $mock2 = $this
-            ->getMockBuilder('React\Promise\CancellablePromiseInterface')
+            ->getMockBuilder(\React\Promise\CancellablePromiseInterface::class)
             ->getMock();
         $mock2
             ->expects($this->once())
@@ -341,7 +329,21 @@ class FunctionReduceTest extends TestCase
         reduce(
             [$mock1, $mock2],
             $this->plus(),
-            1
+            1,
         )->cancel();
+    }
+
+    protected function plus()
+    {
+        return static function ($sum, $val) {
+            return $sum + $val;
+        };
+    }
+
+    protected function append()
+    {
+        return static function ($sum, $val) {
+            return $sum . $val;
+        };
     }
 }

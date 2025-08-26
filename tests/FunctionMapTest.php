@@ -1,25 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 class FunctionMapTest extends TestCase
 {
-    protected function mapper()
-    {
-        return function ($val) {
-            return $val * 2;
-        };
-    }
-
-    protected function promiseMapper()
-    {
-        return function ($val) {
-            return resolve($val * 2);
-        };
-    }
-
-    /** @test */
-    public function shouldMapInputValuesArray()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldMapInputValuesArray(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -29,12 +17,12 @@ class FunctionMapTest extends TestCase
 
         map(
             [1, 2, 3],
-            $this->mapper()
+            $this->mapper(),
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldMapInputPromisesArray()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldMapInputPromisesArray(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -44,12 +32,12 @@ class FunctionMapTest extends TestCase
 
         map(
             [resolve(1), resolve(2), resolve(3)],
-            $this->mapper()
+            $this->mapper(),
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldMapMixedInputArray()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldMapMixedInputArray(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -59,12 +47,12 @@ class FunctionMapTest extends TestCase
 
         map(
             [1, resolve(2), 3],
-            $this->mapper()
+            $this->mapper(),
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldMapInputWhenMapperReturnsAPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldMapInputWhenMapperReturnsAPromise(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -74,12 +62,12 @@ class FunctionMapTest extends TestCase
 
         map(
             [1, 2, 3],
-            $this->promiseMapper()
+            $this->promiseMapper(),
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldAcceptAPromiseForAnArray()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldAcceptAPromiseForAnArray(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -89,12 +77,12 @@ class FunctionMapTest extends TestCase
 
         map(
             resolve([1, resolve(2), 3]),
-            $this->mapper()
+            $this->mapper(),
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldResolveToEmptyArrayWhenInputPromiseDoesNotResolveToArray()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveToEmptyArrayWhenInputPromiseDoesNotResolveToArray(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -104,12 +92,12 @@ class FunctionMapTest extends TestCase
 
         map(
             resolve(1),
-            $this->mapper()
+            $this->mapper(),
         )->then($mock);
     }
 
-    /** @test */
-    public function shouldPreserveTheOrderOfArrayWhenResolvingAsyncPromises()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldPreserveTheOrderOfArrayWhenResolvingAsyncPromises(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -121,14 +109,14 @@ class FunctionMapTest extends TestCase
 
         map(
             [resolve(1), $deferred->promise(), resolve(3)],
-            $this->mapper()
+            $this->mapper(),
         )->then($mock);
 
         $deferred->resolve(2);
     }
 
-    /** @test */
-    public function shouldRejectWhenInputContainsRejection()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldRejectWhenInputContainsRejection(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -138,12 +126,12 @@ class FunctionMapTest extends TestCase
 
         map(
             [resolve(1), reject(2), resolve(3)],
-            $this->mapper()
+            $this->mapper(),
         )->then($this->expectCallableNever(), $mock);
     }
 
-    /** @test */
-    public function shouldRejectWhenInputPromiseRejects()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldRejectWhenInputPromiseRejects(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -153,15 +141,15 @@ class FunctionMapTest extends TestCase
 
         map(
             reject(),
-            $this->mapper()
+            $this->mapper(),
         )->then($this->expectCallableNever(), $mock);
     }
 
-    /** @test */
-    public function shouldCancelInputPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldCancelInputPromise(): void
     {
         $mock = $this
-            ->getMockBuilder('React\Promise\CancellablePromiseInterface')
+            ->getMockBuilder(\React\Promise\CancellablePromiseInterface::class)
             ->getMock();
         $mock
             ->expects($this->once())
@@ -169,22 +157,22 @@ class FunctionMapTest extends TestCase
 
         map(
             $mock,
-            $this->mapper()
+            $this->mapper(),
         )->cancel();
     }
 
-    /** @test */
-    public function shouldCancelInputArrayPromises()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldCancelInputArrayPromises(): void
     {
         $mock1 = $this
-            ->getMockBuilder('React\Promise\CancellablePromiseInterface')
+            ->getMockBuilder(\React\Promise\CancellablePromiseInterface::class)
             ->getMock();
         $mock1
             ->expects($this->once())
             ->method('cancel');
 
         $mock2 = $this
-            ->getMockBuilder('React\Promise\CancellablePromiseInterface')
+            ->getMockBuilder(\React\Promise\CancellablePromiseInterface::class)
             ->getMock();
         $mock2
             ->expects($this->once())
@@ -192,7 +180,21 @@ class FunctionMapTest extends TestCase
 
         map(
             [$mock1, $mock2],
-            $this->mapper()
+            $this->mapper(),
         )->cancel();
+    }
+
+    protected function mapper()
+    {
+        return static function ($val) {
+            return $val * 2;
+        };
+    }
+
+    protected function promiseMapper()
+    {
+        return static function ($val) {
+            return resolve($val * 2);
+        };
     }
 }

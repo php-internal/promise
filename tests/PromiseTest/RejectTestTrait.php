@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\PromiseTest;
 
 use React\Promise;
@@ -10,10 +12,10 @@ trait RejectTestTrait
     /**
      * @return \React\Promise\PromiseAdapter\PromiseAdapterInterface
      */
-    abstract public function getPromiseTestAdapter(callable $canceller = null);
+    abstract public function getPromiseTestAdapter(?callable $canceller = null);
 
-    /** @test */
-    public function rejectShouldRejectWithAnImmediateValue()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function rejectShouldRejectWithAnImmediateValue(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -29,8 +31,8 @@ trait RejectTestTrait
         $adapter->reject(1);
     }
 
-    /** @test */
-    public function rejectShouldRejectWithFulfilledPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function rejectShouldRejectWithFulfilledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -46,8 +48,8 @@ trait RejectTestTrait
         $adapter->reject(Promise\resolve(1));
     }
 
-    /** @test */
-    public function rejectShouldRejectWithRejectedPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function rejectShouldRejectWithRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -63,8 +65,8 @@ trait RejectTestTrait
         $adapter->reject(Promise\reject(1));
     }
 
-    /** @test */
-    public function rejectShouldForwardReasonWhenCallbackIsNull()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function rejectShouldForwardReasonWhenCallbackIsNull(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -76,18 +78,18 @@ trait RejectTestTrait
 
         $adapter->promise()
             ->then(
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             )
             ->then(
                 $this->expectCallableNever(),
-                $mock
+                $mock,
             );
 
         $adapter->reject(1);
     }
 
-    /** @test */
-    public function rejectShouldMakePromiseImmutable()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function rejectShouldMakePromiseImmutable(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -98,22 +100,22 @@ trait RejectTestTrait
             ->with($this->identicalTo(1));
 
         $adapter->promise()
-            ->then(null, function ($value) use ($adapter) {
+            ->then(null, static function ($value) use ($adapter) {
                 $adapter->reject(3);
 
                 return Promise\reject($value);
             })
             ->then(
                 $this->expectCallableNever(),
-                $mock
+                $mock,
             );
 
         $adapter->reject(1);
         $adapter->reject(2);
     }
 
-    /** @test */
-    public function notifyShouldInvokeOtherwiseHandler()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function notifyShouldInvokeOtherwiseHandler(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -129,8 +131,8 @@ trait RejectTestTrait
         $adapter->reject(1);
     }
 
-    /** @test */
-    public function doneShouldInvokeRejectionHandler()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function doneShouldInvokeRejectionHandler(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -144,75 +146,75 @@ trait RejectTestTrait
         $adapter->reject(1);
     }
 
-    /** @test */
-    public function doneShouldThrowExceptionThrownByRejectionHandler()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function doneShouldThrowExceptionThrownByRejectionHandler(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
         $this->setExpectedException('\Exception', 'UnhandledRejectionException');
 
-        $this->assertNull($adapter->promise()->done(null, function () {
+        $this->assertNull($adapter->promise()->done(null, static function (): void {
             throw new \Exception('UnhandledRejectionException');
         }));
         $adapter->reject(1);
     }
 
-    /** @test */
-    public function doneShouldThrowUnhandledRejectionExceptionWhenRejectedWithNonException()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function doneShouldThrowUnhandledRejectionExceptionWhenRejectedWithNonException(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $this->setExpectedException('React\\Promise\\UnhandledRejectionException');
+        $this->setExpectedException(\React\Promise\UnhandledRejectionException::class);
 
         $this->assertNull($adapter->promise()->done());
         $adapter->reject(1);
     }
 
-    /** @test */
-    public function doneShouldThrowUnhandledRejectionExceptionWhenRejectionHandlerRejects()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function doneShouldThrowUnhandledRejectionExceptionWhenRejectionHandlerRejects(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $this->setExpectedException('React\\Promise\\UnhandledRejectionException');
+        $this->setExpectedException(\React\Promise\UnhandledRejectionException::class);
 
-        $this->assertNull($adapter->promise()->done(null, function () {
+        $this->assertNull($adapter->promise()->done(null, static function () {
             return \React\Promise\reject();
         }));
         $adapter->reject(1);
     }
 
-    /** @test */
-    public function doneShouldThrowRejectionExceptionWhenRejectionHandlerRejectsWithException()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function doneShouldThrowRejectionExceptionWhenRejectionHandlerRejectsWithException(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
         $this->setExpectedException('\Exception', 'UnhandledRejectionException');
 
-        $this->assertNull($adapter->promise()->done(null, function () {
+        $this->assertNull($adapter->promise()->done(null, static function () {
             return \React\Promise\reject(new \Exception('UnhandledRejectionException'));
         }));
         $adapter->reject(1);
     }
 
-    /** @test */
-    public function doneShouldThrowUnhandledRejectionExceptionWhenRejectionHandlerRetunsPendingPromiseWhichRejectsLater()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function doneShouldThrowUnhandledRejectionExceptionWhenRejectionHandlerRetunsPendingPromiseWhichRejectsLater(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $this->setExpectedException('React\\Promise\\UnhandledRejectionException');
+        $this->setExpectedException(\React\Promise\UnhandledRejectionException::class);
 
         $d = new Deferred();
         $promise = $d->promise();
 
-        $this->assertNull($adapter->promise()->done(null, function () use ($promise) {
+        $this->assertNull($adapter->promise()->done(null, static function () use ($promise) {
             return $promise;
         }));
         $adapter->reject(1);
         $d->reject(1);
     }
 
-    /** @test */
-    public function doneShouldThrowExceptionProvidedAsRejectionValue()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function doneShouldThrowExceptionProvidedAsRejectionValue(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -222,8 +224,8 @@ trait RejectTestTrait
         $adapter->reject(new \Exception('UnhandledRejectionException'));
     }
 
-    /** @test */
-    public function doneShouldThrowWithDeepNestingPromiseChains()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function doneShouldThrowWithDeepNestingPromiseChains(): void
     {
         $this->setExpectedException('\Exception', 'UnhandledRejectionException');
 
@@ -231,14 +233,14 @@ trait RejectTestTrait
 
         $d = new Deferred();
 
-        $result = \React\Promise\resolve(\React\Promise\resolve($d->promise()->then(function () use ($exception) {
+        $result = \React\Promise\resolve(\React\Promise\resolve($d->promise()->then(static function () use ($exception) {
             $d = new Deferred();
             $d->resolve();
 
-            return \React\Promise\resolve($d->promise()->then(function () {}))->then(
-                function () use ($exception) {
+            return \React\Promise\resolve($d->promise()->then(static function (): void {}))->then(
+                static function () use ($exception): void {
                     throw $exception;
-                }
+                },
             );
         })));
 
@@ -247,19 +249,17 @@ trait RejectTestTrait
         $d->resolve();
     }
 
-    /** @test */
-    public function doneShouldRecoverWhenRejectionHandlerCatchesException()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function doneShouldRecoverWhenRejectionHandlerCatchesException(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $this->assertNull($adapter->promise()->done(null, function (\Exception $e) {
-
-        }));
+        $this->assertNull($adapter->promise()->done(null, static function (\Exception $e): void {}));
         $adapter->reject(new \Exception('UnhandledRejectionException'));
     }
 
-    /** @test */
-    public function alwaysShouldNotSuppressRejection()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function alwaysShouldNotSuppressRejection(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -272,14 +272,14 @@ trait RejectTestTrait
             ->with($this->identicalTo($exception));
 
         $adapter->promise()
-            ->always(function () {})
+            ->always(static function (): void {})
             ->then(null, $mock);
 
         $adapter->reject($exception);
     }
 
-    /** @test */
-    public function alwaysShouldNotSuppressRejectionWhenHandlerReturnsANonPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function alwaysShouldNotSuppressRejectionWhenHandlerReturnsANonPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -292,7 +292,7 @@ trait RejectTestTrait
             ->with($this->identicalTo($exception));
 
         $adapter->promise()
-            ->always(function () {
+            ->always(static function () {
                 return 1;
             })
             ->then(null, $mock);
@@ -300,8 +300,8 @@ trait RejectTestTrait
         $adapter->reject($exception);
     }
 
-    /** @test */
-    public function alwaysShouldNotSuppressRejectionWhenHandlerReturnsAPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function alwaysShouldNotSuppressRejectionWhenHandlerReturnsAPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -314,7 +314,7 @@ trait RejectTestTrait
             ->with($this->identicalTo($exception));
 
         $adapter->promise()
-            ->always(function () {
+            ->always(static function () {
                 return \React\Promise\resolve(1);
             })
             ->then(null, $mock);
@@ -322,8 +322,8 @@ trait RejectTestTrait
         $adapter->reject($exception);
     }
 
-    /** @test */
-    public function alwaysShouldRejectWhenHandlerThrowsForRejection()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function alwaysShouldRejectWhenHandlerThrowsForRejection(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -336,7 +336,7 @@ trait RejectTestTrait
             ->with($this->identicalTo($exception));
 
         $adapter->promise()
-            ->always(function () use ($exception) {
+            ->always(static function () use ($exception): void {
                 throw $exception;
             })
             ->then(null, $mock);
@@ -344,8 +344,8 @@ trait RejectTestTrait
         $adapter->reject($exception);
     }
 
-    /** @test */
-    public function alwaysShouldRejectWhenHandlerRejectsForRejection()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function alwaysShouldRejectWhenHandlerRejectsForRejection(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -358,7 +358,7 @@ trait RejectTestTrait
             ->with($this->identicalTo($exception));
 
         $adapter->promise()
-            ->always(function () use ($exception) {
+            ->always(static function () use ($exception) {
                 return \React\Promise\reject($exception);
             })
             ->then(null, $mock);

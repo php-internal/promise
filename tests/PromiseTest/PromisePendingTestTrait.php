@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\PromiseTest;
 
 trait PromisePendingTestTrait
@@ -7,50 +9,50 @@ trait PromisePendingTestTrait
     /**
      * @return \React\Promise\PromiseAdapter\PromiseAdapterInterface
      */
-    abstract public function getPromiseTestAdapter(callable $canceller = null);
+    abstract public function getPromiseTestAdapter(?callable $canceller = null);
 
-    /** @test */
-    public function thenShouldReturnAPromiseForPendingPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function thenShouldReturnAPromiseForPendingPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $this->assertInstanceOf('React\\Promise\\PromiseInterface', $adapter->promise()->then());
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $adapter->promise()->then());
     }
 
-    /** @test */
-    public function thenShouldReturnAllowNullForPendingPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function thenShouldReturnAllowNullForPendingPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $this->assertInstanceOf('React\\Promise\\PromiseInterface', $adapter->promise()->then(null, null, null));
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $adapter->promise()->then(null, null, null));
     }
 
-    /** @test */
-    public function cancelShouldReturnNullForPendingPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function cancelShouldReturnNullForPendingPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
         $this->assertNull($adapter->promise()->cancel());
     }
 
-    /** @test */
-    public function doneShouldReturnNullForPendingPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function doneShouldReturnNullForPendingPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
         $this->assertNull($adapter->promise()->done());
     }
 
-    /** @test */
-    public function doneShouldReturnAllowNullForPendingPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function doneShouldReturnAllowNullForPendingPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
         $this->assertNull($adapter->promise()->done(null, null, null));
     }
 
-    /** @test */
-    public function otherwiseShouldNotInvokeRejectionHandlerForPendingPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function otherwiseShouldNotInvokeRejectionHandlerForPendingPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
@@ -58,11 +60,11 @@ trait PromisePendingTestTrait
         $adapter->promise()->otherwise($this->expectCallableNever());
     }
 
-    /** @test */
-    public function alwaysShouldReturnAPromiseForPendingPromise()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function alwaysShouldReturnAPromiseForPendingPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $this->assertInstanceOf('React\\Promise\\PromiseInterface', $adapter->promise()->always(function () {}));
+        $this->assertInstanceOf(\React\Promise\PromiseInterface::class, $adapter->promise()->always(static function (): void {}));
     }
 }

@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 class FunctionAllTest extends TestCase
 {
-    /** @test */
-    public function shouldResolveEmptyInput()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveEmptyInput(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -17,8 +19,8 @@ class FunctionAllTest extends TestCase
             ->then($mock);
     }
 
-    /** @test */
-    public function shouldResolveValuesArray()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveValuesArray(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -30,8 +32,8 @@ class FunctionAllTest extends TestCase
             ->then($mock);
     }
 
-    /** @test */
-    public function shouldResolvePromisesArray()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolvePromisesArray(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -43,8 +45,8 @@ class FunctionAllTest extends TestCase
             ->then($mock);
     }
 
-    /** @test */
-    public function shouldResolveSparseArrayInput()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveSparseArrayInput(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -56,8 +58,8 @@ class FunctionAllTest extends TestCase
             ->then($mock);
     }
 
-    /** @test */
-    public function shouldRejectIfAnyInputPromiseRejects()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldRejectIfAnyInputPromiseRejects(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -69,8 +71,8 @@ class FunctionAllTest extends TestCase
             ->then($this->expectCallableNever(), $mock);
     }
 
-    /** @test */
-    public function shouldAcceptAPromiseForAnArray()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldAcceptAPromiseForAnArray(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -82,8 +84,8 @@ class FunctionAllTest extends TestCase
             ->then($mock);
     }
 
-    /** @test */
-    public function shouldResolveToEmptyArrayWhenInputPromiseDoesNotResolveToArray()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldResolveToEmptyArrayWhenInputPromiseDoesNotResolveToArray(): void
     {
         $mock = $this->createCallableMock();
         $mock
@@ -95,8 +97,8 @@ class FunctionAllTest extends TestCase
             ->then($mock);
     }
 
-    /** @test */
-    public function shouldPreserveTheOrderOfArrayWhenResolvingAsyncPromises()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldPreserveTheOrderOfArrayWhenResolvingAsyncPromises(): void
     {
         $mock = $this->createCallableMock();
         $mock

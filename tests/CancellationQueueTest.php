@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 class CancellationQueueTest extends TestCase
 {
-    /** @test */
-    public function acceptsSimpleCancellableThenable()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function acceptsSimpleCancellableThenable(): void
     {
         $p = new SimpleTestCancellableThenable();
 
@@ -17,8 +19,8 @@ class CancellationQueueTest extends TestCase
         $this->assertTrue($p->cancelCalled);
     }
 
-    /** @test */
-    public function ignoresSimpleCancellable()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function ignoresSimpleCancellable(): void
     {
         $p = new SimpleTestCancellable();
 
@@ -30,8 +32,8 @@ class CancellationQueueTest extends TestCase
         $this->assertFalse($p->cancelCalled);
     }
 
-    /** @test */
-    public function callsCancelOnPromisesEnqueuedBeforeStart()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function callsCancelOnPromisesEnqueuedBeforeStart(): void
     {
         $d1 = $this->getCancellableDeferred();
         $d2 = $this->getCancellableDeferred();
@@ -43,8 +45,8 @@ class CancellationQueueTest extends TestCase
         $cancellationQueue();
     }
 
-    /** @test */
-    public function callsCancelOnPromisesEnqueuedAfterStart()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function callsCancelOnPromisesEnqueuedAfterStart(): void
     {
         $d1 = $this->getCancellableDeferred();
         $d2 = $this->getCancellableDeferred();
@@ -57,8 +59,8 @@ class CancellationQueueTest extends TestCase
         $cancellationQueue->enqueue($d1->promise());
     }
 
-    /** @test */
-    public function doesNotCallCancelTwiceWhenStartedTwice()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function doesNotCallCancelTwiceWhenStartedTwice(): void
     {
         $d = $this->getCancellableDeferred();
 
@@ -69,8 +71,8 @@ class CancellationQueueTest extends TestCase
         $cancellationQueue();
     }
 
-    /** @test */
-    public function rethrowsExceptionsThrownFromCancel()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function rethrowsExceptionsThrownFromCancel(): void
     {
         $this->setExpectedException('\Exception', 'test');
 

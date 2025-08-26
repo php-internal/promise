@@ -1,21 +1,14 @@
 <?php
 
-namespace React\Promise;
+declare(strict_types=1);
 
-use Countable;
-use RuntimeException;
+namespace React\Promise;
 
 class CallbackWithIntersectionTypehintClass
 {
-    public function __invoke(RuntimeException&Countable $e)
-    {
-    }
+    public static function testCallbackStatic(\RuntimeException&\Countable $e): void {}
 
-    public function testCallback(RuntimeException&Countable $e)
-    {
-    }
+    public function testCallback(\RuntimeException&\Countable $e): void {}
 
-    public static function testCallbackStatic(RuntimeException&Countable $e)
-    {
-    }
+    public function __invoke(\RuntimeException&\Countable $e): void {}
 }

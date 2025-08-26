@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
-use RuntimeException;
-
-class ArrayAccessibleException extends RuntimeException implements \ArrayAccess
+class ArrayAccessibleException extends \RuntimeException implements \ArrayAccess
 {
     public function offsetExists(mixed $offset): bool
     {

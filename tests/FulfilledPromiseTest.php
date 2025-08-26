@@ -1,38 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 use React\Promise\PromiseAdapter\CallbackPromiseAdapter;
 
 class FulfilledPromiseTest extends TestCase
 {
-    use PromiseTest\PromiseSettledTestTrait,
-        PromiseTest\PromiseFulfilledTestTrait;
+    use PromiseTest\PromiseSettledTestTrait;
+    use PromiseTest\PromiseFulfilledTestTrait;
 
-    public function getPromiseTestAdapter(callable $canceller = null)
+    public function getPromiseTestAdapter(?callable $canceller = null)
     {
         $promise = null;
 
         return new CallbackPromiseAdapter([
-            'promise' => function () use (&$promise) {
+            'promise' => static function () use (&$promise) {
                 if (!$promise) {
                     throw new \LogicException('FulfilledPromise must be resolved before obtaining the promise');
                 }
 
                 return $promise;
             },
-            'resolve' => function ($value = null) use (&$promise) {
+            'resolve' => static function ($value = null) use (&$promise): void {
                 if (!$promise) {
                     $promise = new FulfilledPromise($value);
                 }
             },
-            'reject' => function () {
+            'reject' => static function (): void {
                 throw new \LogicException('You cannot call reject() for React\Promise\FulfilledPromise');
             },
-            'notify' => function () {
+            'notify' => static function (): void {
                 // no-op
             },
-            'settle' => function ($value = null) use (&$promise) {
+            'settle' => static function ($value = null) use (&$promise): void {
                 if (!$promise) {
                     $promise = new FulfilledPromise($value);
                 }
@@ -40,7 +42,7 @@ class FulfilledPromiseTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function shouldThrowExceptionIfConstructedWithAPromise()
     {
         $this->setExpectedException('\InvalidArgumentException');
@@ -48,31 +50,31 @@ class FulfilledPromiseTest extends TestCase
         return new FulfilledPromise(new FulfilledPromise());
     }
 
-    /** @test */
-    public function shouldNotLeaveGarbageCyclesWhenRemovingLastReferenceToFulfilledPromiseWithAlwaysFollowers()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldNotLeaveGarbageCyclesWhenRemovingLastReferenceToFulfilledPromiseWithAlwaysFollowers(): void
     {
-        gc_collect_cycles();
-        gc_collect_cycles(); // clear twice to avoid leftovers in PHP 7.4 with ext-xdebug and code coverage turned on
+        \gc_collect_cycles();
+        \gc_collect_cycles(); // clear twice to avoid leftovers in PHP 7.4 with ext-xdebug and code coverage turned on
 
         $promise = new FulfilledPromise(1);
-        $promise->always(function () {
+        $promise->always(static function (): void {
             throw new \RuntimeException();
         });
         unset($promise);
 
-        $this->assertSame(0, gc_collect_cycles());
+        $this->assertSame(0, \gc_collect_cycles());
     }
 
-    /** @test */
-    public function shouldNotLeaveGarbageCyclesWhenRemovingLastReferenceToFulfilledPromiseWithThenFollowers()
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function shouldNotLeaveGarbageCyclesWhenRemovingLastReferenceToFulfilledPromiseWithThenFollowers(): void
     {
-        gc_collect_cycles();
+        \gc_collect_cycles();
         $promise = new FulfilledPromise(1);
-        $promise = $promise->then(function () {
+        $promise = $promise->then(static function (): void {
             throw new \RuntimeException();
         });
         unset($promise);
 
-        $this->assertSame(0, gc_collect_cycles());
+        $this->assertSame(0, \gc_collect_cycles());
     }
 }
