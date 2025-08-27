@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 use React\Promise\Internal\RejectedPromise;
@@ -62,7 +64,7 @@ final class Promise implements PromiseInterface
         return new self(
             $this->resolver($onFulfilled, $onRejected),
             static function () use (&$parent): void {
-                assert($parent instanceof self);
+                \assert($parent instanceof self);
                 --$parent->requiredCancelRequests;
 
                 if ($parent->requiredCancelRequests <= 0) {
@@ -98,11 +100,10 @@ final class Promise implements PromiseInterface
     {
         return $this
             ->then(
-                static fn($value): PromiseInterface =>
-                /** @var T $value */
-                resolve($onFulfilledOrRejected())->then(fn() => $value),
+                static fn($value): PromiseInterface => resolve($onFulfilledOrRejected())
+                    ->then(static fn(): mixed => $value),
                 static fn(\Throwable $reason): PromiseInterface => resolve($onFulfilledOrRejected())
-                    ->then(fn(): RejectedPromise => new RejectedPromise($reason)),
+                    ->then(static fn(): RejectedPromise => new RejectedPromise($reason)),
             );
     }
 
@@ -168,7 +169,9 @@ final class Promise implements PromiseInterface
     private function resolver(?callable $onFulfilled = null, ?callable $onRejected = null): callable
     {
         return function (callable $resolve, callable $reject) use ($onFulfilled, $onRejected): void {
-            $this->handlers[] = static function (PromiseInterface $promise) use ($onFulfilled, $onRejected, $resolve, $reject): void {
+            $this->handlers[] = static function (
+                PromiseInterface $promise,
+            ) use ($onFulfilled, $onRejected, $resolve, $reject): void {
                 $promise = $promise->then($onFulfilled, $onRejected);
 
                 if ($promise instanceof self && $promise->result === null) {
@@ -260,7 +263,7 @@ final class Promise implements PromiseInterface
         } elseif (\is_object($callback) && !$callback instanceof \Closure) {
             $ref = new \ReflectionMethod($callback, '__invoke');
         } else {
-            assert($callback instanceof \Closure || \is_string($callback));
+            \assert($callback instanceof \Closure || \is_string($callback));
             $ref = new \ReflectionFunction($callback);
         }
         $args = $ref->getNumberOfParameters();

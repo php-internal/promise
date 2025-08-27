@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\Internal;
 
 use React\Promise\PromiseInterface;
@@ -59,9 +61,10 @@ final class FulfilledPromise implements PromiseInterface
 
     public function finally(callable $onFulfilledOrRejected): PromiseInterface
     {
-        return $this->then(fn($value): PromiseInterface =>
-            /** @var T $value */
-            resolve($onFulfilledOrRejected())->then(static fn() => $value));
+        return $this->then(
+            static fn(mixed $value): PromiseInterface => resolve($onFulfilledOrRejected())
+                ->then(static fn(): mixed => $value),
+        );
     }
 
     public function cancel(): void {}

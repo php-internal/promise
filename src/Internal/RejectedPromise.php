@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\Internal;
 
 use React\Promise\PromiseInterface;
@@ -66,7 +68,7 @@ final class RejectedPromise implements PromiseInterface
     {
         return $this->then(
             null,
-            fn(\Throwable $reason): PromiseInterface => resolve($onFulfilledOrRejected())
+            static fn(\Throwable $reason): PromiseInterface => resolve($onFulfilledOrRejected())
                 ->then(static fn(): PromiseInterface => new RejectedPromise($reason)),
         );
     }

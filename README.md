@@ -5,6 +5,7 @@ A lightweight implementation of [CommonJS Promises/A][CommonJS Promises/A] for P
 > [!NOTE]
 > This is a fork of [reactphp/promise][reactphp/promise] with the following improvements:
 > - PHP 8.1+
+> - `declare(strict_types=1);` in all the PHP files
 > - `@yield` annotation in the PromiseInterface
 > - Replaces `react/promise` v3
 > - Make rejection handler reusable. `error_log()` is still used by default.
