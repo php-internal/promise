@@ -54,10 +54,7 @@
                 "tests/fixtures/",
                 "tests/"
             ]
-        },
-        "files": [
-            "tests/Fiber.php"
-        ]
+        }
     },
     "config": {
         "audit": {
@@ -69,6 +66,7 @@
         "cs:fix": "php-cs-fixer fix -v",
         "stan": "phpstan",
         "test": "phpunit --color=always --testdox",
+        "test:unit": "phpunit --color=always --testdox --testsuite=Unit",
         "refactor": "rector process --config=rector.php",
         "test:cc": [
             "@putenv XDEBUG_MODE=coverage",

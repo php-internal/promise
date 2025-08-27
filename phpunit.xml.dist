@@ -2,15 +2,17 @@
 
 <!-- PHPUnit configuration file with new format for PHPUnit 9.6+ -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="vendor/autoload.php"
-         cacheResult="false"
+         cacheResultFile="runtime/phpunit/result.cache"
          colors="true"
          convertDeprecationsToExceptions="true">
     <testsuites>
-        <testsuite name="Promise Test Suite">
-            <directory>./tests/</directory>
-            <directory suffix=".phpt">./tests/</directory>
+        <testsuite name="Feature">
+            <directory suffix=".phpt">./tests/Feature</directory>
+        </testsuite>
+        <testsuite name="Unit">
+            <directory>./tests/Unit</directory>
         </testsuite>
     </testsuites>
     <coverage>
