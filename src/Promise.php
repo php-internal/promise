@@ -96,16 +96,13 @@ final class Promise implements PromiseInterface
 
     public function finally(callable $onFulfilledOrRejected): PromiseInterface
     {
-        return $this->then(static function ($value) use ($onFulfilledOrRejected): PromiseInterface {
-            /** @var T $value */
-            return resolve($onFulfilledOrRejected())->then(function () use ($value) {
-                return $value;
-            });
-        }, static function (\Throwable $reason) use ($onFulfilledOrRejected): PromiseInterface {
-            return resolve($onFulfilledOrRejected())->then(function () use ($reason): RejectedPromise {
-                return new RejectedPromise($reason);
-            });
-        });
+        return $this
+            ->then(static fn($value): PromiseInterface =>
+                /** @var T $value */
+                resolve($onFulfilledOrRejected())->then(fn() => $value),
+                static fn(\Throwable $reason): PromiseInterface => resolve($onFulfilledOrRejected())
+                    ->then(fn(): RejectedPromise => new RejectedPromise($reason))
+            );
     }
 
     public function cancel(): void
@@ -135,7 +132,7 @@ final class Promise implements PromiseInterface
             $root->requiredCancelRequests--;
 
             if ($root->requiredCancelRequests <= 0) {
-                $parentCanceller = [$root, 'cancel'];
+                $parentCanceller = $root->cancel(...);
             }
         }
 

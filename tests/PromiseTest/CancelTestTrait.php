@@ -134,17 +134,13 @@ trait CancelTestTrait
         $adapter = $this->getPromiseTestAdapter($this->expectCallableOnce());
 
         $promise = $adapter->promise()
-            ->then(function () {
-                return new Promise\Promise(function (): void {});
-            })
+            ->then(fn() => new Promise\Promise(function (): void {}))
             ->then(function () {
                 $d = new Promise\Deferred();
 
                 return $d->promise();
             })
-            ->then(function () {
-                return new Promise\Promise(function (): void {});
-            });
+            ->then(fn() => new Promise\Promise(function (): void {}));
 
         $promise->cancel();
     }

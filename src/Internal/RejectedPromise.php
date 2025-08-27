@@ -14,13 +14,11 @@ use function React\Promise\set_rejection_handler;
  */
 final class RejectedPromise implements PromiseInterface
 {
-    private \Throwable $reason;
     private bool $handled = false;
     private static ?\Closure $rejectionHandler = null;
 
-    public function __construct(\Throwable $reason)
+    public function __construct(private readonly \Throwable $reason)
     {
-        $this->reason = $reason;
     }
 
     public static function setRejectionHandler(?callable $handler): void
@@ -87,11 +85,11 @@ final class RejectedPromise implements PromiseInterface
 
     public function finally(callable $onFulfilledOrRejected): PromiseInterface
     {
-        return $this->then(null, function (\Throwable $reason) use ($onFulfilledOrRejected): PromiseInterface {
-            return resolve($onFulfilledOrRejected())->then(function () use ($reason): PromiseInterface {
-                return new RejectedPromise($reason);
-            });
-        });
+        return $this->then(
+            null,
+            fn(\Throwable $reason): PromiseInterface => resolve($onFulfilledOrRejected())
+                ->then(static fn(): PromiseInterface => new RejectedPromise($reason)),
+        );
     }
 
     public function cancel(): void

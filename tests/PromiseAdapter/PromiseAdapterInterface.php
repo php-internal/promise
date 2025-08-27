@@ -14,10 +14,7 @@ interface PromiseAdapterInterface
      */
     public function promise(): PromiseInterface;
 
-    /**
-     * @param mixed $value
-     */
-    public function resolve($value): void;
+    public function resolve(mixed $value): void;
     public function reject(): void;
     public function settle(): void;
 }

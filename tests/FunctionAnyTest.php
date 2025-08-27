@@ -16,10 +16,8 @@ class FunctionAnyTest extends TestCase
             ->expects(self::once())
             ->method('__invoke')
             ->with(
-                self::callback(function ($exception) {
-                    return $exception instanceof LengthException &&
-                           'Must contain at least 1 item but contains only 0 items.' === $exception->getMessage();
-                })
+                self::callback(fn($exception) => $exception instanceof LengthException &&
+                       'Must contain at least 1 item but contains only 0 items.' === $exception->getMessage())
             );
 
         any([])

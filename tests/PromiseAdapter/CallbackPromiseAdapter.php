@@ -10,15 +10,11 @@ use React\Promise\PromiseInterface;
  */
 class CallbackPromiseAdapter implements PromiseAdapterInterface
 {
-    /** @var callable[] */
-    private $callbacks;
-
     /**
      * @param callable[] $callbacks
      */
-    public function __construct(array $callbacks)
+    public function __construct(private array $callbacks)
     {
-        $this->callbacks = $callbacks;
     }
 
     /**

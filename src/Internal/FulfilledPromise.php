@@ -20,7 +20,7 @@ final class FulfilledPromise implements PromiseInterface
      * @param T $value
      * @throws \InvalidArgumentException
      */
-    public function __construct($value = null)
+    public function __construct(mixed $value = null)
     {
         if ($value instanceof PromiseInterface) {
             throw new \InvalidArgumentException('You cannot create React\Promise\FulfilledPromise with a promise. Use React\Promise\resolve($promiseOrValue) instead.');
@@ -58,12 +58,9 @@ final class FulfilledPromise implements PromiseInterface
 
     public function finally(callable $onFulfilledOrRejected): PromiseInterface
     {
-        return $this->then(function ($value) use ($onFulfilledOrRejected): PromiseInterface {
+        return $this->then(fn($value): PromiseInterface =>
             /** @var T $value */
-            return resolve($onFulfilledOrRejected())->then(function () use ($value) {
-                return $value;
-            });
-        });
+            resolve($onFulfilledOrRejected())->then(static fn() => $value));
     }
 
     public function cancel(): void

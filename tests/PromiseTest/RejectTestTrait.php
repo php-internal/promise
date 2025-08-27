@@ -141,9 +141,8 @@ trait RejectTestTrait
             ->with($this->identicalTo($exception));
 
         $adapter->promise()
-            ->finally(function (): int { // @phpstan-ignore-line
-                return 1;
-            })
+            // @phpstan-ignore-line
+            ->finally(fn(): int => 1)
             ->then(null, $mock);
 
         $adapter->reject($exception);
@@ -163,9 +162,8 @@ trait RejectTestTrait
             ->with($this->identicalTo($exception));
 
         $adapter->promise()
-            ->finally(function (): PromiseInterface { // @phpstan-ignore-line
-                return resolve(1);
-            })
+            // @phpstan-ignore-line
+            ->finally(fn(): PromiseInterface => resolve(1))
             ->then(null, $mock);
 
         $adapter->reject($exception);
@@ -207,9 +205,7 @@ trait RejectTestTrait
             ->with($this->identicalTo($exception));
 
         $adapter->promise()
-            ->finally(function () use ($exception) {
-                return reject($exception);
-            })
+            ->finally(fn() => reject($exception))
             ->then(null, $mock);
 
         $adapter->reject($exception);

@@ -40,7 +40,7 @@ final class Deferred
     /**
      * @param T $value
      */
-    public function resolve($value): void
+    public function resolve(mixed $value): void
     {
         ($this->resolveCallback)($value);
     }

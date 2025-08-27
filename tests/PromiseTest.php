@@ -28,9 +28,7 @@ class PromiseTest extends TestCase
         assert(is_callable($rejectCallback));
 
         return new CallbackPromiseAdapter([
-            'promise' => function () use ($promise) {
-                return $promise;
-            },
+            'promise' => fn() => $promise,
             'resolve' => $resolveCallback,
             'reject'  => $rejectCallback,
             'settle'  => $resolveCallback,

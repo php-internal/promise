@@ -105,14 +105,10 @@ class FunctionResolveTest extends TestCase
             $d = new Deferred();
             $d->resolve($val);
 
-            $identity = function ($val) {
-                return $val;
-            };
+            $identity = fn($val) => $val;
 
             return resolve($d->promise()->then($identity))->then(
-                function ($val) {
-                    return !$val;
-                }
+                fn($val) => !$val
             );
         })));
 
@@ -140,9 +136,7 @@ class FunctionResolveTest extends TestCase
 
             $last = $p;
             for ($j = 0; $j < 150; $j++) {
-                $last = $last->then(function ($result) {
-                    return $result;
-                });
+                $last = $last->then(fn($result) => $result);
             }
         }
 
