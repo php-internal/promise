@@ -6,6 +6,7 @@ namespace React\Promise;
 
 /**
  * @template T
+ * @implements PromisorInterface<T>
  */
 class Deferred implements PromisorInterface
 {
