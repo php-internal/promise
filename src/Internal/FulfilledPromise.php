@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\Internal;
 
 use React\Promise\PromiseInterface;
+
 use function React\Promise\resolve;
 
 /**
@@ -20,7 +23,7 @@ final class FulfilledPromise implements PromiseInterface
      * @param T $value
      * @throws \InvalidArgumentException
      */
-    public function __construct($value = null)
+    public function __construct(mixed $value = null)
     {
         if ($value instanceof PromiseInterface) {
             throw new \InvalidArgumentException('You cannot create React\Promise\FulfilledPromise with a promise. Use React\Promise\resolve($promiseOrValue) instead.');
@@ -36,7 +39,7 @@ final class FulfilledPromise implements PromiseInterface
      */
     public function then(?callable $onFulfilled = null, ?callable $onRejected = null): PromiseInterface
     {
-        if (null === $onFulfilled) {
+        if ($onFulfilled === null) {
             return $this;
         }
 
@@ -58,17 +61,13 @@ final class FulfilledPromise implements PromiseInterface
 
     public function finally(callable $onFulfilledOrRejected): PromiseInterface
     {
-        return $this->then(function ($value) use ($onFulfilledOrRejected): PromiseInterface {
-            /** @var T $value */
-            return resolve($onFulfilledOrRejected())->then(function () use ($value) {
-                return $value;
-            });
-        });
+        return $this->then(
+            static fn(mixed $value): PromiseInterface => resolve($onFulfilledOrRejected())
+                ->then(static fn(): mixed => $value),
+        );
     }
 
-    public function cancel(): void
-    {
-    }
+    public function cancel(): void {}
 
     /**
      * @deprecated 3.0.0 Use `catch()` instead

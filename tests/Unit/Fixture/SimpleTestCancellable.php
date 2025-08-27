@@ -1,0 +1,16 @@
+<?php
+
+declare(strict_types=1);
+
+namespace React\Promise\Tests\Unit\Fixture;
+
+class SimpleTestCancellable
+{
+    /** @var bool */
+    public $cancelCalled = false;
+
+    public function cancel(): void
+    {
+        $this->cancelCalled = true;
+    }
+}

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\Internal;
 
 /**
@@ -13,6 +15,19 @@ final class CancellationQueue
     /** @var object[] */
     private $queue = [];
 
+    public function enqueue(mixed $cancellable): void
+    {
+        if (!\is_object($cancellable) || !\method_exists($cancellable, 'then') || !\method_exists($cancellable, 'cancel')) {
+            return;
+        }
+
+        $length = \array_push($this->queue, $cancellable);
+
+        if ($this->started && $length === 1) {
+            $this->drain();
+        }
+    }
+
     public function __invoke(): void
     {
         if ($this->started) {
@@ -23,27 +38,11 @@ final class CancellationQueue
         $this->drain();
     }
 
-    /**
-     * @param mixed $cancellable
-     */
-    public function enqueue($cancellable): void
-    {
-        if (!\is_object($cancellable) || !\method_exists($cancellable, 'then') || !\method_exists($cancellable, 'cancel')) {
-            return;
-        }
-
-        $length = \array_push($this->queue, $cancellable);
-
-        if ($this->started && 1 === $length) {
-            $this->drain();
-        }
-    }
-
     private function drain(): void
     {
         for ($i = \key($this->queue); isset($this->queue[$i]); $i++) {
             $cancellable = $this->queue[$i];
-            assert(\method_exists($cancellable, 'cancel'));
+            \assert(\method_exists($cancellable, 'cancel'));
 
             $exception = null;
 

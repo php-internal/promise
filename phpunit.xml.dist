@@ -2,25 +2,40 @@
 
 <!-- PHPUnit configuration file with new format for PHPUnit 9.6+ -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="vendor/autoload.php"
-         cacheResult="false"
+         cacheResultFile="runtime/phpunit/result.cache"
          colors="true"
-         convertDeprecationsToExceptions="true">
+>
     <testsuites>
-        <testsuite name="Promise Test Suite">
-            <directory>./tests/</directory>
-            <directory suffix=".phpt">./tests/</directory>
+        <testsuite name="Arch">
+            <directory>./tests/Arch</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory suffix=".phpt">./tests/Feature</directory>
+        </testsuite>
+        <testsuite name="Unit">
+            <directory>./tests/Unit</directory>
         </testsuite>
     </testsuites>
     <coverage>
+        <report>
+            <html outputDirectory="runtime/coverage"/>
+            <text outputFile="runtime/coverage.txt"/>
+            <clover outputFile="runtime/logs/clover.xml"/>
+        </report>
+    </coverage>
+    <logging>
+        <junit outputFile="runtime/report.junit.xml"/>
+    </logging>
+    <source>
         <include>
-            <directory>./src/</directory>
+            <directory>src</directory>
         </include>
         <exclude>
-            <file>./src/functions_include.php</file>
+            <directory>tests</directory>
         </exclude>
-    </coverage>
+    </source>
     <php>
         <ini name="error_reporting" value="-1" />
         <!-- Evaluate assertions, requires running with "php -d zend.assertions=1 vendor/bin/phpunit" -->

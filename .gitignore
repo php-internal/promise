@@ -1,2 +1,9 @@
-/composer.lock
+/.*
+!/.github/
+!/.php-cs-fixer.dist.php
+!/.editorconfig
+/runtime/
 /vendor/
+/.env
+/composer.lock
+*.log

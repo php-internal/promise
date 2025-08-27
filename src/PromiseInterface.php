@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 /**
+ * @yield T
  * @template-covariant T
  */
 interface PromiseInterface
@@ -109,8 +112,6 @@ interface PromiseInterface
      *
      * Once a promise is settled (either fulfilled or rejected), calling `cancel()` on
      * a promise has no effect.
-     *
-     * @return void
      */
     public function cancel(): void;
 

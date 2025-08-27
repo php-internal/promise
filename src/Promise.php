@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 use React\Promise\Internal\RejectedPromise;
@@ -43,12 +45,12 @@ final class Promise implements PromiseInterface
 
     public function then(?callable $onFulfilled = null, ?callable $onRejected = null): PromiseInterface
     {
-        if (null !== $this->result) {
+        if ($this->result !== null) {
             return $this->result->then($onFulfilled, $onRejected);
         }
 
-        if (null === $this->canceller) {
-            return new static($this->resolver($onFulfilled, $onRejected));
+        if ($this->canceller === null) {
+            return new self($this->resolver($onFulfilled, $onRejected));
         }
 
         // This promise has a canceller, so we create a new child promise which
@@ -59,10 +61,10 @@ final class Promise implements PromiseInterface
         $parent = $this;
         ++$parent->requiredCancelRequests;
 
-        return new static(
+        return new self(
             $this->resolver($onFulfilled, $onRejected),
             static function () use (&$parent): void {
-                assert($parent instanceof self);
+                \assert($parent instanceof self);
                 --$parent->requiredCancelRequests;
 
                 if ($parent->requiredCancelRequests <= 0) {
@@ -70,7 +72,7 @@ final class Promise implements PromiseInterface
                 }
 
                 $parent = null;
-            }
+            },
         );
     }
 
@@ -96,16 +98,13 @@ final class Promise implements PromiseInterface
 
     public function finally(callable $onFulfilledOrRejected): PromiseInterface
     {
-        return $this->then(static function ($value) use ($onFulfilledOrRejected): PromiseInterface {
-            /** @var T $value */
-            return resolve($onFulfilledOrRejected())->then(function () use ($value) {
-                return $value;
-            });
-        }, static function (\Throwable $reason) use ($onFulfilledOrRejected): PromiseInterface {
-            return resolve($onFulfilledOrRejected())->then(function () use ($reason): RejectedPromise {
-                return new RejectedPromise($reason);
-            });
-        });
+        return $this
+            ->then(
+                static fn($value): PromiseInterface => resolve($onFulfilledOrRejected())
+                    ->then(static fn(): mixed => $value),
+                static fn(\Throwable $reason): PromiseInterface => resolve($onFulfilledOrRejected())
+                    ->then(static fn(): RejectedPromise => new RejectedPromise($reason)),
+            );
     }
 
     public function cancel(): void
@@ -116,7 +115,7 @@ final class Promise implements PromiseInterface
 
         $parentCanceller = null;
 
-        if (null !== $this->result) {
+        if ($this->result !== null) {
             // Forward cancellation to rejected promise to avoid reporting unhandled rejection
             if ($this->result instanceof RejectedPromise) {
                 $this->result->cancel();
@@ -128,18 +127,18 @@ final class Promise implements PromiseInterface
 
             // Return if the root promise is already resolved or a
             // FulfilledPromise or RejectedPromise
-            if (!$root instanceof self || null !== $root->result) {
+            if (!$root instanceof self || $root->result !== null) {
                 return;
             }
 
             $root->requiredCancelRequests--;
 
             if ($root->requiredCancelRequests <= 0) {
-                $parentCanceller = [$root, 'cancel'];
+                $parentCanceller = $root->cancel(...);
             }
         }
 
-        if (null !== $canceller) {
+        if ($canceller !== null) {
             $this->call($canceller);
         }
 
@@ -170,7 +169,9 @@ final class Promise implements PromiseInterface
     private function resolver(?callable $onFulfilled = null, ?callable $onRejected = null): callable
     {
         return function (callable $resolve, callable $reject) use ($onFulfilled, $onRejected): void {
-            $this->handlers[] = static function (PromiseInterface $promise) use ($onFulfilled, $onRejected, $resolve, $reject): void {
+            $this->handlers[] = static function (
+                PromiseInterface $promise,
+            ) use ($onFulfilled, $onRejected, $resolve, $reject): void {
                 $promise = $promise->then($onFulfilled, $onRejected);
 
                 if ($promise instanceof self && $promise->result === null) {
@@ -186,7 +187,7 @@ final class Promise implements PromiseInterface
 
     private function reject(\Throwable $reason): void
     {
-        if (null !== $this->result) {
+        if ($this->result !== null) {
             return;
         }
 
@@ -202,7 +203,7 @@ final class Promise implements PromiseInterface
 
         if ($result === $this) {
             $result = new RejectedPromise(
-                new \LogicException('Cannot resolve a promise with itself.')
+                new \LogicException('Cannot resolve a promise with itself.'),
             );
         }
 
@@ -234,7 +235,7 @@ final class Promise implements PromiseInterface
      */
     private function unwrap(PromiseInterface $promise): PromiseInterface
     {
-        while ($promise instanceof self && null !== $promise->result) {
+        while ($promise instanceof self && $promise->result !== null) {
             /** @var PromiseInterface<T> $promise */
             $promise = $promise->result;
         }
@@ -262,7 +263,7 @@ final class Promise implements PromiseInterface
         } elseif (\is_object($callback) && !$callback instanceof \Closure) {
             $ref = new \ReflectionMethod($callback, '__invoke');
         } else {
-            assert($callback instanceof \Closure || \is_string($callback));
+            \assert($callback instanceof \Closure || \is_string($callback));
             $ref = new \ReflectionFunction($callback);
         }
         $args = $ref->getNumberOfParameters();
@@ -279,7 +280,7 @@ final class Promise implements PromiseInterface
                 // garbage cycles if any callback creates an Exception.
                 // These assumptions are covered by the test suite, so if you ever feel like
                 // refactoring this, go ahead, any alternative suggestions are welcome!
-                $target =& $this;
+                $target = & $this;
 
                 $callback(
                     static function ($value) use (&$target): void {
@@ -293,7 +294,7 @@ final class Promise implements PromiseInterface
                             $target->reject($reason);
                             $target = null;
                         }
-                    }
+                    },
                 );
             }
         } catch (\Throwable $e) {
