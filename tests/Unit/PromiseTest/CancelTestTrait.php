@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-namespace React\Promise\Unit\PromiseTest;
+namespace React\Promise\Tests\Unit\PromiseTest;
 
+use PHPUnit\Framework\Attributes\Test;
 use React\Promise;
-use React\Promise\Unit\PromiseAdapter\PromiseAdapterInterface;
+use React\Promise\Tests\Unit\PromiseAdapter\PromiseAdapterInterface;
 
 trait CancelTestTrait
 {
     abstract public function getPromiseTestAdapter(?callable $canceller = null): PromiseAdapterInterface;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cancelShouldCallCancellerWithResolverArguments(): void
     {
         $args = [];
@@ -28,9 +27,7 @@ trait CancelTestTrait
         self::assertTrue(\is_callable($args[1]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cancelShouldCallCancellerWithoutArgumentsIfNotAccessed(): void
     {
         $args = null;
@@ -43,9 +40,7 @@ trait CancelTestTrait
         self::assertSame(0, $args);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cancelShouldFulfillPromiseIfCancellerFulfills(): void
     {
         $adapter = $this->getPromiseTestAdapter(static function ($resolve): void {
@@ -64,9 +59,7 @@ trait CancelTestTrait
         $adapter->promise()->cancel();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cancelShouldRejectPromiseIfCancellerRejects(): void
     {
         $exception = new \Exception();
@@ -87,9 +80,7 @@ trait CancelTestTrait
         $adapter->promise()->cancel();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cancelShouldRejectPromiseWithExceptionIfCancellerThrows(): void
     {
         $e = new \Exception();
@@ -110,9 +101,7 @@ trait CancelTestTrait
         $adapter->promise()->cancel();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cancelShouldCallCancellerOnlyOnceIfCancellerResolves(): void
     {
         $mock = $this->createCallableMock();
@@ -129,9 +118,7 @@ trait CancelTestTrait
         $adapter->promise()->cancel();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cancelShouldHaveNoEffectIfCancellerDoesNothing(): void
     {
         $adapter = $this->getPromiseTestAdapter(static function (): void {});
@@ -143,9 +130,7 @@ trait CancelTestTrait
         $adapter->promise()->cancel();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cancelShouldCallCancellerFromDeepNestedPromiseChain(): void
     {
         $adapter = $this->getPromiseTestAdapter($this->expectCallableOnce());
@@ -162,9 +147,7 @@ trait CancelTestTrait
         $promise->cancel();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cancelCalledOnChildrenSouldOnlyCancelWhenAllChildrenCancelled(): void
     {
         $adapter = $this->getPromiseTestAdapter($this->expectCallableNever());
@@ -179,9 +162,7 @@ trait CancelTestTrait
         $child1->cancel();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cancelShouldTriggerCancellerWhenAllChildrenCancel(): void
     {
         $adapter = $this->getPromiseTestAdapter($this->expectCallableOnce());
@@ -197,9 +178,7 @@ trait CancelTestTrait
         $child2->cancel();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cancelShouldNotTriggerCancellerWhenCancellingOneChildrenMultipleTimes(): void
     {
         $adapter = $this->getPromiseTestAdapter($this->expectCallableNever());
@@ -215,9 +194,7 @@ trait CancelTestTrait
         $child1->cancel();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cancelShouldTriggerCancellerOnlyOnceWhenCancellingMultipleTimes(): void
     {
         $adapter = $this->getPromiseTestAdapter($this->expectCallableOnce());
@@ -226,9 +203,7 @@ trait CancelTestTrait
         $adapter->promise()->cancel();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cancelShouldAlwaysTriggerCancellerWhenCalledOnRootPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter($this->expectCallableOnce());
@@ -243,9 +218,7 @@ trait CancelTestTrait
         $adapter->promise()->cancel();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cancelShouldTriggerCancellerWhenFollowerCancels(): void
     {
         $adapter1 = $this->getPromiseTestAdapter($this->expectCallableOnce());
@@ -260,9 +233,7 @@ trait CancelTestTrait
         $follower->cancel();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cancelShouldNotTriggerCancellerWhenCancellingOnlyOneFollower(): void
     {
         $adapter1 = $this->getPromiseTestAdapter($this->expectCallableNever());
@@ -280,9 +251,7 @@ trait CancelTestTrait
         $follower1->cancel();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cancelCalledOnFollowerShouldOnlyCancelWhenAllChildrenAndFollowerCancelled(): void
     {
         $adapter1 = $this->getPromiseTestAdapter($this->expectCallableOnce());
@@ -300,9 +269,7 @@ trait CancelTestTrait
         $child->cancel();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cancelShouldNotTriggerCancellerWhenCancellingFollowerButNotChildren(): void
     {
         $adapter1 = $this->getPromiseTestAdapter($this->expectCallableNever());

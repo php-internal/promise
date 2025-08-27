@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace React\Promise\Unit\PromiseTest;
+namespace React\Promise\Tests\Unit\PromiseTest;
 
+use PHPUnit\Framework\Attributes\Test;
 use React\Promise\PromiseInterface;
-use React\Promise\Unit\PromiseAdapter\PromiseAdapterInterface;
+use React\Promise\Tests\Unit\PromiseAdapter\PromiseAdapterInterface;
 
 use function React\Promise\reject;
 use function React\Promise\resolve;
@@ -14,9 +15,7 @@ trait ResolveTestTrait
 {
     abstract public function getPromiseTestAdapter(?callable $canceller = null): PromiseAdapterInterface;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveShouldResolve(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -33,9 +32,7 @@ trait ResolveTestTrait
         $adapter->resolve(1);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveShouldResolveWithPromisedValue(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -52,9 +49,7 @@ trait ResolveTestTrait
         $adapter->resolve(resolve(1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveShouldRejectWhenResolvedWithRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -73,9 +68,7 @@ trait ResolveTestTrait
         $adapter->resolve(reject($exception));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveShouldForwardValueWhenCallbackIsNull(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -99,9 +92,7 @@ trait ResolveTestTrait
         $adapter->resolve(1);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveShouldMakePromiseImmutable(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -127,9 +118,7 @@ trait ResolveTestTrait
         $adapter->resolve(2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveShouldRejectWhenResolvedWithItself(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -149,9 +138,7 @@ trait ResolveTestTrait
         $adapter->resolve($adapter->promise());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveShouldRejectWhenResolvedWithAPromiseWhichFollowsItself(): void
     {
         $adapter1 = $this->getPromiseTestAdapter();
@@ -176,9 +163,7 @@ trait ResolveTestTrait
         $adapter2->resolve($promise1);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finallyShouldNotSuppressValue(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -198,9 +183,7 @@ trait ResolveTestTrait
         $adapter->resolve($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finallyShouldNotSuppressValueWhenHandlerReturnsANonPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -221,9 +204,7 @@ trait ResolveTestTrait
         $adapter->resolve($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finallyShouldNotSuppressValueWhenHandlerReturnsAPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -245,9 +226,7 @@ trait ResolveTestTrait
         $adapter->resolve($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finallyShouldRejectWhenHandlerThrowsForFulfillment(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -269,9 +248,7 @@ trait ResolveTestTrait
         $adapter->resolve(1);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finallyShouldRejectWhenHandlerRejectsForFulfillment(): void
     {
         $adapter = $this->getPromiseTestAdapter();

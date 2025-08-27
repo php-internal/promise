@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace React\Promise\Unit;
+namespace React\Promise\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\Test;
 use React\Promise\Deferred;
-use React\Promise\Unit\PromiseAdapter\CallbackPromiseAdapter;
+use React\Promise\Tests\Unit\PromiseAdapter\CallbackPromiseAdapter;
 
 /**
  * @template T
@@ -29,9 +30,7 @@ class DeferredTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRejectWithoutCreatingGarbageCyclesIfCancellerRejectsWithException(): void
     {
         \gc_collect_cycles();
@@ -44,9 +43,7 @@ class DeferredTest extends TestCase
         $this->assertSame(0, \gc_collect_cycles());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRejectWithoutCreatingGarbageCyclesIfParentCancellerRejectsWithException(): void
     {
         \gc_collect_cycles();
@@ -61,9 +58,7 @@ class DeferredTest extends TestCase
         $this->assertSame(0, \gc_collect_cycles());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRejectWithoutCreatingGarbageCyclesIfCancellerHoldsReferenceAndExplicitlyRejectWithException(): void
     {
         \gc_collect_cycles();

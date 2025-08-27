@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace React\Promise\Unit\Internal;
+namespace React\Promise\Tests\Unit\Internal;
 
 use React\Promise\Internal\RejectedPromise;
-use React\Promise\Unit\PromiseAdapter\CallbackPromiseAdapter;
-use React\Promise\Unit\PromiseTest\PromiseRejectedTestTrait;
-use React\Promise\Unit\PromiseTest\PromiseSettledTestTrait;
-use React\Promise\Unit\TestCase;
+use React\Promise\Tests\Unit\PromiseAdapter\CallbackPromiseAdapter;
+use React\Promise\Tests\Unit\PromiseTest\PromiseRejectedTestTrait;
+use React\Promise\Tests\Unit\PromiseTest\PromiseSettledTestTrait;
+use React\Promise\Tests\Unit\TestCase;
 
 class RejectedPromiseTest extends TestCase
 {

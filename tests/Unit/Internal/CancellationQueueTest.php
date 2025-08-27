@@ -2,19 +2,18 @@
 
 declare(strict_types=1);
 
-namespace React\Promise\Unit\Internal;
+namespace React\Promise\Tests\Unit\Internal;
 
+use PHPUnit\Framework\Attributes\Test;
 use React\Promise\Deferred;
 use React\Promise\Internal\CancellationQueue;
-use React\Promise\Unit\Fixture\SimpleTestCancellable;
-use React\Promise\Unit\Fixture\SimpleTestCancellableThenable;
-use React\Promise\Unit\TestCase;
+use React\Promise\Tests\Unit\Fixture\SimpleTestCancellable;
+use React\Promise\Tests\Unit\Fixture\SimpleTestCancellableThenable;
+use React\Promise\Tests\Unit\TestCase;
 
 class CancellationQueueTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function acceptsSimpleCancellableThenable(): void
     {
         $p = new SimpleTestCancellableThenable();
@@ -27,9 +26,7 @@ class CancellationQueueTest extends TestCase
         self::assertTrue($p->cancelCalled);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ignoresSimpleCancellable(): void
     {
         $p = new SimpleTestCancellable();
@@ -42,9 +39,7 @@ class CancellationQueueTest extends TestCase
         self::assertFalse($p->cancelCalled);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function callsCancelOnPromisesEnqueuedBeforeStart(): void
     {
         $d1 = $this->getCancellableDeferred();
@@ -57,9 +52,7 @@ class CancellationQueueTest extends TestCase
         $cancellationQueue();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function callsCancelOnPromisesEnqueuedAfterStart(): void
     {
         $d1 = $this->getCancellableDeferred();
@@ -73,9 +66,7 @@ class CancellationQueueTest extends TestCase
         $cancellationQueue->enqueue($d1->promise());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesNotCallCancelTwiceWhenStartedTwice(): void
     {
         $d = $this->getCancellableDeferred();
@@ -87,9 +78,7 @@ class CancellationQueueTest extends TestCase
         $cancellationQueue();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rethrowsExceptionsThrownFromCancel(): void
     {
         $this->expectException(\Exception::class);

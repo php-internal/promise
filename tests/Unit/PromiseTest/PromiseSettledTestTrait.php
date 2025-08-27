@@ -2,19 +2,18 @@
 
 declare(strict_types=1);
 
-namespace React\Promise\Unit\PromiseTest;
+namespace React\Promise\Tests\Unit\PromiseTest;
 
+use PHPUnit\Framework\Attributes\Test;
 use React\Promise\Internal\RejectedPromise;
 use React\Promise\PromiseInterface;
-use React\Promise\Unit\PromiseAdapter\PromiseAdapterInterface;
+use React\Promise\Tests\Unit\PromiseAdapter\PromiseAdapterInterface;
 
 trait PromiseSettledTestTrait
 {
     abstract public function getPromiseTestAdapter(?callable $canceller = null): PromiseAdapterInterface;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function thenShouldReturnAPromiseForSettledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -27,9 +26,7 @@ trait PromiseSettledTestTrait
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function thenShouldReturnAllowNullForSettledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -42,9 +39,7 @@ trait PromiseSettledTestTrait
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cancelShouldHaveNoEffectForSettledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter($this->expectCallableNever());
@@ -54,9 +49,7 @@ trait PromiseSettledTestTrait
         $adapter->promise()->cancel();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finallyShouldReturnAPromiseForSettledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -70,9 +63,9 @@ trait PromiseSettledTestTrait
     }
 
     /**
-     * @test
      * @deprecated
      */
+    #[Test]
     public function alwaysShouldReturnAPromiseForSettledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();

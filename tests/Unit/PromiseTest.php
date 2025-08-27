@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace React\Promise\Unit;
+namespace React\Promise\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\Test;
 use React\Promise\Promise;
-use React\Promise\Unit\PromiseAdapter\CallbackPromiseAdapter;
+use React\Promise\Tests\Unit\PromiseAdapter\CallbackPromiseAdapter;
 
 /**
  * @template T
@@ -37,9 +38,7 @@ class PromiseTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRejectIfResolverThrowsException(): void
     {
         $exception = new \Exception('foo');
@@ -58,9 +57,7 @@ class PromiseTest extends TestCase
             ->then($this->expectCallableNever(), $mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveWithoutCreatingGarbageCyclesIfResolverResolvesWithException(): void
     {
         \gc_collect_cycles();
@@ -72,9 +69,7 @@ class PromiseTest extends TestCase
         $this->assertSame(0, \gc_collect_cycles());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRejectWithoutCreatingGarbageCyclesIfResolverThrowsExceptionWithoutResolver(): void
     {
         \gc_collect_cycles();
@@ -89,9 +84,7 @@ class PromiseTest extends TestCase
         $this->assertSame(0, \gc_collect_cycles());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRejectWithoutCreatingGarbageCyclesIfResolverRejectsWithException(): void
     {
         \gc_collect_cycles();
@@ -106,9 +99,7 @@ class PromiseTest extends TestCase
         $this->assertSame(0, \gc_collect_cycles());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRejectWithoutCreatingGarbageCyclesIfCancellerRejectsWithException(): void
     {
         \gc_collect_cycles();
@@ -121,9 +112,7 @@ class PromiseTest extends TestCase
         $this->assertSame(0, \gc_collect_cycles());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRejectWithoutCreatingGarbageCyclesIfParentCancellerRejectsWithException(): void
     {
         \gc_collect_cycles();
@@ -136,9 +125,7 @@ class PromiseTest extends TestCase
         $this->assertSame(0, \gc_collect_cycles());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRejectWithoutCreatingGarbageCyclesIfResolverThrowsException(): void
     {
         \gc_collect_cycles();
@@ -153,9 +140,7 @@ class PromiseTest extends TestCase
         $this->assertSame(0, \gc_collect_cycles());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotLeaveGarbageCyclesWhenRemovingLastReferenceToPendingPromise(): void
     {
         \gc_collect_cycles();
@@ -165,9 +150,7 @@ class PromiseTest extends TestCase
         $this->assertSame(0, \gc_collect_cycles());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotLeaveGarbageCyclesWhenRemovingLastReferenceToPendingPromiseWithThenFollowers(): void
     {
         \gc_collect_cycles();
@@ -178,9 +161,7 @@ class PromiseTest extends TestCase
         $this->assertSame(0, \gc_collect_cycles());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotLeaveGarbageCyclesWhenRemovingLastReferenceToPendingPromiseWithCatchFollowers(): void
     {
         \gc_collect_cycles();
@@ -191,9 +172,7 @@ class PromiseTest extends TestCase
         $this->assertSame(0, \gc_collect_cycles());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotLeaveGarbageCyclesWhenRemovingLastReferenceToPendingPromiseWithFinallyFollowers(): void
     {
         \gc_collect_cycles();
@@ -205,9 +184,9 @@ class PromiseTest extends TestCase
     }
 
     /**
-     * @test
      * @deprecated
      */
+    #[Test]
     public function shouldNotLeaveGarbageCyclesWhenRemovingLastReferenceToPendingPromiseWithOtherwiseFollowers(): void
     {
         \gc_collect_cycles();
@@ -219,9 +198,9 @@ class PromiseTest extends TestCase
     }
 
     /**
-     * @test
      * @deprecated
      */
+    #[Test]
     public function shouldNotLeaveGarbageCyclesWhenRemovingLastReferenceToPendingPromiseWithAlwaysFollowers(): void
     {
         \gc_collect_cycles();
@@ -232,9 +211,7 @@ class PromiseTest extends TestCase
         $this->assertSame(0, \gc_collect_cycles());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFulfillIfFullfilledWithSimplePromise(): void
     {
         \gc_collect_cycles();

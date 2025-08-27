@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace React\Promise\Unit;
+namespace React\Promise\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\Test;
 use React\Promise\Deferred;
 use React\Promise\Promise;
 
@@ -11,9 +12,7 @@ use function React\Promise\race;
 
 class FunctionRaceTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnForeverPendingPromiseForEmptyInput(): void
     {
         race(
@@ -21,9 +20,7 @@ class FunctionRaceTest extends TestCase
         )->then($this->expectCallableNever(), $this->expectCallableNever());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveValuesArray(): void
     {
         $mock = $this->createCallableMock();
@@ -37,9 +34,7 @@ class FunctionRaceTest extends TestCase
         )->then($mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolvePromisesArray(): void
     {
         $mock = $this->createCallableMock();
@@ -62,9 +57,7 @@ class FunctionRaceTest extends TestCase
         $d3->resolve(3);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveSparseArrayInput(): void
     {
         $mock = $this->createCallableMock();
@@ -78,9 +71,7 @@ class FunctionRaceTest extends TestCase
         )->then($mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveValuesGenerator(): void
     {
         $mock = $this->createCallableMock();
@@ -98,9 +89,7 @@ class FunctionRaceTest extends TestCase
         race($gen)->then($mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveValuesInfiniteGenerator(): void
     {
         $mock = $this->createCallableMock();
@@ -118,9 +107,7 @@ class FunctionRaceTest extends TestCase
         race($gen)->then($mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRejectIfFirstSettledPromiseRejects(): void
     {
         $exception = new \Exception();
@@ -145,9 +132,7 @@ class FunctionRaceTest extends TestCase
         $d3->resolve(3);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldCancelInputArrayPromises(): void
     {
         $promise1 = new Promise(static function (): void {}, $this->expectCallableOnce());
@@ -156,9 +141,7 @@ class FunctionRaceTest extends TestCase
         race([$promise1, $promise2])->cancel();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotCancelOtherPendingInputArrayPromisesIfOnePromiseFulfills(): void
     {
         $deferred = new Deferred($this->expectCallableNever());
@@ -169,9 +152,7 @@ class FunctionRaceTest extends TestCase
         race([$deferred->promise(), $promise2])->cancel();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldNotCancelOtherPendingInputArrayPromisesIfOnePromiseRejects(): void
     {
         $deferred = new Deferred($this->expectCallableNever());

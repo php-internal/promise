@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace React\Promise\Unit;
+namespace React\Promise\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\Test;
 use React\Promise\Deferred;
 
 use function React\Promise\all;
@@ -12,9 +13,7 @@ use function React\Promise\resolve;
 
 class FunctionAllTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveEmptyInput(): void
     {
         $mock = $this->createCallableMock();
@@ -27,9 +26,7 @@ class FunctionAllTest extends TestCase
             ->then($mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveValuesArray(): void
     {
         $mock = $this->createCallableMock();
@@ -42,9 +39,7 @@ class FunctionAllTest extends TestCase
             ->then($mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolvePromisesArray(): void
     {
         $mock = $this->createCallableMock();
@@ -57,9 +52,7 @@ class FunctionAllTest extends TestCase
             ->then($mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveSparseArrayInput(): void
     {
         $mock = $this->createCallableMock();
@@ -72,9 +65,7 @@ class FunctionAllTest extends TestCase
             ->then($mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveValuesGenerator(): void
     {
         $mock = $this->createCallableMock();
@@ -92,9 +83,7 @@ class FunctionAllTest extends TestCase
         all($gen)->then($mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveValuesGeneratorEmpty(): void
     {
         $mock = $this->createCallableMock();
@@ -112,9 +101,7 @@ class FunctionAllTest extends TestCase
         all($gen)->then($mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRejectIfAnyInputPromiseRejects(): void
     {
         $exception2 = new \Exception();
@@ -130,9 +117,7 @@ class FunctionAllTest extends TestCase
             ->then($this->expectCallableNever(), $mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRejectInfiteGeneratorOrRejectedPromises(): void
     {
         $mock = $this->createCallableMock();
@@ -150,9 +135,7 @@ class FunctionAllTest extends TestCase
         all($gen)->then(null, $mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldPreserveTheOrderOfArrayWhenResolvingAsyncPromises(): void
     {
         $mock = $this->createCallableMock();

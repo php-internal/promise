@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace React\Promise\Unit;
+namespace React\Promise\Tests\Unit;
 
-use React\Promise\Unit\Fixture\SimpleFulfilledTestThenable;
-use React\Promise\Unit\Fixture\SimpleTestCancellableThenable;
+use PHPUnit\Framework\Attributes\Test;
+use React\Promise\Tests\Unit\Fixture\SimpleFulfilledTestThenable;
+use React\Promise\Tests\Unit\Fixture\SimpleTestCancellableThenable;
 use React\Promise\Deferred;
 use React\Promise\Internal\FulfilledPromise;
 use React\Promise\Internal\RejectedPromise;
@@ -14,9 +15,7 @@ use function React\Promise\resolve;
 
 class FunctionResolveTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveAnImmediateValue(): void
     {
         $expected = 123;
@@ -34,9 +33,7 @@ class FunctionResolveTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveAFulfilledPromise(): void
     {
         $expected = 123;
@@ -56,9 +53,7 @@ class FunctionResolveTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveAThenable(): void
     {
         $thenable = new SimpleFulfilledTestThenable();
@@ -76,9 +71,7 @@ class FunctionResolveTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldResolveACancellableThenable(): void
     {
         $thenable = new SimpleTestCancellableThenable();
@@ -89,9 +82,7 @@ class FunctionResolveTest extends TestCase
         self::assertTrue($thenable->cancelCalled);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRejectARejectedPromise(): void
     {
         $exception = new \Exception();
@@ -111,9 +102,7 @@ class FunctionResolveTest extends TestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSupportDeepNestingInPromiseChains(): void
     {
         $d = new Deferred();
@@ -139,9 +128,7 @@ class FunctionResolveTest extends TestCase
         $result->then($mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSupportVeryDeepNestedPromises(): void
     {
         $deferreds = [];

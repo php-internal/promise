@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace React\Promise\Unit\PromiseTest;
+namespace React\Promise\Tests\Unit\PromiseTest;
 
+use PHPUnit\Framework\Attributes\Test;
 use React\Promise\PromiseInterface;
-use React\Promise\Unit\PromiseAdapter\PromiseAdapterInterface;
+use React\Promise\Tests\Unit\PromiseAdapter\PromiseAdapterInterface;
 
 use function React\Promise\reject;
 use function React\Promise\resolve;
@@ -14,9 +15,7 @@ trait PromiseRejectedTestTrait
 {
     abstract public function getPromiseTestAdapter(?callable $canceller = null): PromiseAdapterInterface;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rejectedPromiseShouldBeImmutable(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -40,9 +39,7 @@ trait PromiseRejectedTestTrait
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rejectedPromiseShouldInvokeNewlyAddedCallback(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -61,9 +58,7 @@ trait PromiseRejectedTestTrait
             ->then($this->expectCallableNever(), $mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldForwardUndefinedRejectionValue(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -91,9 +86,7 @@ trait PromiseRejectedTestTrait
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSwitchFromErrbacksToCallbacksWhenErrbackDoesNotExplicitlyPropagate(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -116,9 +109,7 @@ trait PromiseRejectedTestTrait
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldSwitchFromErrbacksToCallbacksWhenErrbackReturnsAResolution(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -141,9 +132,7 @@ trait PromiseRejectedTestTrait
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldPropagateRejectionsWhenErrbackThrows(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -174,9 +163,7 @@ trait PromiseRejectedTestTrait
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldPropagateRejectionsWhenErrbackReturnsARejection(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -201,9 +188,7 @@ trait PromiseRejectedTestTrait
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function catchShouldInvokeRejectionHandlerForRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -220,9 +205,7 @@ trait PromiseRejectedTestTrait
         $adapter->promise()->catch($mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function catchShouldInvokeNonTypeHintedRejectionHandlerIfReasonIsAnExceptionForRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -242,9 +225,7 @@ trait PromiseRejectedTestTrait
             });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function catchShouldInvokeRejectionHandlerIfReasonMatchesTypehintForRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -264,9 +245,7 @@ trait PromiseRejectedTestTrait
             });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function catchShouldNotInvokeRejectionHandlerIfReaonsDoesNotMatchTypehintForRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -282,9 +261,7 @@ trait PromiseRejectedTestTrait
             })->then(null, $this->expectCallableOnce()); // avoid reporting unhandled rejection
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finallyShouldNotSuppressRejectionForRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -303,9 +280,7 @@ trait PromiseRejectedTestTrait
             ->then(null, $mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finallyShouldNotSuppressRejectionWhenHandlerReturnsANonPromiseForRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -326,9 +301,7 @@ trait PromiseRejectedTestTrait
             ->then(null, $mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finallyShouldNotSuppressRejectionWhenHandlerReturnsAPromiseForRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -349,9 +322,7 @@ trait PromiseRejectedTestTrait
             ->then(null, $mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finallyShouldRejectWhenHandlerThrowsForRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -373,9 +344,7 @@ trait PromiseRejectedTestTrait
             ->then(null, $mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finallyShouldRejectWhenHandlerRejectsForRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -395,9 +364,7 @@ trait PromiseRejectedTestTrait
             ->then(null, $mock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cancelShouldHaveNoEffectForRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter($this->expectCallableNever());
@@ -408,9 +375,9 @@ trait PromiseRejectedTestTrait
     }
 
     /**
-     * @test
      * @deprecated
      */
+    #[Test]
     public function otherwiseShouldInvokeRejectionHandlerForRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -428,9 +395,9 @@ trait PromiseRejectedTestTrait
     }
 
     /**
-     * @test
      * @deprecated
      */
+    #[Test]
     public function otherwiseShouldInvokeNonTypeHintedRejectionHandlerIfReasonIsAnExceptionForRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -451,9 +418,9 @@ trait PromiseRejectedTestTrait
     }
 
     /**
-     * @test
      * @deprecated
      */
+    #[Test]
     public function otherwiseShouldInvokeRejectionHandlerIfReasonMatchesTypehintForRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -474,9 +441,9 @@ trait PromiseRejectedTestTrait
     }
 
     /**
-     * @test
      * @deprecated
      */
+    #[Test]
     public function otherwiseShouldNotInvokeRejectionHandlerIfReaonsDoesNotMatchTypehintForRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -493,9 +460,9 @@ trait PromiseRejectedTestTrait
     }
 
     /**
-     * @test
      * @deprecated
      */
+    #[Test]
     public function alwaysShouldNotSuppressRejectionForRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -515,9 +482,9 @@ trait PromiseRejectedTestTrait
     }
 
     /**
-     * @test
      * @deprecated
      */
+    #[Test]
     public function alwaysShouldNotSuppressRejectionWhenHandlerReturnsANonPromiseForRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -539,9 +506,9 @@ trait PromiseRejectedTestTrait
     }
 
     /**
-     * @test
      * @deprecated
      */
+    #[Test]
     public function alwaysShouldNotSuppressRejectionWhenHandlerReturnsAPromiseForRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -563,9 +530,9 @@ trait PromiseRejectedTestTrait
     }
 
     /**
-     * @test
      * @deprecated
      */
+    #[Test]
     public function alwaysShouldRejectWhenHandlerThrowsForRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -588,9 +555,9 @@ trait PromiseRejectedTestTrait
     }
 
     /**
-     * @test
      * @deprecated
      */
+    #[Test]
     public function alwaysShouldRejectWhenHandlerRejectsForRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();

@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace React\Promise\Unit\Internal;
+namespace React\Promise\Tests\Unit\Internal;
 
+use PHPUnit\Framework\Attributes\Test;
 use React\Promise\Internal\FulfilledPromise;
-use React\Promise\Unit\PromiseAdapter\CallbackPromiseAdapter;
-use React\Promise\Unit\PromiseTest\PromiseFulfilledTestTrait;
-use React\Promise\Unit\PromiseTest\PromiseSettledTestTrait;
-use React\Promise\Unit\TestCase;
+use React\Promise\Tests\Unit\PromiseAdapter\CallbackPromiseAdapter;
+use React\Promise\Tests\Unit\PromiseTest\PromiseFulfilledTestTrait;
+use React\Promise\Tests\Unit\PromiseTest\PromiseSettledTestTrait;
+use React\Promise\Tests\Unit\TestCase;
 
 /**
  * @template T
@@ -50,9 +51,7 @@ class FulfilledPromiseTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldThrowExceptionIfConstructedWithAPromise(): void
     {
         $this->expectException(\InvalidArgumentException::class);

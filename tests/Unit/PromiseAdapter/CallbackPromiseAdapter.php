@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace React\Promise\Unit\PromiseAdapter;
+namespace React\Promise\Tests\Unit\PromiseAdapter;
 
 use React\Promise\PromiseInterface;
 

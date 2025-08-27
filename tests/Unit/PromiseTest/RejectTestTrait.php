@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace React\Promise\Unit\PromiseTest;
+namespace React\Promise\Tests\Unit\PromiseTest;
 
+use PHPUnit\Framework\Attributes\Test;
 use React\Promise\PromiseInterface;
-use React\Promise\Unit\PromiseAdapter\PromiseAdapterInterface;
+use React\Promise\Tests\Unit\PromiseAdapter\PromiseAdapterInterface;
 
 use function React\Promise\reject;
 use function React\Promise\resolve;
@@ -14,9 +15,7 @@ trait RejectTestTrait
 {
     abstract public function getPromiseTestAdapter(?callable $canceller = null): PromiseAdapterInterface;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rejectShouldRejectWithAnException(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -35,9 +34,7 @@ trait RejectTestTrait
         $adapter->reject($exception);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rejectShouldForwardReasonWhenCallbackIsNull(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -62,9 +59,7 @@ trait RejectTestTrait
         $adapter->reject($exception);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rejectShouldMakePromiseImmutable(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -94,9 +89,7 @@ trait RejectTestTrait
         $adapter->reject($exception2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function rejectShouldInvokeCatchHandler(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -115,9 +108,7 @@ trait RejectTestTrait
         $adapter->reject($exception);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finallyShouldNotSuppressRejection(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -137,9 +128,7 @@ trait RejectTestTrait
         $adapter->reject($exception);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finallyShouldNotSuppressRejectionWhenHandlerReturnsANonPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -160,9 +149,7 @@ trait RejectTestTrait
         $adapter->reject($exception);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finallyShouldNotSuppressRejectionWhenHandlerReturnsAPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -183,9 +170,7 @@ trait RejectTestTrait
         $adapter->reject($exception);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finallyShouldRejectWhenHandlerThrowsForRejection(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -207,9 +192,7 @@ trait RejectTestTrait
         $adapter->reject($exception);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finallyShouldRejectWhenHandlerRejectsForRejection(): void
     {
         $adapter = $this->getPromiseTestAdapter();

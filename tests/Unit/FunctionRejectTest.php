@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace React\Promise\Unit;
+namespace React\Promise\Tests\Unit;
+
+use PHPUnit\Framework\Attributes\Test;
 
 use function React\Promise\reject;
 
 class FunctionRejectTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldRejectAnException(): void
     {
         $exception = new \Exception();

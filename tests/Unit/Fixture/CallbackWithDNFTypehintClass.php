@@ -1,6 +1,6 @@
 <?php
 
-namespace React\Promise\Unit\Fixture;
+namespace React\Promise\Tests\Unit\Fixture;
 
 class CallbackWithDNFTypehintClass
 {

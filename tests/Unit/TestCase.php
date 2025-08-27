@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace React\Promise\Unit;
+namespace React\Promise\Tests\Unit;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase as BaseTestCase;
@@ -47,7 +47,7 @@ class TestCase extends BaseTestCase
             $mock = $builder->addMethods(['__invoke'])->getMock();
         } else {
             // legacy PHPUnit 4 - PHPUnit 9
-            $mock = $builder->setMethods(['__invoke'])->getMock();
+            $mock = $builder->getMock();
         }
         \assert($mock instanceof MockObject && \is_callable($mock));
 
