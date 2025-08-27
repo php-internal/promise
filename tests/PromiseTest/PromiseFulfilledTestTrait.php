@@ -192,8 +192,8 @@ trait PromiseFulfilledTestTrait
         $adapter = $this->getPromiseTestAdapter();
         $adapter->resolve(42);
 
-        $fiber = new \Fiber(function () use ($adapter) {
-            $adapter->promise()->then(function (int $value) {
+        $fiber = new \Fiber(function () use ($adapter): void {
+            $adapter->promise()->then(function (int $value): void {
                 \Fiber::suspend($value);
             });
         });
@@ -244,7 +244,7 @@ trait PromiseFulfilledTestTrait
 
         $adapter->resolve($value);
         $adapter->promise()
-            ->finally(function () {})
+            ->finally(function (): void {})
             ->then($mock);
     }
 
@@ -305,7 +305,7 @@ trait PromiseFulfilledTestTrait
 
         $adapter->resolve(1);
         $adapter->promise()
-            ->finally(function () use ($exception) {
+            ->finally(function () use ($exception): void {
                 throw $exception;
             })
             ->then(null, $mock);
@@ -362,7 +362,7 @@ trait PromiseFulfilledTestTrait
 
         $adapter->resolve($value);
         $adapter->promise()
-            ->always(function () {})
+            ->always(function (): void {})
             ->then($mock);
     }
 
@@ -432,7 +432,7 @@ trait PromiseFulfilledTestTrait
 
         $adapter->resolve(1);
         $adapter->promise()
-            ->always(function () use ($exception) {
+            ->always(function () use ($exception): void {
                 throw $exception;
             })
             ->then(null, $mock);

@@ -39,7 +39,7 @@ trait PromisePendingTestTrait
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        self::assertInstanceOf(PromiseInterface::class, $adapter->promise()->finally(function () {}));
+        self::assertInstanceOf(PromiseInterface::class, $adapter->promise()->finally(function (): void {}));
     }
 
     /**
@@ -62,6 +62,6 @@ trait PromisePendingTestTrait
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        self::assertInstanceOf(PromiseInterface::class, $adapter->promise()->always(function () {}));
+        self::assertInstanceOf(PromiseInterface::class, $adapter->promise()->always(function (): void {}));
     }
 }

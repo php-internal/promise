@@ -121,7 +121,7 @@ trait RejectTestTrait
             ->with($this->identicalTo($exception));
 
         $adapter->promise()
-            ->finally(function () {})
+            ->finally(function (): void {})
             ->then(null, $mock);
 
         $adapter->reject($exception);
@@ -185,7 +185,7 @@ trait RejectTestTrait
             ->with($this->identicalTo($exception));
 
         $adapter->promise()
-            ->finally(function () use ($exception) {
+            ->finally(function () use ($exception): void {
                 throw $exception;
             })
             ->then(null, $mock);

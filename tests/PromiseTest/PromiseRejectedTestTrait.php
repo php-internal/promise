@@ -71,7 +71,7 @@ trait PromiseRejectedTestTrait
         $adapter->promise()
             ->then(
                 $this->expectCallableNever(),
-                function () {
+                function (): void {
                     // Presence of rejection handler is enough to switch back
                     // to resolve mode, even though it returns undefined.
                     // The ONLY way to propagate a rejection is to re-throw or
@@ -224,7 +224,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->catch(function ($reason) use ($mock) {
+            ->catch(function ($reason) use ($mock): void {
                 $mock($reason);
             });
     }
@@ -244,7 +244,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->catch(function (InvalidArgumentException $reason) use ($mock) {
+            ->catch(function (InvalidArgumentException $reason) use ($mock): void {
                 $mock($reason);
             });
     }
@@ -260,7 +260,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->catch(function (InvalidArgumentException $reason) use ($mock) {
+            ->catch(function (InvalidArgumentException $reason) use ($mock): void {
                 $mock($reason);
             })->then(null, $this->expectCallableOnce()); // avoid reporting unhandled rejection
     }
@@ -280,7 +280,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->finally(function () {})
+            ->finally(function (): void {})
             ->then(null, $mock);
     }
 
@@ -342,7 +342,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception1);
         $adapter->promise()
-            ->finally(function () use ($exception2) {
+            ->finally(function () use ($exception2): void {
                 throw $exception2;
             })
             ->then(null, $mock);
@@ -418,7 +418,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->otherwise(function ($reason) use ($mock) {
+            ->otherwise(function ($reason) use ($mock): void {
                 $mock($reason);
             });
     }
@@ -441,7 +441,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->otherwise(function (InvalidArgumentException $reason) use ($mock) {
+            ->otherwise(function (InvalidArgumentException $reason) use ($mock): void {
                 $mock($reason);
             });
     }
@@ -460,7 +460,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->otherwise(function (InvalidArgumentException $reason) use ($mock) {
+            ->otherwise(function (InvalidArgumentException $reason) use ($mock): void {
                 $mock($reason);
             })->then(null, $this->expectCallableOnce()); // avoid reporting unhandled rejection
     }
@@ -483,7 +483,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->always(function () {})
+            ->always(function (): void {})
             ->then(null, $mock);
     }
 
@@ -554,7 +554,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception1);
         $adapter->promise()
-            ->always(function () use ($exception2) {
+            ->always(function () use ($exception2): void {
                 throw $exception2;
             })
             ->then(null, $mock);

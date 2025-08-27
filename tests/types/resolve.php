@@ -42,7 +42,7 @@ assertType('React\Promise\PromiseInterface<bool|int>', resolve(true)->then(null,
 }));
 
 assertType('React\Promise\PromiseInterface<void>', resolve(true)->then(function (bool $bool): void { }));
-assertType('React\Promise\PromiseInterface<void>', resolve(false)->then(function (bool $bool): void { })->then(function (null $value) { }));
+assertType('React\Promise\PromiseInterface<void>', resolve(false)->then(function (bool $bool): void { })->then(function (null $value): void { }));
 
 $value = null;
 assertType('React\Promise\PromiseInterface<void>', resolve(true)->then(static function (bool $v) use (&$value): void {

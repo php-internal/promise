@@ -10,8 +10,8 @@ class FunctionCheckTypehintTest extends TestCase
     /** @test */
     public function shouldAcceptClosureCallbackWithTypehint(): void
     {
-        self::assertTrue(_checkTypehint(function (InvalidArgumentException $e) {}, new InvalidArgumentException()));
-        self::assertFalse(_checkTypehint(function (InvalidArgumentException $e) {}, new Exception()));
+        self::assertTrue(_checkTypehint(function (InvalidArgumentException $e): void {}, new InvalidArgumentException()));
+        self::assertFalse(_checkTypehint(function (InvalidArgumentException $e): void {}, new Exception()));
     }
 
     /** @test */
@@ -151,7 +151,7 @@ class FunctionCheckTypehintTest extends TestCase
     /** @test */
     public function shouldAcceptClosureCallbackWithoutTypehint(): void
     {
-        self::assertTrue(_checkTypehint(function (InvalidArgumentException $e) {
+        self::assertTrue(_checkTypehint(function (InvalidArgumentException $e): void {
         }, new InvalidArgumentException()));
     }
 

@@ -52,7 +52,7 @@ trait PromiseSettledTestTrait
         $adapter = $this->getPromiseTestAdapter();
 
         $adapter->settle(null);
-        self::assertInstanceOf(PromiseInterface::class, $promise = $adapter->promise()->finally(function () {}));
+        self::assertInstanceOf(PromiseInterface::class, $promise = $adapter->promise()->finally(function (): void {}));
 
         if ($promise instanceof RejectedPromise) {
             $promise->then(null, $this->expectCallableOnce()); // avoid reporting unhandled rejection
@@ -68,7 +68,7 @@ trait PromiseSettledTestTrait
         $adapter = $this->getPromiseTestAdapter();
 
         $adapter->settle(null);
-        self::assertInstanceOf(PromiseInterface::class, $promise = $adapter->promise()->always(function () {}));
+        self::assertInstanceOf(PromiseInterface::class, $promise = $adapter->promise()->always(function (): void {}));
 
         if ($promise instanceof RejectedPromise) {
             $promise->then(null, $this->expectCallableOnce()); // avoid reporting unhandled rejection

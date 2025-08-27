@@ -35,8 +35,9 @@
         "react/promise": "^3.0"
     },
     "require-dev": {
-        "phpstan/phpstan": "1.12.28 || 1.4.10",
-        "phpunit/phpunit": "^9.6 || ^7.5"
+        "phpstan/phpstan": "1.12.28",
+        "phpunit/phpunit": "^9.6",
+        "rector/rector": "^1.2"
     },
     "autoload": {
         "psr-4": {
@@ -66,6 +67,7 @@
     "scripts": {
         "stan": "phpstan",
         "test": "phpunit --color=always --testdox",
+        "refactor": "rector process --config=rector.php",
         "test:cc": [
             "@putenv XDEBUG_MODE=coverage",
             "phpunit --coverage-clover=runtime/phpunit/logs/clover.xml --color=always"

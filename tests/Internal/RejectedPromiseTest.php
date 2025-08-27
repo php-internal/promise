@@ -30,15 +30,15 @@ class RejectedPromiseTest extends TestCase
 
                 return $promise;
             },
-            'resolve' => function () {
+            'resolve' => function (): void {
                 throw new LogicException('You cannot call resolve() for React\Promise\RejectedPromise');
             },
-            'reject' => function (\Throwable $reason) use (&$promise) {
+            'reject' => function (\Throwable $reason) use (&$promise): void {
                 if (!$promise) {
                     $promise = new RejectedPromise($reason);
                 }
             },
-            'settle' => function ($reason = '') use (&$promise) {
+            'settle' => function ($reason = '') use (&$promise): void {
                 if (!$promise) {
                     if (!$reason instanceof Exception) {
                         $reason = new Exception((string) $reason);

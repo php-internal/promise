@@ -14,7 +14,7 @@ trait CancelTestTrait
     public function cancelShouldCallCancellerWithResolverArguments(): void
     {
         $args = [];
-        $adapter = $this->getPromiseTestAdapter(function ($resolve, $reject) use (&$args) {
+        $adapter = $this->getPromiseTestAdapter(function ($resolve, $reject) use (&$args): void {
             $args = func_get_args();
         });
 
@@ -29,7 +29,7 @@ trait CancelTestTrait
     public function cancelShouldCallCancellerWithoutArgumentsIfNotAccessed(): void
     {
         $args = null;
-        $adapter = $this->getPromiseTestAdapter(function () use (&$args) {
+        $adapter = $this->getPromiseTestAdapter(function () use (&$args): void {
             $args = func_num_args();
         });
 
@@ -41,7 +41,7 @@ trait CancelTestTrait
     /** @test */
     public function cancelShouldFulfillPromiseIfCancellerFulfills(): void
     {
-        $adapter = $this->getPromiseTestAdapter(function ($resolve) {
+        $adapter = $this->getPromiseTestAdapter(function ($resolve): void {
             $resolve(1);
         });
 
@@ -62,7 +62,7 @@ trait CancelTestTrait
     {
         $exception = new Exception();
 
-        $adapter = $this->getPromiseTestAdapter(function ($resolve, $reject) use ($exception) {
+        $adapter = $this->getPromiseTestAdapter(function ($resolve, $reject) use ($exception): void {
             $reject($exception);
         });
 
@@ -83,7 +83,7 @@ trait CancelTestTrait
     {
         $e = new Exception();
 
-        $adapter = $this->getPromiseTestAdapter(function () use ($e) {
+        $adapter = $this->getPromiseTestAdapter(function () use ($e): void {
             throw $e;
         });
 
@@ -106,7 +106,7 @@ trait CancelTestTrait
         $mock
             ->expects($this->once())
             ->method('__invoke')
-            ->will($this->returnCallback(function ($resolve) {
+            ->will($this->returnCallback(function ($resolve): void {
                 $resolve(null);
             }));
 
@@ -119,7 +119,7 @@ trait CancelTestTrait
     /** @test */
     public function cancelShouldHaveNoEffectIfCancellerDoesNothing(): void
     {
-        $adapter = $this->getPromiseTestAdapter(function () {});
+        $adapter = $this->getPromiseTestAdapter(function (): void {});
 
         $adapter->promise()
             ->then($this->expectCallableNever(), $this->expectCallableNever());
@@ -135,7 +135,7 @@ trait CancelTestTrait
 
         $promise = $adapter->promise()
             ->then(function () {
-                return new Promise\Promise(function () {});
+                return new Promise\Promise(function (): void {});
             })
             ->then(function () {
                 $d = new Promise\Deferred();
@@ -143,7 +143,7 @@ trait CancelTestTrait
                 return $d->promise();
             })
             ->then(function () {
-                return new Promise\Promise(function () {});
+                return new Promise\Promise(function (): void {});
             });
 
         $promise->cancel();

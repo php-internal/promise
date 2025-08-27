@@ -205,8 +205,8 @@ class FunctionAnyTest extends TestCase
     /** @test */
     public function shouldCancelInputArrayPromises(): void
     {
-        $promise1 = new Promise(function () {}, $this->expectCallableOnce());
-        $promise2 = new Promise(function () {}, $this->expectCallableOnce());
+        $promise1 = new Promise(function (): void {}, $this->expectCallableOnce());
+        $promise2 = new Promise(function (): void {}, $this->expectCallableOnce());
 
         any([$promise1, $promise2])->cancel();
     }
@@ -217,7 +217,7 @@ class FunctionAnyTest extends TestCase
         $deferred = new Deferred($this->expectCallableNever());
         $deferred->resolve(null);
 
-        $promise2 = new Promise(function () {}, $this->expectCallableNever());
+        $promise2 = new Promise(function (): void {}, $this->expectCallableNever());
 
         any([$deferred->promise(), $promise2])->cancel();
     }

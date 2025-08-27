@@ -33,15 +33,15 @@ class FulfilledPromiseTest extends TestCase
 
                 return $promise;
             },
-            'resolve' => function ($value = null) use (&$promise) {
+            'resolve' => function ($value = null) use (&$promise): void {
                 if (!$promise) {
                     $promise = new FulfilledPromise($value);
                 }
             },
-            'reject' => function () {
+            'reject' => function (): void {
                 throw new LogicException('You cannot call reject() for React\Promise\FulfilledPromise');
             },
-            'settle' => function ($value = null) use (&$promise) {
+            'settle' => function ($value = null) use (&$promise): void {
                 if (!$promise) {
                     $promise = new FulfilledPromise($value);
                 }

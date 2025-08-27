@@ -30,7 +30,7 @@ class DeferredTest extends TestCase
     public function shouldRejectWithoutCreatingGarbageCyclesIfCancellerRejectsWithException(): void
     {
         gc_collect_cycles();
-        $deferred = new Deferred(function ($resolve, $reject) {
+        $deferred = new Deferred(function ($resolve, $reject): void {
             $reject(new \Exception('foo'));
         });
         $deferred->promise()->cancel();
@@ -45,7 +45,7 @@ class DeferredTest extends TestCase
         gc_collect_cycles();
         gc_collect_cycles(); // clear twice to avoid leftovers in PHP 7.4 with ext-xdebug and code coverage turned on
 
-        $deferred = new Deferred(function ($resolve, $reject) {
+        $deferred = new Deferred(function ($resolve, $reject): void {
             $reject(new \Exception('foo'));
         });
         $deferred->promise()->then()->cancel();
@@ -61,7 +61,7 @@ class DeferredTest extends TestCase
         gc_collect_cycles(); // clear twice to avoid leftovers in PHP 7.4 with ext-xdebug and code coverage turned on
 
         /** @var Deferred<never> $deferred */
-        $deferred = new Deferred(function () use (&$deferred) {
+        $deferred = new Deferred(function () use (&$deferred): void {
             assert($deferred instanceof Deferred);
         });
 
