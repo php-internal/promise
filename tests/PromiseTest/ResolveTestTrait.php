@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\PromiseTest;
 
 use React\Promise\PromiseAdapter\PromiseAdapterInterface;
@@ -111,7 +113,7 @@ trait ResolveTestTrait
             ->with($this->identicalTo(1));
 
         $adapter->promise()
-            ->then(function ($value) use ($adapter) {
+            ->then(static function ($value) use ($adapter) {
                 $adapter->resolve(3);
 
                 return $value;
@@ -190,7 +192,7 @@ trait ResolveTestTrait
             ->with($this->identicalTo($value));
 
         $adapter->promise()
-            ->finally(function (): void {})
+            ->finally(static function (): void {})
             ->then($mock);
 
         $adapter->resolve($value);
@@ -213,7 +215,7 @@ trait ResolveTestTrait
 
         $adapter->promise()
             // @phpstan-ignore-line
-            ->finally(fn(): int => 1)
+            ->finally(static fn(): int => 1)
             ->then($mock);
 
         $adapter->resolve($value);
@@ -236,7 +238,7 @@ trait ResolveTestTrait
 
         $adapter->promise()
             // @phpstan-ignore-line
-            ->finally(fn(): PromiseInterface =>
+            ->finally(static fn(): PromiseInterface =>
                 resolve(1))
             ->then($mock);
 
@@ -259,7 +261,7 @@ trait ResolveTestTrait
             ->with($this->identicalTo($exception));
 
         $adapter->promise()
-            ->finally(function () use ($exception): void {
+            ->finally(static function () use ($exception): void {
                 throw $exception;
             })
             ->then(null, $mock);
@@ -283,7 +285,7 @@ trait ResolveTestTrait
             ->with($this->identicalTo($exception));
 
         $adapter->promise()
-            ->finally(fn() => reject($exception))
+            ->finally(static fn() => reject($exception))
             ->then(null, $mock);
 
         $adapter->resolve(1);

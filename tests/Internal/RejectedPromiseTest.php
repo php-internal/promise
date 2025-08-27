@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\Internal;
 
 use React\Promise\PromiseAdapter\CallbackPromiseAdapter;
@@ -21,22 +23,22 @@ class RejectedPromiseTest extends TestCase
         $promise = null;
 
         return new CallbackPromiseAdapter([
-            'promise' => function () use (&$promise) {
+            'promise' => static function () use (&$promise) {
                 if (!$promise) {
                     throw new \LogicException('RejectedPromise must be rejected before obtaining the promise');
                 }
 
                 return $promise;
             },
-            'resolve' => function (): void {
+            'resolve' => static function (): void {
                 throw new \LogicException('You cannot call resolve() for React\Promise\RejectedPromise');
             },
-            'reject' => function (\Throwable $reason) use (&$promise): void {
+            'reject' => static function (\Throwable $reason) use (&$promise): void {
                 if (!$promise) {
                     $promise = new RejectedPromise($reason);
                 }
             },
-            'settle' => function ($reason = '') use (&$promise): void {
+            'settle' => static function ($reason = '') use (&$promise): void {
                 if (!$promise) {
                     if (!$reason instanceof \Exception) {
                         $reason = new \Exception((string) $reason);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 class SimpleTestCancellableThenable
@@ -24,7 +26,7 @@ class SimpleTestCancellableThenable
     {
         $this->cancelCalled = true;
 
-        if (is_callable($this->onCancel)) {
+        if (\is_callable($this->onCancel)) {
             ($this->onCancel)();
         }
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\PromiseAdapter;
 
 use React\Promise\PromiseInterface;
@@ -20,21 +22,21 @@ class CallbackPromiseAdapter implements PromiseAdapterInterface
      */
     public function promise(): PromiseInterface
     {
-        return ($this->callbacks['promise'])(...func_get_args());
+        return ($this->callbacks['promise'])(...\func_get_args());
     }
 
     public function resolve($value): void
     {
-        ($this->callbacks['resolve'])(...func_get_args());
+        ($this->callbacks['resolve'])(...\func_get_args());
     }
 
     public function reject(): void
     {
-        ($this->callbacks['reject'])(...func_get_args());
+        ($this->callbacks['reject'])(...\func_get_args());
     }
 
     public function settle(): void
     {
-        ($this->callbacks['settle'])(...func_get_args());
+        ($this->callbacks['settle'])(...\func_get_args());
     }
 }

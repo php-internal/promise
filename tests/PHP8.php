@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 /**
@@ -12,6 +14,6 @@ class PHP8
 {
     public function __construct()
     {
-        assert(\PHP_VERSION_ID >= 80000);
+        \assert(\PHP_VERSION_ID >= 80000);
     }
 }

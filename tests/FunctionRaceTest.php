@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 class FunctionRaceTest extends TestCase
@@ -82,7 +84,7 @@ class FunctionRaceTest extends TestCase
             ->method('__invoke')
             ->with(self::identicalTo(1));
 
-        $gen = (function () {
+        $gen = (static function () {
             for ($i = 1; $i <= 3; ++$i) {
                 yield $i;
             }
@@ -102,7 +104,7 @@ class FunctionRaceTest extends TestCase
             ->method('__invoke')
             ->with(self::identicalTo(1));
 
-        $gen = (function () {
+        $gen = (static function () {
             for ($i = 1; ; ++$i) {
                 yield $i;
             }
@@ -143,8 +145,8 @@ class FunctionRaceTest extends TestCase
      */
     public function shouldCancelInputArrayPromises(): void
     {
-        $promise1 = new Promise(function (): void {}, $this->expectCallableOnce());
-        $promise2 = new Promise(function (): void {}, $this->expectCallableOnce());
+        $promise1 = new Promise(static function (): void {}, $this->expectCallableOnce());
+        $promise2 = new Promise(static function (): void {}, $this->expectCallableOnce());
 
         race([$promise1, $promise2])->cancel();
     }
@@ -157,7 +159,7 @@ class FunctionRaceTest extends TestCase
         $deferred = new Deferred($this->expectCallableNever());
         $deferred->resolve(null);
 
-        $promise2 = new Promise(function (): void {}, $this->expectCallableNever());
+        $promise2 = new Promise(static function (): void {}, $this->expectCallableNever());
 
         race([$deferred->promise(), $promise2])->cancel();
     }
@@ -170,7 +172,7 @@ class FunctionRaceTest extends TestCase
         $deferred = new Deferred($this->expectCallableNever());
         $deferred->reject(new \Exception());
 
-        $promise2 = new Promise(function (): void {}, $this->expectCallableNever());
+        $promise2 = new Promise(static function (): void {}, $this->expectCallableNever());
 
         race([$deferred->promise(), $promise2])->cancel();
     }

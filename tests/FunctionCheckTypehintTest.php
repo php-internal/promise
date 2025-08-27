@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 class FunctionCheckTypehintTest extends TestCase
@@ -9,8 +11,8 @@ class FunctionCheckTypehintTest extends TestCase
      */
     public function shouldAcceptClosureCallbackWithTypehint(): void
     {
-        self::assertTrue(_checkTypehint(function (\InvalidArgumentException $e): void {}, new \InvalidArgumentException()));
-        self::assertFalse(_checkTypehint(function (\InvalidArgumentException $e): void {}, new \Exception()));
+        self::assertTrue(_checkTypehint(static function (\InvalidArgumentException $e): void {}, new \InvalidArgumentException()));
+        self::assertFalse(_checkTypehint(static function (\InvalidArgumentException $e): void {}, new \Exception()));
     }
 
     /**
@@ -160,7 +162,7 @@ class FunctionCheckTypehintTest extends TestCase
      */
     public function shouldAcceptClosureCallbackWithoutTypehint(): void
     {
-        self::assertTrue(_checkTypehint(function (\InvalidArgumentException $e): void {}, new \InvalidArgumentException()));
+        self::assertTrue(_checkTypehint(static function (\InvalidArgumentException $e): void {}, new \InvalidArgumentException()));
     }
 
     /**

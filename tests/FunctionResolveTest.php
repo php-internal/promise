@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 use React\Promise\Internal\FulfilledPromise;
@@ -112,14 +114,14 @@ class FunctionResolveTest extends TestCase
         $d = new Deferred();
         $d->resolve(false);
 
-        $result = resolve(resolve($d->promise()->then(function ($val) {
+        $result = resolve(resolve($d->promise()->then(static function ($val) {
             $d = new Deferred();
             $d->resolve($val);
 
-            $identity = fn($val) => $val;
+            $identity = static fn($val) => $val;
 
             return resolve($d->promise()->then($identity))->then(
-                fn($val) => !$val,
+                static fn($val) => !$val,
             );
         })));
 
@@ -137,7 +139,7 @@ class FunctionResolveTest extends TestCase
      */
     public function shouldSupportVeryDeepNestedPromises(): void
     {
-        if (PHP_VERSION_ID < 70200 && ini_get('xdebug.max_nesting_level') !== false) {
+        if (PHP_VERSION_ID < 70200 && \ini_get('xdebug.max_nesting_level') !== false) {
             $this->markTestSkipped('Skip unhandled rejection on legacy PHP 7.1');
         }
 
@@ -149,7 +151,7 @@ class FunctionResolveTest extends TestCase
 
             $last = $p;
             for ($j = 0; $j < 150; $j++) {
-                $last = $last->then(fn($result) => $result);
+                $last = $last->then(static fn($result) => $result);
             }
         }
 

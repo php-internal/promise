@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\PromiseTest;
 
 use React\Promise\PromiseAdapter\PromiseAdapterInterface;
@@ -95,7 +97,7 @@ trait PromiseFulfilledTestTrait
         $adapter->resolve(1);
         $adapter->promise()
             ->then(
-                fn($val) => $val + 1,
+                static fn($val) => $val + 1,
                 $this->expectCallableNever(),
             )
             ->then(
@@ -120,7 +122,7 @@ trait PromiseFulfilledTestTrait
         $adapter->resolve(1);
         $adapter->promise()
             ->then(
-                fn($val) => resolve($val + 1),
+                static fn($val) => resolve($val + 1),
                 $this->expectCallableNever(),
             )
             ->then(
@@ -147,7 +149,7 @@ trait PromiseFulfilledTestTrait
         $adapter->resolve(1);
         $adapter->promise()
             ->then(
-                fn() => reject($exception),
+                static fn() => reject($exception),
                 $this->expectCallableNever(),
             )
             ->then(
@@ -199,8 +201,8 @@ trait PromiseFulfilledTestTrait
         $adapter = $this->getPromiseTestAdapter();
         $adapter->resolve(42);
 
-        $fiber = new \Fiber(function () use ($adapter): void {
-            $adapter->promise()->then(function (int $value): void {
+        $fiber = new \Fiber(static function () use ($adapter): void {
+            $adapter->promise()->then(static function (int $value): void {
                 \Fiber::suspend($value);
             });
         });
@@ -257,7 +259,7 @@ trait PromiseFulfilledTestTrait
 
         $adapter->resolve($value);
         $adapter->promise()
-            ->finally(function (): void {})
+            ->finally(static function (): void {})
             ->then($mock);
     }
 
@@ -279,7 +281,7 @@ trait PromiseFulfilledTestTrait
         $adapter->resolve($value);
         $adapter->promise()
             // @phpstan-ignore-line
-            ->finally(fn(): int => 1)
+            ->finally(static fn(): int => 1)
             ->then($mock);
     }
 
@@ -301,7 +303,7 @@ trait PromiseFulfilledTestTrait
         $adapter->resolve($value);
         $adapter->promise()
             // @phpstan-ignore-line
-            ->finally(fn(): PromiseInterface => resolve(1))
+            ->finally(static fn(): PromiseInterface => resolve(1))
             ->then($mock);
     }
 
@@ -322,7 +324,7 @@ trait PromiseFulfilledTestTrait
 
         $adapter->resolve(1);
         $adapter->promise()
-            ->finally(function () use ($exception): void {
+            ->finally(static function () use ($exception): void {
                 throw $exception;
             })
             ->then(null, $mock);
@@ -345,7 +347,7 @@ trait PromiseFulfilledTestTrait
 
         $adapter->resolve(1);
         $adapter->promise()
-            ->finally(fn() => reject($exception))
+            ->finally(static fn() => reject($exception))
             ->then(null, $mock);
     }
 
@@ -379,7 +381,7 @@ trait PromiseFulfilledTestTrait
 
         $adapter->resolve($value);
         $adapter->promise()
-            ->always(function (): void {})
+            ->always(static function (): void {})
             ->then($mock);
     }
 
@@ -402,7 +404,7 @@ trait PromiseFulfilledTestTrait
         $adapter->resolve($value);
         $adapter->promise()
             // @phpstan-ignore-line
-            ->always(fn(): int => 1)
+            ->always(static fn(): int => 1)
             ->then($mock);
     }
 
@@ -425,7 +427,7 @@ trait PromiseFulfilledTestTrait
         $adapter->resolve($value);
         $adapter->promise()
             // @phpstan-ignore-line
-            ->always(fn(): PromiseInterface => resolve(1))
+            ->always(static fn(): PromiseInterface => resolve(1))
             ->then($mock);
     }
 
@@ -447,7 +449,7 @@ trait PromiseFulfilledTestTrait
 
         $adapter->resolve(1);
         $adapter->promise()
-            ->always(function () use ($exception): void {
+            ->always(static function () use ($exception): void {
                 throw $exception;
             })
             ->then(null, $mock);
@@ -471,7 +473,7 @@ trait PromiseFulfilledTestTrait
 
         $adapter->resolve(1);
         $adapter->promise()
-            ->always(fn() => reject($exception))
+            ->always(static fn() => reject($exception))
             ->then(null, $mock);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 class FunctionAllTest extends TestCase
@@ -75,7 +77,7 @@ class FunctionAllTest extends TestCase
             ->method('__invoke')
             ->with(self::identicalTo([1, 2, 3]));
 
-        $gen = (function () {
+        $gen = (static function () {
             for ($i = 1; $i <= 3; ++$i) {
                 yield $i;
             }
@@ -95,7 +97,7 @@ class FunctionAllTest extends TestCase
             ->method('__invoke')
             ->with(self::identicalTo([]));
 
-        $gen = (function () {
+        $gen = (static function () {
             if (false) { // @phpstan-ignore-line
                 yield;
             }
@@ -133,7 +135,7 @@ class FunctionAllTest extends TestCase
             ->method('__invoke')
             ->with(new \RuntimeException('Iteration 1'));
 
-        $gen = (function () {
+        $gen = (static function () {
             for ($i = 1; ; ++$i) {
                 yield reject(new \RuntimeException('Iteration ' . $i));
             }

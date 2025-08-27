@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\Internal;
 
 use React\Promise\Deferred;

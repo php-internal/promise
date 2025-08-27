@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\PromiseTest;
 
 use React\Promise\PromiseAdapter\PromiseAdapterInterface;
@@ -47,7 +49,7 @@ trait PromisePendingTestTrait
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        self::assertInstanceOf(PromiseInterface::class, $adapter->promise()->finally(function (): void {}));
+        self::assertInstanceOf(PromiseInterface::class, $adapter->promise()->finally(static function (): void {}));
     }
 
     /**
@@ -70,6 +72,6 @@ trait PromisePendingTestTrait
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        self::assertInstanceOf(PromiseInterface::class, $adapter->promise()->always(function (): void {}));
+        self::assertInstanceOf(PromiseInterface::class, $adapter->promise()->always(static function (): void {}));
     }
 }

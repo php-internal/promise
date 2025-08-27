@@ -1,6 +1,8 @@
 <?php
 
-if (!class_exists(Fiber::class)) {
+declare(strict_types=1);
+
+if (!\class_exists(Fiber::class)) {
     /**
      * Fiber stub to make PHPStan happy on PHP < 8.1
      *
@@ -11,7 +13,7 @@ if (!class_exists(Fiber::class)) {
     {
         public function __construct(callable $callback)
         {
-            assert(is_callable($callback));
+            \assert(\is_callable($callback));
         }
 
         public static function suspend(mixed $value): void

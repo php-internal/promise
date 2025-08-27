@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use React\Promise\PromiseInterface;
 
 use function PHPStan\Testing\assertType;
@@ -11,7 +13,7 @@ use function React\Promise\resolve;
  */
 function stringOrInt()
 {
-    return time() % 2 ? 'string' : time();
+    return \time() % 2 ? 'string' : \time();
 };
 
 /**
@@ -19,7 +21,7 @@ function stringOrInt()
  */
 function stringOrIntPromise(): PromiseInterface
 {
-    return resolve(time() % 2 ? 'string' : time());
+    return resolve(\time() % 2 ? 'string' : \time());
 };
 
 assertType('React\Promise\PromiseInterface<bool>', resolve(true));
@@ -28,16 +30,16 @@ assertType('React\Promise\PromiseInterface<int|string>', stringOrIntPromise());
 assertType('React\Promise\PromiseInterface<bool>', resolve(resolve(true)));
 
 assertType('React\Promise\PromiseInterface<bool>', resolve(true)->then(null, null));
-assertType('React\Promise\PromiseInterface<bool>', resolve(true)->then(fn(bool $bool): bool => $bool));
-assertType('React\Promise\PromiseInterface<int>', resolve(true)->then(fn(bool $value): int => 42));
-assertType('React\Promise\PromiseInterface<int>', resolve(true)->then(fn(bool $value): PromiseInterface => resolve(42)));
-assertType('React\Promise\PromiseInterface<never>', resolve(true)->then(function (bool $value): never {
+assertType('React\Promise\PromiseInterface<bool>', resolve(true)->then(static fn(bool $bool): bool => $bool));
+assertType('React\Promise\PromiseInterface<int>', resolve(true)->then(static fn(bool $value): int => 42));
+assertType('React\Promise\PromiseInterface<int>', resolve(true)->then(static fn(bool $value): PromiseInterface => resolve(42)));
+assertType('React\Promise\PromiseInterface<never>', resolve(true)->then(static function (bool $value): never {
     throw new \RuntimeException();
 }));
-assertType('React\Promise\PromiseInterface<bool|int>', resolve(true)->then(null, fn(\Throwable $e): int => 42));
+assertType('React\Promise\PromiseInterface<bool|int>', resolve(true)->then(null, static fn(\Throwable $e): int => 42));
 
-assertType('React\Promise\PromiseInterface<void>', resolve(true)->then(function (bool $bool): void {}));
-assertType('React\Promise\PromiseInterface<void>', resolve(false)->then(function (bool $bool): void {})->then(function (null $value): void {}));
+assertType('React\Promise\PromiseInterface<void>', resolve(true)->then(static function (bool $bool): void {}));
+assertType('React\Promise\PromiseInterface<void>', resolve(false)->then(static function (bool $bool): void {})->then(static function (null $value): void {}));
 
 $value = null;
 assertType('React\Promise\PromiseInterface<void>', resolve(true)->then(static function (bool $v) use (&$value): void {
@@ -45,13 +47,13 @@ assertType('React\Promise\PromiseInterface<void>', resolve(true)->then(static fu
 }));
 assertType('bool|null', $value);
 
-assertType('React\Promise\PromiseInterface<bool>', resolve(true)->catch(function (\Throwable $e): never {
+assertType('React\Promise\PromiseInterface<bool>', resolve(true)->catch(static function (\Throwable $e): never {
     throw $e;
 }));
-assertType('React\Promise\PromiseInterface<bool|int>', resolve(true)->catch(fn(\Throwable $e): int => 42));
-assertType('React\Promise\PromiseInterface<bool|int>', resolve(true)->catch(fn(\Throwable $e): PromiseInterface => resolve(42)));
+assertType('React\Promise\PromiseInterface<bool|int>', resolve(true)->catch(static fn(\Throwable $e): int => 42));
+assertType('React\Promise\PromiseInterface<bool|int>', resolve(true)->catch(static fn(\Throwable $e): PromiseInterface => resolve(42)));
 
-assertType('React\Promise\PromiseInterface<bool>', resolve(true)->finally(function (): void {}));
+assertType('React\Promise\PromiseInterface<bool>', resolve(true)->finally(static function (): void {}));
 // assertType('React\Promise\PromiseInterface<never>', resolve(true)->finally(function (): never {
 //     throw new \RuntimeException();
 // }));
@@ -59,13 +61,13 @@ assertType('React\Promise\PromiseInterface<bool>', resolve(true)->finally(functi
 //     return reject(new \RuntimeException());
 // }));
 
-assertType('React\Promise\PromiseInterface<bool>', resolve(true)->otherwise(function (\Throwable $e): never {
+assertType('React\Promise\PromiseInterface<bool>', resolve(true)->otherwise(static function (\Throwable $e): never {
     throw $e;
 }));
-assertType('React\Promise\PromiseInterface<bool|int>', resolve(true)->otherwise(fn(\Throwable $e): int => 42));
-assertType('React\Promise\PromiseInterface<bool|int>', resolve(true)->otherwise(fn(\Throwable $e): PromiseInterface => resolve(42)));
+assertType('React\Promise\PromiseInterface<bool|int>', resolve(true)->otherwise(static fn(\Throwable $e): int => 42));
+assertType('React\Promise\PromiseInterface<bool|int>', resolve(true)->otherwise(static fn(\Throwable $e): PromiseInterface => resolve(42)));
 
-assertType('React\Promise\PromiseInterface<bool>', resolve(true)->always(function (): void {}));
+assertType('React\Promise\PromiseInterface<bool>', resolve(true)->always(static function (): void {}));
 // assertType('React\Promise\PromiseInterface<never>', resolve(true)->always(function (): never {
 //     throw new \RuntimeException();
 // }));

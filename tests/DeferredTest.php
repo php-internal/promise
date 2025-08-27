@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 use React\Promise\PromiseAdapter\CallbackPromiseAdapter;
@@ -31,14 +33,14 @@ class DeferredTest extends TestCase
      */
     public function shouldRejectWithoutCreatingGarbageCyclesIfCancellerRejectsWithException(): void
     {
-        gc_collect_cycles();
-        $deferred = new Deferred(function ($resolve, $reject): void {
+        \gc_collect_cycles();
+        $deferred = new Deferred(static function ($resolve, $reject): void {
             $reject(new \Exception('foo'));
         });
         $deferred->promise()->cancel();
         unset($deferred);
 
-        $this->assertSame(0, gc_collect_cycles());
+        $this->assertSame(0, \gc_collect_cycles());
     }
 
     /**
@@ -46,16 +48,16 @@ class DeferredTest extends TestCase
      */
     public function shouldRejectWithoutCreatingGarbageCyclesIfParentCancellerRejectsWithException(): void
     {
-        gc_collect_cycles();
-        gc_collect_cycles(); // clear twice to avoid leftovers in PHP 7.4 with ext-xdebug and code coverage turned on
+        \gc_collect_cycles();
+        \gc_collect_cycles(); // clear twice to avoid leftovers in PHP 7.4 with ext-xdebug and code coverage turned on
 
-        $deferred = new Deferred(function ($resolve, $reject): void {
+        $deferred = new Deferred(static function ($resolve, $reject): void {
             $reject(new \Exception('foo'));
         });
         $deferred->promise()->then()->cancel();
         unset($deferred);
 
-        $this->assertSame(0, gc_collect_cycles());
+        $this->assertSame(0, \gc_collect_cycles());
     }
 
     /**
@@ -63,12 +65,12 @@ class DeferredTest extends TestCase
      */
     public function shouldRejectWithoutCreatingGarbageCyclesIfCancellerHoldsReferenceAndExplicitlyRejectWithException(): void
     {
-        gc_collect_cycles();
-        gc_collect_cycles(); // clear twice to avoid leftovers in PHP 7.4 with ext-xdebug and code coverage turned on
+        \gc_collect_cycles();
+        \gc_collect_cycles(); // clear twice to avoid leftovers in PHP 7.4 with ext-xdebug and code coverage turned on
 
         /** @var Deferred<never> $deferred */
-        $deferred = new Deferred(function () use (&$deferred): void {
-            assert($deferred instanceof Deferred);
+        $deferred = new Deferred(static function () use (&$deferred): void {
+            \assert($deferred instanceof Deferred);
         });
 
         $deferred->promise()->then(null, $this->expectCallableOnce()); // avoid reporting unhandled rejection
@@ -76,6 +78,6 @@ class DeferredTest extends TestCase
         $deferred->reject(new \Exception('foo'));
         unset($deferred);
 
-        $this->assertSame(0, gc_collect_cycles());
+        $this->assertSame(0, \gc_collect_cycles());
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 use PHPUnit\Framework\MockObject\MockObject;
@@ -11,7 +13,7 @@ class TestCase extends BaseTestCase
     {
         $mock = $this->createCallableMock();
         $mock->expects(self::exactly($amount))->method('__invoke');
-        assert(is_callable($mock));
+        \assert(\is_callable($mock));
 
         return $mock;
     }
@@ -20,7 +22,7 @@ class TestCase extends BaseTestCase
     {
         $mock = $this->createCallableMock();
         $mock->expects(self::once())->method('__invoke');
-        assert(is_callable($mock));
+        \assert(\is_callable($mock));
 
         return $mock;
     }
@@ -29,7 +31,7 @@ class TestCase extends BaseTestCase
     {
         $mock = $this->createCallableMock();
         $mock->expects(self::never())->method('__invoke');
-        assert(is_callable($mock));
+        \assert(\is_callable($mock));
 
         return $mock;
     }
@@ -40,14 +42,14 @@ class TestCase extends BaseTestCase
     protected function createCallableMock(): MockObject
     {
         $builder = $this->getMockBuilder(\stdClass::class);
-        if (method_exists($builder, 'addMethods')) {
+        if (\method_exists($builder, 'addMethods')) {
             // PHPUnit 9+
             $mock = $builder->addMethods(['__invoke'])->getMock();
         } else {
             // legacy PHPUnit 4 - PHPUnit 9
             $mock = $builder->setMethods(['__invoke'])->getMock();
         }
-        assert($mock instanceof MockObject && is_callable($mock));
+        \assert($mock instanceof MockObject && \is_callable($mock));
 
         return $mock;
     }

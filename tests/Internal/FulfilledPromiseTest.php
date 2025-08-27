@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\Internal;
 
 use React\Promise\PromiseAdapter\CallbackPromiseAdapter;
@@ -24,22 +26,22 @@ class FulfilledPromiseTest extends TestCase
         $promise = null;
 
         return new CallbackPromiseAdapter([
-            'promise' => function () use (&$promise) {
+            'promise' => static function () use (&$promise) {
                 if (!$promise) {
                     throw new \LogicException('FulfilledPromise must be resolved before obtaining the promise');
                 }
 
                 return $promise;
             },
-            'resolve' => function ($value = null) use (&$promise): void {
+            'resolve' => static function ($value = null) use (&$promise): void {
                 if (!$promise) {
                     $promise = new FulfilledPromise($value);
                 }
             },
-            'reject' => function (): void {
+            'reject' => static function (): void {
                 throw new \LogicException('You cannot call reject() for React\Promise\FulfilledPromise');
             },
-            'settle' => function ($value = null) use (&$promise): void {
+            'settle' => static function ($value = null) use (&$promise): void {
                 if (!$promise) {
                     $promise = new FulfilledPromise($value);
                 }

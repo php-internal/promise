@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\PromiseTest;
 
 use React\Promise\Internal\RejectedPromise;
@@ -60,7 +62,7 @@ trait PromiseSettledTestTrait
         $adapter = $this->getPromiseTestAdapter();
 
         $adapter->settle(null);
-        self::assertInstanceOf(PromiseInterface::class, $promise = $adapter->promise()->finally(function (): void {}));
+        self::assertInstanceOf(PromiseInterface::class, $promise = $adapter->promise()->finally(static function (): void {}));
 
         if ($promise instanceof RejectedPromise) {
             $promise->then(null, $this->expectCallableOnce()); // avoid reporting unhandled rejection
@@ -76,7 +78,7 @@ trait PromiseSettledTestTrait
         $adapter = $this->getPromiseTestAdapter();
 
         $adapter->settle(null);
-        self::assertInstanceOf(PromiseInterface::class, $promise = $adapter->promise()->always(function (): void {}));
+        self::assertInstanceOf(PromiseInterface::class, $promise = $adapter->promise()->always(static function (): void {}));
 
         if ($promise instanceof RejectedPromise) {
             $promise->then(null, $this->expectCallableOnce()); // avoid reporting unhandled rejection

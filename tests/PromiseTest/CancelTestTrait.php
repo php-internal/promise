@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\PromiseTest;
 
 use React\Promise;
@@ -15,15 +17,15 @@ trait CancelTestTrait
     public function cancelShouldCallCancellerWithResolverArguments(): void
     {
         $args = [];
-        $adapter = $this->getPromiseTestAdapter(function ($resolve, $reject) use (&$args): void {
-            $args = func_get_args();
+        $adapter = $this->getPromiseTestAdapter(static function ($resolve, $reject) use (&$args): void {
+            $args = \func_get_args();
         });
 
         $adapter->promise()->cancel();
 
         self::assertCount(2, $args);
-        self::assertTrue(is_callable($args[0]));
-        self::assertTrue(is_callable($args[1]));
+        self::assertTrue(\is_callable($args[0]));
+        self::assertTrue(\is_callable($args[1]));
     }
 
     /**
@@ -32,8 +34,8 @@ trait CancelTestTrait
     public function cancelShouldCallCancellerWithoutArgumentsIfNotAccessed(): void
     {
         $args = null;
-        $adapter = $this->getPromiseTestAdapter(function () use (&$args): void {
-            $args = func_num_args();
+        $adapter = $this->getPromiseTestAdapter(static function () use (&$args): void {
+            $args = \func_num_args();
         });
 
         $adapter->promise()->cancel();
@@ -46,7 +48,7 @@ trait CancelTestTrait
      */
     public function cancelShouldFulfillPromiseIfCancellerFulfills(): void
     {
-        $adapter = $this->getPromiseTestAdapter(function ($resolve): void {
+        $adapter = $this->getPromiseTestAdapter(static function ($resolve): void {
             $resolve(1);
         });
 
@@ -69,7 +71,7 @@ trait CancelTestTrait
     {
         $exception = new \Exception();
 
-        $adapter = $this->getPromiseTestAdapter(function ($resolve, $reject) use ($exception): void {
+        $adapter = $this->getPromiseTestAdapter(static function ($resolve, $reject) use ($exception): void {
             $reject($exception);
         });
 
@@ -92,7 +94,7 @@ trait CancelTestTrait
     {
         $e = new \Exception();
 
-        $adapter = $this->getPromiseTestAdapter(function () use ($e): void {
+        $adapter = $this->getPromiseTestAdapter(static function () use ($e): void {
             throw $e;
         });
 
@@ -117,7 +119,7 @@ trait CancelTestTrait
         $mock
             ->expects($this->once())
             ->method('__invoke')
-            ->will($this->returnCallback(function ($resolve): void {
+            ->will($this->returnCallback(static function ($resolve): void {
                 $resolve(null);
             }));
 
@@ -132,7 +134,7 @@ trait CancelTestTrait
      */
     public function cancelShouldHaveNoEffectIfCancellerDoesNothing(): void
     {
-        $adapter = $this->getPromiseTestAdapter(function (): void {});
+        $adapter = $this->getPromiseTestAdapter(static function (): void {});
 
         $adapter->promise()
             ->then($this->expectCallableNever(), $this->expectCallableNever());
@@ -149,13 +151,13 @@ trait CancelTestTrait
         $adapter = $this->getPromiseTestAdapter($this->expectCallableOnce());
 
         $promise = $adapter->promise()
-            ->then(fn() => new Promise\Promise(function (): void {}))
-            ->then(function () {
+            ->then(static fn() => new Promise\Promise(static function (): void {}))
+            ->then(static function () {
                 $d = new Promise\Deferred();
 
                 return $d->promise();
             })
-            ->then(fn() => new Promise\Promise(function (): void {}));
+            ->then(static fn() => new Promise\Promise(static function (): void {}));
 
         $promise->cancel();
     }

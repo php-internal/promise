@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\PromiseTest;
 
 use React\Promise\PromiseAdapter\PromiseAdapterInterface;
@@ -76,7 +78,7 @@ trait PromiseRejectedTestTrait
         $adapter->promise()
             ->then(
                 $this->expectCallableNever(),
-                function (): void {
+                static function (): void {
                     // Presence of rejection handler is enough to switch back
                     // to resolve mode, even though it returns undefined.
                     // The ONLY way to propagate a rejection is to re-throw or
@@ -106,7 +108,7 @@ trait PromiseRejectedTestTrait
         $adapter->promise()
             ->then(
                 $this->expectCallableNever(),
-                fn() => 2,
+                static fn() => 2,
             )
             ->then(
                 $mock,
@@ -131,7 +133,7 @@ trait PromiseRejectedTestTrait
         $adapter->promise()
             ->then(
                 $this->expectCallableNever(),
-                fn() => resolve(2),
+                static fn() => resolve(2),
             )
             ->then(
                 $mock,
@@ -191,7 +193,7 @@ trait PromiseRejectedTestTrait
         $adapter->promise()
             ->then(
                 $this->expectCallableNever(),
-                fn() => reject($exception),
+                static fn() => reject($exception),
             )
             ->then(
                 $this->expectCallableNever(),
@@ -235,7 +237,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->catch(function ($reason) use ($mock): void {
+            ->catch(static function ($reason) use ($mock): void {
                 $mock($reason);
             });
     }
@@ -257,7 +259,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->catch(function (\InvalidArgumentException $reason) use ($mock): void {
+            ->catch(static function (\InvalidArgumentException $reason) use ($mock): void {
                 $mock($reason);
             });
     }
@@ -275,7 +277,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->catch(function (\InvalidArgumentException $reason) use ($mock): void {
+            ->catch(static function (\InvalidArgumentException $reason) use ($mock): void {
                 $mock($reason);
             })->then(null, $this->expectCallableOnce()); // avoid reporting unhandled rejection
     }
@@ -297,7 +299,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->finally(function (): void {})
+            ->finally(static function (): void {})
             ->then(null, $mock);
     }
 
@@ -318,7 +320,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->finally(fn(): int =>
+            ->finally(static fn(): int =>
                 // @phpstan-ignore-line
                 1)
             ->then(null, $mock);
@@ -341,7 +343,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->finally(fn(): PromiseInterface =>
+            ->finally(static fn(): PromiseInterface =>
                 // @phpstan-ignore-line
                 resolve(1))
             ->then(null, $mock);
@@ -365,7 +367,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception1);
         $adapter->promise()
-            ->finally(function () use ($exception2): void {
+            ->finally(static function () use ($exception2): void {
                 throw $exception2;
             })
             ->then(null, $mock);
@@ -389,7 +391,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception1);
         $adapter->promise()
-            ->finally(fn() => reject($exception2))
+            ->finally(static fn() => reject($exception2))
             ->then(null, $mock);
     }
 
@@ -443,7 +445,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->otherwise(function ($reason) use ($mock): void {
+            ->otherwise(static function ($reason) use ($mock): void {
                 $mock($reason);
             });
     }
@@ -466,7 +468,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->otherwise(function (\InvalidArgumentException $reason) use ($mock): void {
+            ->otherwise(static function (\InvalidArgumentException $reason) use ($mock): void {
                 $mock($reason);
             });
     }
@@ -485,7 +487,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->otherwise(function (\InvalidArgumentException $reason) use ($mock): void {
+            ->otherwise(static function (\InvalidArgumentException $reason) use ($mock): void {
                 $mock($reason);
             })->then(null, $this->expectCallableOnce()); // avoid reporting unhandled rejection
     }
@@ -508,7 +510,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->always(function (): void {})
+            ->always(static function (): void {})
             ->then(null, $mock);
     }
 
@@ -530,7 +532,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->finally(fn(): int =>
+            ->finally(static fn(): int =>
                 // @phpstan-ignore-line
                 1)
             ->then(null, $mock);
@@ -554,7 +556,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception);
         $adapter->promise()
-            ->always(fn(): PromiseInterface =>
+            ->always(static fn(): PromiseInterface =>
                 // @phpstan-ignore-line
                 resolve(1))
             ->then(null, $mock);
@@ -579,7 +581,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception1);
         $adapter->promise()
-            ->always(function () use ($exception2): void {
+            ->always(static function () use ($exception2): void {
                 throw $exception2;
             })
             ->then(null, $mock);
@@ -604,7 +606,7 @@ trait PromiseRejectedTestTrait
 
         $adapter->reject($exception1);
         $adapter->promise()
-            ->always(fn() => reject($exception2))
+            ->always(static fn() => reject($exception2))
             ->then(null, $mock);
     }
 }

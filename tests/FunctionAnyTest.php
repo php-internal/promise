@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise;
 
 use React\Promise\Exception\CompositeException;
@@ -17,7 +19,7 @@ class FunctionAnyTest extends TestCase
             ->expects(self::once())
             ->method('__invoke')
             ->with(
-                self::callback(fn($exception) => $exception instanceof LengthException &&
+                self::callback(static fn($exception) => $exception instanceof LengthException &&
                        $exception->getMessage() === 'Must contain at least 1 item but contains only 0 items.'),
             );
 
@@ -36,7 +38,7 @@ class FunctionAnyTest extends TestCase
             ->method('__invoke')
             ->with(new LengthException('Must contain at least 1 item but contains only 0 items.'));
 
-        $gen = (function () {
+        $gen = (static function () {
             if (false) { // @phpstan-ignore-line
                 yield;
             }
@@ -104,7 +106,7 @@ class FunctionAnyTest extends TestCase
             ->method('__invoke')
             ->with(self::identicalTo(1));
 
-        $gen = (function () {
+        $gen = (static function () {
             for ($i = 1; $i <= 3; ++$i) {
                 yield $i;
             }
@@ -124,7 +126,7 @@ class FunctionAnyTest extends TestCase
             ->method('__invoke')
             ->with(self::identicalTo(1));
 
-        $gen = (function () {
+        $gen = (static function () {
             for ($i = 1; ; ++$i) {
                 yield $i;
             }
@@ -226,8 +228,8 @@ class FunctionAnyTest extends TestCase
      */
     public function shouldCancelInputArrayPromises(): void
     {
-        $promise1 = new Promise(function (): void {}, $this->expectCallableOnce());
-        $promise2 = new Promise(function (): void {}, $this->expectCallableOnce());
+        $promise1 = new Promise(static function (): void {}, $this->expectCallableOnce());
+        $promise2 = new Promise(static function (): void {}, $this->expectCallableOnce());
 
         any([$promise1, $promise2])->cancel();
     }
@@ -240,7 +242,7 @@ class FunctionAnyTest extends TestCase
         $deferred = new Deferred($this->expectCallableNever());
         $deferred->resolve(null);
 
-        $promise2 = new Promise(function (): void {}, $this->expectCallableNever());
+        $promise2 = new Promise(static function (): void {}, $this->expectCallableNever());
 
         any([$deferred->promise(), $promise2])->cancel();
     }

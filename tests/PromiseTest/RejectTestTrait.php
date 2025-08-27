@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace React\Promise\PromiseTest;
 
 use React\Promise\PromiseAdapter\PromiseAdapterInterface;
@@ -78,7 +80,7 @@ trait RejectTestTrait
             ->with($this->identicalTo($exception1));
 
         $adapter->promise()
-            ->then(null, function (\Throwable $value) use ($exception3, $adapter): PromiseInterface {
+            ->then(null, static function (\Throwable $value) use ($exception3, $adapter): PromiseInterface {
                 $adapter->reject($exception3);
 
                 return reject($value);
@@ -129,7 +131,7 @@ trait RejectTestTrait
             ->with($this->identicalTo($exception));
 
         $adapter->promise()
-            ->finally(function (): void {})
+            ->finally(static function (): void {})
             ->then(null, $mock);
 
         $adapter->reject($exception);
@@ -152,7 +154,7 @@ trait RejectTestTrait
 
         $adapter->promise()
             // @phpstan-ignore-line
-            ->finally(fn(): int => 1)
+            ->finally(static fn(): int => 1)
             ->then(null, $mock);
 
         $adapter->reject($exception);
@@ -175,7 +177,7 @@ trait RejectTestTrait
 
         $adapter->promise()
             // @phpstan-ignore-line
-            ->finally(fn(): PromiseInterface => resolve(1))
+            ->finally(static fn(): PromiseInterface => resolve(1))
             ->then(null, $mock);
 
         $adapter->reject($exception);
@@ -197,7 +199,7 @@ trait RejectTestTrait
             ->with($this->identicalTo($exception));
 
         $adapter->promise()
-            ->finally(function () use ($exception): void {
+            ->finally(static function () use ($exception): void {
                 throw $exception;
             })
             ->then(null, $mock);
@@ -221,7 +223,7 @@ trait RejectTestTrait
             ->with($this->identicalTo($exception));
 
         $adapter->promise()
-            ->finally(fn() => reject($exception))
+            ->finally(static fn() => reject($exception))
             ->then(null, $mock);
 
         $adapter->reject($exception);
