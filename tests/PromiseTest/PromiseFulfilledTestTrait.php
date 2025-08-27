@@ -2,10 +2,9 @@
 
 namespace React\Promise\PromiseTest;
 
-use Exception;
 use React\Promise\PromiseAdapter\PromiseAdapterInterface;
 use React\Promise\PromiseInterface;
-use stdClass;
+
 use function React\Promise\reject;
 use function React\Promise\resolve;
 
@@ -13,7 +12,9 @@ trait PromiseFulfilledTestTrait
 {
     abstract public function getPromiseTestAdapter(?callable $canceller = null): PromiseAdapterInterface;
 
-    /** @test */
+    /**
+     * @test
+     */
     public function fulfilledPromiseShouldBeImmutable(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -30,11 +31,13 @@ trait PromiseFulfilledTestTrait
         $adapter->promise()
             ->then(
                 $mock,
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             );
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function fulfilledPromiseShouldInvokeNewlyAddedCallback(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -51,7 +54,9 @@ trait PromiseFulfilledTestTrait
             ->then($mock, $this->expectCallableNever());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function thenShouldForwardResultWhenCallbackIsNull(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -66,15 +71,17 @@ trait PromiseFulfilledTestTrait
         $adapter->promise()
             ->then(
                 null,
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             )
             ->then(
                 $mock,
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             );
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function thenShouldForwardCallbackResultToNextCallback(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -89,15 +96,17 @@ trait PromiseFulfilledTestTrait
         $adapter->promise()
             ->then(
                 fn($val) => $val + 1,
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             )
             ->then(
                 $mock,
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             );
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function thenShouldForwardPromisedCallbackResultValueToNextCallback(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -112,20 +121,22 @@ trait PromiseFulfilledTestTrait
         $adapter->promise()
             ->then(
                 fn($val) => resolve($val + 1),
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             )
             ->then(
                 $mock,
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             );
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function thenShouldSwitchFromCallbacksToErrbacksWhenCallbackReturnsARejection(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock
@@ -137,20 +148,22 @@ trait PromiseFulfilledTestTrait
         $adapter->promise()
             ->then(
                 fn() => reject($exception),
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             )
             ->then(
                 $this->expectCallableNever(),
-                $mock
+                $mock,
             );
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function thenShouldSwitchFromCallbacksToErrbacksWhenCallbackThrows(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock
@@ -168,11 +181,11 @@ trait PromiseFulfilledTestTrait
         $adapter->promise()
             ->then(
                 $mock,
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             )
             ->then(
                 $this->expectCallableNever(),
-                $mock2
+                $mock2,
             );
     }
 
@@ -204,7 +217,9 @@ trait PromiseFulfilledTestTrait
         $adapter->promise()->then($mock);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function cancelShouldHaveNoEffectForFulfilledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter($this->expectCallableNever());
@@ -214,7 +229,9 @@ trait PromiseFulfilledTestTrait
         $adapter->promise()->cancel();
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function catchShouldNotInvokeRejectionHandlerForFulfilledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -223,12 +240,14 @@ trait PromiseFulfilledTestTrait
         $adapter->promise()->catch($this->expectCallableNever());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function finallyShouldNotSuppressValueForFulfilledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $value = new stdClass();
+        $value = new \stdClass();
 
         $mock = $this->createCallableMock();
         $mock
@@ -242,12 +261,14 @@ trait PromiseFulfilledTestTrait
             ->then($mock);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function finallyShouldNotSuppressValueWhenHandlerReturnsANonPromiseForFulfilledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $value = new stdClass();
+        $value = new \stdClass();
 
         $mock = $this->createCallableMock();
         $mock
@@ -262,12 +283,14 @@ trait PromiseFulfilledTestTrait
             ->then($mock);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function finallyShouldNotSuppressValueWhenHandlerReturnsAPromiseForFulfilledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $value = new stdClass();
+        $value = new \stdClass();
 
         $mock = $this->createCallableMock();
         $mock
@@ -282,12 +305,14 @@ trait PromiseFulfilledTestTrait
             ->then($mock);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function finallyShouldRejectWhenHandlerThrowsForFulfilledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock
@@ -303,12 +328,14 @@ trait PromiseFulfilledTestTrait
             ->then(null, $mock);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function finallyShouldRejectWhenHandlerRejectsForFulfilledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock
@@ -342,7 +369,7 @@ trait PromiseFulfilledTestTrait
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $value = new stdClass();
+        $value = new \stdClass();
 
         $mock = $this->createCallableMock();
         $mock
@@ -364,7 +391,7 @@ trait PromiseFulfilledTestTrait
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $value = new stdClass();
+        $value = new \stdClass();
 
         $mock = $this->createCallableMock();
         $mock
@@ -387,7 +414,7 @@ trait PromiseFulfilledTestTrait
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $value = new stdClass();
+        $value = new \stdClass();
 
         $mock = $this->createCallableMock();
         $mock
@@ -410,7 +437,7 @@ trait PromiseFulfilledTestTrait
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock
@@ -434,7 +461,7 @@ trait PromiseFulfilledTestTrait
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock

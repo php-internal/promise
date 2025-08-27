@@ -2,19 +2,21 @@
 
 namespace React\Promise;
 
-use Exception;
-
 class FunctionRaceTest extends TestCase
 {
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldReturnForeverPendingPromiseForEmptyInput(): void
     {
         race(
-            []
+            [],
         )->then($this->expectCallableNever(), $this->expectCallableNever());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldResolveValuesArray(): void
     {
         $mock = $this->createCallableMock();
@@ -24,11 +26,13 @@ class FunctionRaceTest extends TestCase
             ->with(self::identicalTo(1));
 
         race(
-            [1, 2, 3]
+            [1, 2, 3],
         )->then($mock);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldResolvePromisesArray(): void
     {
         $mock = $this->createCallableMock();
@@ -42,7 +46,7 @@ class FunctionRaceTest extends TestCase
         $d3 = new Deferred();
 
         race(
-            [$d1->promise(), $d2->promise(), $d3->promise()]
+            [$d1->promise(), $d2->promise(), $d3->promise()],
         )->then($mock);
 
         $d2->resolve(2);
@@ -51,7 +55,9 @@ class FunctionRaceTest extends TestCase
         $d3->resolve(3);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldResolveSparseArrayInput(): void
     {
         $mock = $this->createCallableMock();
@@ -61,11 +67,13 @@ class FunctionRaceTest extends TestCase
             ->with(self::identicalTo(null));
 
         race(
-            [null, 1, null, 2, 3]
+            [null, 1, null, 2, 3],
         )->then($mock);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldResolveValuesGenerator(): void
     {
         $mock = $this->createCallableMock();
@@ -83,7 +91,9 @@ class FunctionRaceTest extends TestCase
         race($gen)->then($mock);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldResolveValuesInfiniteGenerator(): void
     {
         $mock = $this->createCallableMock();
@@ -101,10 +111,12 @@ class FunctionRaceTest extends TestCase
         race($gen)->then($mock);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldRejectIfFirstSettledPromiseRejects(): void
     {
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock
@@ -117,7 +129,7 @@ class FunctionRaceTest extends TestCase
         $d3 = new Deferred();
 
         race(
-            [$d1->promise(), $d2->promise(), $d3->promise()]
+            [$d1->promise(), $d2->promise(), $d3->promise()],
         )->then($this->expectCallableNever(), $mock);
 
         $d2->reject($exception);
@@ -126,7 +138,9 @@ class FunctionRaceTest extends TestCase
         $d3->resolve(3);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldCancelInputArrayPromises(): void
     {
         $promise1 = new Promise(function (): void {}, $this->expectCallableOnce());
@@ -135,7 +149,9 @@ class FunctionRaceTest extends TestCase
         race([$promise1, $promise2])->cancel();
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldNotCancelOtherPendingInputArrayPromisesIfOnePromiseFulfills(): void
     {
         $deferred = new Deferred($this->expectCallableNever());
@@ -146,11 +162,13 @@ class FunctionRaceTest extends TestCase
         race([$deferred->promise(), $promise2])->cancel();
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldNotCancelOtherPendingInputArrayPromisesIfOnePromiseRejects(): void
     {
         $deferred = new Deferred($this->expectCallableNever());
-        $deferred->reject(new Exception());
+        $deferred->reject(new \Exception());
 
         $promise2 = new Promise(function (): void {}, $this->expectCallableNever());
 

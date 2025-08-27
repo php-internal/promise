@@ -4,11 +4,12 @@ namespace React\Promise;
 
 use React\Promise\Internal\FulfilledPromise;
 use React\Promise\Internal\RejectedPromise;
-use Exception;
 
 class FunctionResolveTest extends TestCase
 {
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldResolveAnImmediateValue(): void
     {
         $expected = 123;
@@ -22,11 +23,13 @@ class FunctionResolveTest extends TestCase
         resolve($expected)
             ->then(
                 $mock,
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             );
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldResolveAFulfilledPromise(): void
     {
         $expected = 123;
@@ -42,11 +45,13 @@ class FunctionResolveTest extends TestCase
         resolve($resolved)
             ->then(
                 $mock,
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             );
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldResolveAThenable(): void
     {
         $thenable = new SimpleFulfilledTestThenable();
@@ -60,11 +65,13 @@ class FunctionResolveTest extends TestCase
         resolve($thenable)
             ->then(
                 $mock,
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             );
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldResolveACancellableThenable(): void
     {
         $thenable = new SimpleTestCancellableThenable();
@@ -75,10 +82,12 @@ class FunctionResolveTest extends TestCase
         self::assertTrue($thenable->cancelCalled);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldRejectARejectedPromise(): void
     {
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $resolved = new RejectedPromise($exception);
 
@@ -91,11 +100,13 @@ class FunctionResolveTest extends TestCase
         resolve($resolved)
             ->then(
                 $this->expectCallableNever(),
-                $mock
+                $mock,
             );
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldSupportDeepNestingInPromiseChains(): void
     {
         $d = new Deferred();
@@ -108,7 +119,7 @@ class FunctionResolveTest extends TestCase
             $identity = fn($val) => $val;
 
             return resolve($d->promise()->then($identity))->then(
-                fn($val) => !$val
+                fn($val) => !$val,
             );
         })));
 
@@ -121,7 +132,9 @@ class FunctionResolveTest extends TestCase
         $result->then($mock);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldSupportVeryDeepNestedPromises(): void
     {
         if (PHP_VERSION_ID < 70200 && ini_get('xdebug.max_nesting_level') !== false) {

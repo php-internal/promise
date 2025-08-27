@@ -3,6 +3,7 @@
 namespace React\Promise\Internal;
 
 use React\Promise\PromiseInterface;
+
 use function React\Promise\resolve;
 
 /**
@@ -36,7 +37,7 @@ final class FulfilledPromise implements PromiseInterface
      */
     public function then(?callable $onFulfilled = null, ?callable $onRejected = null): PromiseInterface
     {
-        if (null === $onFulfilled) {
+        if ($onFulfilled === null) {
             return $this;
         }
 
@@ -63,9 +64,7 @@ final class FulfilledPromise implements PromiseInterface
             resolve($onFulfilledOrRejected())->then(static fn() => $value));
     }
 
-    public function cancel(): void
-    {
-    }
+    public function cancel(): void {}
 
     /**
      * @deprecated 3.0.0 Use `catch()` instead

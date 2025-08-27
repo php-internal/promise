@@ -2,12 +2,9 @@
 
 namespace React\Promise\PromiseTest;
 
-use Exception;
-use LogicException;
-use React\Promise;
 use React\Promise\PromiseAdapter\PromiseAdapterInterface;
 use React\Promise\PromiseInterface;
-use stdClass;
+
 use function React\Promise\reject;
 use function React\Promise\resolve;
 
@@ -15,7 +12,9 @@ trait ResolveTestTrait
 {
     abstract public function getPromiseTestAdapter(?callable $canceller = null): PromiseAdapterInterface;
 
-    /** @test */
+    /**
+     * @test
+     */
     public function resolveShouldResolve(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -32,7 +31,9 @@ trait ResolveTestTrait
         $adapter->resolve(1);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function resolveShouldResolveWithPromisedValue(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -49,12 +50,14 @@ trait ResolveTestTrait
         $adapter->resolve(resolve(1));
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function resolveShouldRejectWhenResolvedWithRejectedPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock
@@ -68,7 +71,9 @@ trait ResolveTestTrait
         $adapter->resolve(reject($exception));
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function resolveShouldForwardValueWhenCallbackIsNull(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -82,17 +87,19 @@ trait ResolveTestTrait
         $adapter->promise()
             ->then(
                 null,
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             )
             ->then(
                 $mock,
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             );
 
         $adapter->resolve(1);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function resolveShouldMakePromiseImmutable(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -111,7 +118,7 @@ trait ResolveTestTrait
             })
             ->then(
                 $mock,
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             );
 
         $adapter->resolve(1);
@@ -129,12 +136,12 @@ trait ResolveTestTrait
         $mock
             ->expects($this->once())
             ->method('__invoke')
-            ->with(new LogicException('Cannot resolve a promise with itself.'));
+            ->with(new \LogicException('Cannot resolve a promise with itself.'));
 
         $adapter->promise()
             ->then(
                 $this->expectCallableNever(),
-                $mock
+                $mock,
             );
 
         $adapter->resolve($adapter->promise());
@@ -152,7 +159,7 @@ trait ResolveTestTrait
         $mock
             ->expects($this->once())
             ->method('__invoke')
-            ->with(new LogicException('Cannot resolve a promise with itself.'));
+            ->with(new \LogicException('Cannot resolve a promise with itself.'));
 
         $promise1 = $adapter1->promise();
 
@@ -160,19 +167,21 @@ trait ResolveTestTrait
 
         $promise2->then(
             $this->expectCallableNever(),
-            $mock
+            $mock,
         );
 
         $adapter1->resolve($promise2);
         $adapter2->resolve($promise1);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function finallyShouldNotSuppressValue(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $value = new stdClass();
+        $value = new \stdClass();
 
         $mock = $this->createCallableMock();
         $mock
@@ -187,12 +196,14 @@ trait ResolveTestTrait
         $adapter->resolve($value);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function finallyShouldNotSuppressValueWhenHandlerReturnsANonPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $value = new stdClass();
+        $value = new \stdClass();
 
         $mock = $this->createCallableMock();
         $mock
@@ -208,12 +219,14 @@ trait ResolveTestTrait
         $adapter->resolve($value);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function finallyShouldNotSuppressValueWhenHandlerReturnsAPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $value = new stdClass();
+        $value = new \stdClass();
 
         $mock = $this->createCallableMock();
         $mock
@@ -230,12 +243,14 @@ trait ResolveTestTrait
         $adapter->resolve($value);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function finallyShouldRejectWhenHandlerThrowsForFulfillment(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock
@@ -252,12 +267,14 @@ trait ResolveTestTrait
         $adapter->resolve(1);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function finallyShouldRejectWhenHandlerRejectsForFulfillment(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock

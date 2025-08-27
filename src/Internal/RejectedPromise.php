@@ -3,9 +3,9 @@
 namespace React\Promise\Internal;
 
 use React\Promise\PromiseInterface;
+
 use function React\Promise\_checkTypehint;
 use function React\Promise\resolve;
-use function React\Promise\set_rejection_handler;
 
 /**
  * @internal
@@ -17,42 +17,21 @@ final class RejectedPromise implements PromiseInterface
     private bool $handled = false;
     private static ?\Closure $rejectionHandler = null;
 
-    public function __construct(private readonly \Throwable $reason)
-    {
-    }
+    public function __construct(private readonly \Throwable $reason) {}
 
     public static function setRejectionHandler(?callable $handler): void
     {
         self::$rejectionHandler = $handler === null ? null : $handler(...);
     }
 
-    /** @throws void */
-    public function __destruct()
-    {
-        if ($this->handled || self::$rejectionHandler === null) {
-            return;
-        }
-
-        try {
-            (self::$rejectionHandler)($this->reason);
-        } catch (\Throwable $e) {
-            \preg_match('/^([^:\s]++)(.*+)$/sm', (string) $e, $match);
-            \assert(isset($match[1], $match[2]));
-            $message = 'Fatal error: Uncaught ' . $match[1] . ' from unhandled promise rejection handler' . $match[2];
-
-            \error_log($message);
-        }
-    }
-
     /**
      * @template TRejected
-     * @param ?callable $onFulfilled
      * @param ?(callable(\Throwable): (PromiseInterface<TRejected>|TRejected)) $onRejected
      * @return PromiseInterface<($onRejected is null ? never : TRejected)>
      */
     public function then(?callable $onFulfilled = null, ?callable $onRejected = null): PromiseInterface
     {
-        if (null === $onRejected) {
+        if ($onRejected === null) {
             return $this;
         }
 
@@ -113,5 +92,25 @@ final class RejectedPromise implements PromiseInterface
     public function always(callable $onFulfilledOrRejected): PromiseInterface
     {
         return $this->finally($onFulfilledOrRejected);
+    }
+
+    /**
+     * @throws void
+     */
+    public function __destruct()
+    {
+        if ($this->handled || self::$rejectionHandler === null) {
+            return;
+        }
+
+        try {
+            (self::$rejectionHandler)($this->reason);
+        } catch (\Throwable $e) {
+            \preg_match('/^([^:\s]++)(.*+)$/sm', (string) $e, $match);
+            \assert(isset($match[1], $match[2]));
+            $message = 'Fatal error: Uncaught ' . $match[1] . ' from unhandled promise rejection handler' . $match[2];
+
+            \error_log($message);
+        }
     }
 }

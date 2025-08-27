@@ -26,7 +26,9 @@ class DeferredTest extends TestCase
         ]);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldRejectWithoutCreatingGarbageCyclesIfCancellerRejectsWithException(): void
     {
         gc_collect_cycles();
@@ -39,7 +41,9 @@ class DeferredTest extends TestCase
         $this->assertSame(0, gc_collect_cycles());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldRejectWithoutCreatingGarbageCyclesIfParentCancellerRejectsWithException(): void
     {
         gc_collect_cycles();
@@ -54,7 +58,9 @@ class DeferredTest extends TestCase
         $this->assertSame(0, gc_collect_cycles());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldRejectWithoutCreatingGarbageCyclesIfCancellerHoldsReferenceAndExplicitlyRejectWithException(): void
     {
         gc_collect_cycles();

@@ -9,14 +9,14 @@ if (!class_exists(Fiber::class)) {
      */
     class Fiber
     {
-        public static function suspend(mixed $value): void
-        {
-            // NOOP
-        }
-
         public function __construct(callable $callback)
         {
             assert(is_callable($callback));
+        }
+
+        public static function suspend(mixed $value): void
+        {
+            // NOOP
         }
 
         public function start(): int

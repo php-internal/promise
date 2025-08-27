@@ -2,11 +2,9 @@
 
 namespace React\Promise\PromiseTest;
 
-use Exception;
-use React\Promise;
-use React\Promise\Deferred;
 use React\Promise\PromiseAdapter\PromiseAdapterInterface;
 use React\Promise\PromiseInterface;
+
 use function React\Promise\reject;
 use function React\Promise\resolve;
 
@@ -14,12 +12,14 @@ trait RejectTestTrait
 {
     abstract public function getPromiseTestAdapter(?callable $canceller = null): PromiseAdapterInterface;
 
-    /** @test */
+    /**
+     * @test
+     */
     public function rejectShouldRejectWithAnException(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock
@@ -33,12 +33,14 @@ trait RejectTestTrait
         $adapter->reject($exception);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function rejectShouldForwardReasonWhenCallbackIsNull(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock
@@ -48,24 +50,26 @@ trait RejectTestTrait
 
         $adapter->promise()
             ->then(
-                $this->expectCallableNever()
+                $this->expectCallableNever(),
             )
             ->then(
                 $this->expectCallableNever(),
-                $mock
+                $mock,
             );
 
         $adapter->reject($exception);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function rejectShouldMakePromiseImmutable(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $exception1 = new Exception();
-        $exception2 = new Exception();
-        $exception3 = new Exception();
+        $exception1 = new \Exception();
+        $exception2 = new \Exception();
+        $exception3 = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock
@@ -81,19 +85,21 @@ trait RejectTestTrait
             })
             ->then(
                 $this->expectCallableNever(),
-                $mock
+                $mock,
             );
 
         $adapter->reject($exception1);
         $adapter->reject($exception2);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function rejectShouldInvokeCatchHandler(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock
@@ -107,12 +113,14 @@ trait RejectTestTrait
         $adapter->reject($exception);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function finallyShouldNotSuppressRejection(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock
@@ -127,12 +135,14 @@ trait RejectTestTrait
         $adapter->reject($exception);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function finallyShouldNotSuppressRejectionWhenHandlerReturnsANonPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock
@@ -148,12 +158,14 @@ trait RejectTestTrait
         $adapter->reject($exception);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function finallyShouldNotSuppressRejectionWhenHandlerReturnsAPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock
@@ -169,12 +181,14 @@ trait RejectTestTrait
         $adapter->reject($exception);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function finallyShouldRejectWhenHandlerThrowsForRejection(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock
@@ -191,12 +205,14 @@ trait RejectTestTrait
         $adapter->reject($exception);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function finallyShouldRejectWhenHandlerRejectsForRejection(): void
     {
         $adapter = $this->getPromiseTestAdapter();
 
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock

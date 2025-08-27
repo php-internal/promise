@@ -10,7 +10,9 @@ trait PromiseSettledTestTrait
 {
     abstract public function getPromiseTestAdapter(?callable $canceller = null): PromiseAdapterInterface;
 
-    /** @test */
+    /**
+     * @test
+     */
     public function thenShouldReturnAPromiseForSettledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -23,7 +25,9 @@ trait PromiseSettledTestTrait
         }
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function thenShouldReturnAllowNullForSettledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -36,7 +40,9 @@ trait PromiseSettledTestTrait
         }
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function cancelShouldHaveNoEffectForSettledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter($this->expectCallableNever());
@@ -46,7 +52,9 @@ trait PromiseSettledTestTrait
         $adapter->promise()->cancel();
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function finallyShouldReturnAPromiseForSettledPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();

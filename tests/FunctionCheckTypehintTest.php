@@ -2,44 +2,51 @@
 
 namespace React\Promise;
 
-use Exception;
-use InvalidArgumentException;
-
 class FunctionCheckTypehintTest extends TestCase
 {
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldAcceptClosureCallbackWithTypehint(): void
     {
-        self::assertTrue(_checkTypehint(function (InvalidArgumentException $e): void {}, new InvalidArgumentException()));
-        self::assertFalse(_checkTypehint(function (InvalidArgumentException $e): void {}, new Exception()));
+        self::assertTrue(_checkTypehint(function (\InvalidArgumentException $e): void {}, new \InvalidArgumentException()));
+        self::assertFalse(_checkTypehint(function (\InvalidArgumentException $e): void {}, new \Exception()));
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldAcceptFunctionStringCallbackWithTypehint(): void
     {
-        self::assertTrue(_checkTypehint(new CallbackWithTypehintClass(), new InvalidArgumentException()));
-        self::assertFalse(_checkTypehint(new CallbackWithTypehintClass(), new Exception()));
+        self::assertTrue(_checkTypehint(new CallbackWithTypehintClass(), new \InvalidArgumentException()));
+        self::assertFalse(_checkTypehint(new CallbackWithTypehintClass(), new \Exception()));
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldAcceptInvokableObjectCallbackWithTypehint(): void
     {
-        self::assertTrue(_checkTypehint(new CallbackWithTypehintClass(), new InvalidArgumentException()));
-        self::assertFalse(_checkTypehint(new CallbackWithTypehintClass(), new Exception()));
+        self::assertTrue(_checkTypehint(new CallbackWithTypehintClass(), new \InvalidArgumentException()));
+        self::assertFalse(_checkTypehint(new CallbackWithTypehintClass(), new \Exception()));
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldAcceptObjectMethodCallbackWithTypehint(): void
     {
-        self::assertTrue(_checkTypehint([new CallbackWithTypehintClass(), 'testCallback'], new InvalidArgumentException()));
-        self::assertFalse(_checkTypehint([new CallbackWithTypehintClass(), 'testCallback'], new Exception()));
+        self::assertTrue(_checkTypehint([new CallbackWithTypehintClass(), 'testCallback'], new \InvalidArgumentException()));
+        self::assertFalse(_checkTypehint([new CallbackWithTypehintClass(), 'testCallback'], new \Exception()));
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldAcceptStaticClassCallbackWithTypehint(): void
     {
-        self::assertTrue(_checkTypehint([CallbackWithTypehintClass::class, 'testCallbackStatic'], new InvalidArgumentException()));
-        self::assertFalse(_checkTypehint([CallbackWithTypehintClass::class, 'testCallbackStatic'], new Exception()));
+        self::assertTrue(_checkTypehint([CallbackWithTypehintClass::class, 'testCallbackStatic'], new \InvalidArgumentException()));
+        self::assertFalse(_checkTypehint([CallbackWithTypehintClass::class, 'testCallbackStatic'], new \Exception()));
     }
 
     /**
@@ -61,8 +68,8 @@ class FunctionCheckTypehintTest extends TestCase
      */
     public function shouldAcceptInvokableObjectCallbackWithUnionTypehint(): void
     {
-        self::assertTrue(_checkTypehint(new CallbackWithUnionTypehintClass(), new InvalidArgumentException()));
-        self::assertFalse(_checkTypehint(new CallbackWithUnionTypehintClass(), new Exception()));
+        self::assertTrue(_checkTypehint(new CallbackWithUnionTypehintClass(), new \InvalidArgumentException()));
+        self::assertFalse(_checkTypehint(new CallbackWithUnionTypehintClass(), new \Exception()));
     }
 
     /**
@@ -71,8 +78,8 @@ class FunctionCheckTypehintTest extends TestCase
      */
     public function shouldAcceptObjectMethodCallbackWithUnionTypehint(): void
     {
-        self::assertTrue(_checkTypehint([new CallbackWithUnionTypehintClass(), 'testCallback'], new InvalidArgumentException()));
-        self::assertFalse(_checkTypehint([new CallbackWithUnionTypehintClass(), 'testCallback'], new Exception()));
+        self::assertTrue(_checkTypehint([new CallbackWithUnionTypehintClass(), 'testCallback'], new \InvalidArgumentException()));
+        self::assertFalse(_checkTypehint([new CallbackWithUnionTypehintClass(), 'testCallback'], new \Exception()));
     }
 
     /**
@@ -81,8 +88,8 @@ class FunctionCheckTypehintTest extends TestCase
      */
     public function shouldAcceptStaticClassCallbackWithUnionTypehint(): void
     {
-        self::assertTrue(_checkTypehint([CallbackWithUnionTypehintClass::class, 'testCallbackStatic'], new InvalidArgumentException()));
-        self::assertFalse(_checkTypehint([CallbackWithUnionTypehintClass::class, 'testCallbackStatic'], new Exception()));
+        self::assertTrue(_checkTypehint([CallbackWithUnionTypehintClass::class, 'testCallbackStatic'], new \InvalidArgumentException()));
+        self::assertFalse(_checkTypehint([CallbackWithUnionTypehintClass::class, 'testCallbackStatic'], new \Exception()));
     }
 
     /**
@@ -148,42 +155,47 @@ class FunctionCheckTypehintTest extends TestCase
         self::assertTrue(_checkTypehint([CallbackWithDNFTypehintClass::class, 'testCallbackStatic'], new IterableException()));
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldAcceptClosureCallbackWithoutTypehint(): void
     {
-        self::assertTrue(_checkTypehint(function (InvalidArgumentException $e): void {
-        }, new InvalidArgumentException()));
+        self::assertTrue(_checkTypehint(function (\InvalidArgumentException $e): void {}, new \InvalidArgumentException()));
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldAcceptFunctionStringCallbackWithoutTypehint(): void
     {
-        self::assertTrue(_checkTypehint(new CallbackWithoutTypehintClass(), new InvalidArgumentException()));
+        self::assertTrue(_checkTypehint(new CallbackWithoutTypehintClass(), new \InvalidArgumentException()));
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldAcceptInvokableObjectCallbackWithoutTypehint(): void
     {
-        self::assertTrue(_checkTypehint(new CallbackWithoutTypehintClass(), new InvalidArgumentException()));
+        self::assertTrue(_checkTypehint(new CallbackWithoutTypehintClass(), new \InvalidArgumentException()));
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldAcceptObjectMethodCallbackWithoutTypehint(): void
     {
-        self::assertTrue(_checkTypehint([new CallbackWithoutTypehintClass(), 'testCallback'], new InvalidArgumentException()));
+        self::assertTrue(_checkTypehint([new CallbackWithoutTypehintClass(), 'testCallback'], new \InvalidArgumentException()));
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldAcceptStaticClassCallbackWithoutTypehint(): void
     {
-        self::assertTrue(_checkTypehint([CallbackWithoutTypehintClass::class, 'testCallbackStatic'], new InvalidArgumentException()));
+        self::assertTrue(_checkTypehint([CallbackWithoutTypehintClass::class, 'testCallbackStatic'], new \InvalidArgumentException()));
     }
 }
 
-function testCallbackWithTypehint(InvalidArgumentException $e): void
-{
-}
+function testCallbackWithTypehint(\InvalidArgumentException $e): void {}
 
-function testCallbackWithoutTypehint(): void
-{
-}
+function testCallbackWithoutTypehint(): void {}

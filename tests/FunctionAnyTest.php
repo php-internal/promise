@@ -2,13 +2,14 @@
 
 namespace React\Promise;
 
-use Exception;
 use React\Promise\Exception\CompositeException;
 use React\Promise\Exception\LengthException;
 
 class FunctionAnyTest extends TestCase
 {
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldRejectWithLengthExceptionWithEmptyInputArray(): void
     {
         $mock = $this->createCallableMock();
@@ -17,14 +18,16 @@ class FunctionAnyTest extends TestCase
             ->method('__invoke')
             ->with(
                 self::callback(fn($exception) => $exception instanceof LengthException &&
-                       'Must contain at least 1 item but contains only 0 items.' === $exception->getMessage())
+                       $exception->getMessage() === 'Must contain at least 1 item but contains only 0 items.'),
             );
 
         any([])
             ->then($this->expectCallableNever(), $mock);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldRejectWithLengthExceptionWithEmptyInputGenerator(): void
     {
         $mock = $this->createCallableMock();
@@ -42,7 +45,9 @@ class FunctionAnyTest extends TestCase
         any($gen)->then($this->expectCallableNever(), $mock);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldResolveWithAnInputValue(): void
     {
         $mock = $this->createCallableMock();
@@ -55,7 +60,9 @@ class FunctionAnyTest extends TestCase
             ->then($mock);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldResolveWithAPromisedInputValue(): void
     {
         $mock = $this->createCallableMock();
@@ -68,7 +75,9 @@ class FunctionAnyTest extends TestCase
             ->then($mock);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldResolveWithAnInputValueFromDeferred(): void
     {
         $mock = $this->createCallableMock();
@@ -84,7 +93,9 @@ class FunctionAnyTest extends TestCase
         $deferred->resolve(1);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldResolveValuesGenerator(): void
     {
         $mock = $this->createCallableMock();
@@ -102,7 +113,9 @@ class FunctionAnyTest extends TestCase
         any($gen)->then($mock);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldResolveValuesInfiniteGenerator(): void
     {
         $mock = $this->createCallableMock();
@@ -120,16 +133,18 @@ class FunctionAnyTest extends TestCase
         any($gen)->then($mock);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldRejectWithAllRejectedInputValuesIfAllInputsAreRejected(): void
     {
-        $exception1 = new Exception();
-        $exception2 = new Exception();
-        $exception3 = new Exception();
+        $exception1 = new \Exception();
+        $exception2 = new \Exception();
+        $exception3 = new \Exception();
 
         $compositeException = new CompositeException(
             [0 => $exception1, 1 => $exception2, 2 => $exception3],
-            'All promises rejected.'
+            'All promises rejected.',
         );
 
         $mock = $this->createCallableMock();
@@ -142,14 +157,16 @@ class FunctionAnyTest extends TestCase
             ->then($this->expectCallableNever(), $mock);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldRejectWithAllRejectedInputValuesIfInputIsRejectedFromDeferred(): void
     {
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $compositeException = new CompositeException(
             [2 => $exception],
-            'All promises rejected.'
+            'All promises rejected.',
         );
 
         $mock = $this->createCallableMock();
@@ -165,11 +182,13 @@ class FunctionAnyTest extends TestCase
         $deferred->reject($exception);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldResolveWhenFirstInputPromiseResolves(): void
     {
-        $exception2 = new Exception();
-        $exception3 = new Exception();
+        $exception2 = new \Exception();
+        $exception3 = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock
@@ -181,7 +200,9 @@ class FunctionAnyTest extends TestCase
             ->then($mock);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldNotRelyOnArryIndexesWhenUnwrappingToASingleResolutionValue(): void
     {
         $mock = $this->createCallableMock();
@@ -200,7 +221,9 @@ class FunctionAnyTest extends TestCase
         $d1->resolve(1);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldCancelInputArrayPromises(): void
     {
         $promise1 = new Promise(function (): void {}, $this->expectCallableOnce());
@@ -209,7 +232,9 @@ class FunctionAnyTest extends TestCase
         any([$promise1, $promise2])->cancel();
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldNotCancelOtherPendingInputArrayPromisesIfOnePromiseFulfills(): void
     {
         $deferred = new Deferred($this->expectCallableNever());

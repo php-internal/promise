@@ -2,7 +2,6 @@
 
 namespace React\Promise\Internal;
 
-use Exception;
 use React\Promise\Deferred;
 use React\Promise\SimpleTestCancellable;
 use React\Promise\SimpleTestCancellableThenable;
@@ -10,7 +9,9 @@ use React\Promise\TestCase;
 
 class CancellationQueueTest extends TestCase
 {
-    /** @test */
+    /**
+     * @test
+     */
     public function acceptsSimpleCancellableThenable(): void
     {
         $p = new SimpleTestCancellableThenable();
@@ -23,7 +24,9 @@ class CancellationQueueTest extends TestCase
         self::assertTrue($p->cancelCalled);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function ignoresSimpleCancellable(): void
     {
         $p = new SimpleTestCancellable();
@@ -36,7 +39,9 @@ class CancellationQueueTest extends TestCase
         self::assertFalse($p->cancelCalled);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function callsCancelOnPromisesEnqueuedBeforeStart(): void
     {
         $d1 = $this->getCancellableDeferred();
@@ -49,7 +54,9 @@ class CancellationQueueTest extends TestCase
         $cancellationQueue();
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function callsCancelOnPromisesEnqueuedAfterStart(): void
     {
         $d1 = $this->getCancellableDeferred();
@@ -63,7 +70,9 @@ class CancellationQueueTest extends TestCase
         $cancellationQueue->enqueue($d1->promise());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function doesNotCallCancelTwiceWhenStartedTwice(): void
     {
         $d = $this->getCancellableDeferred();
@@ -80,13 +89,13 @@ class CancellationQueueTest extends TestCase
      */
     public function rethrowsExceptionsThrownFromCancel(): void
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
         $this->expectExceptionMessage('test');
         $mock = $this->createCallableMock();
         $mock
             ->expects(self::once())
             ->method('__invoke')
-            ->will(self::throwException(new Exception('test')));
+            ->will(self::throwException(new \Exception('test')));
 
         $promise = new SimpleTestCancellableThenable($mock);
 

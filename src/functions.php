@@ -94,14 +94,14 @@ function all(iterable $promisesOrValues): PromiseInterface
                 function ($value) use ($i, &$values, &$toResolve, &$continue, $resolve): void {
                     $values[$i] = $value;
 
-                    if (0 === --$toResolve && !$continue) {
+                    if (--$toResolve === 0 && !$continue) {
                         $resolve($values);
                     }
                 },
                 function (\Throwable $reason) use (&$continue, $reject): void {
                     $continue = false;
                     $reject($reason);
-                }
+                },
             );
 
             if (!$continue && !\is_array($promisesOrValues)) {
@@ -186,13 +186,13 @@ function any(iterable $promisesOrValues): PromiseInterface
                 function (\Throwable $reason) use ($i, &$reasons, &$toReject, $reject, &$continue): void {
                     $reasons[$i] = $reason;
 
-                    if (0 === --$toReject && !$continue) {
+                    if (--$toReject === 0 && !$continue) {
                         $reject(new CompositeException(
                             $reasons,
-                            'All promises rejected.'
+                            'All promises rejected.',
                         ));
                     }
-                }
+                },
             );
 
             if (!$continue && !\is_array($promisesOrValues)) {
@@ -203,12 +203,12 @@ function any(iterable $promisesOrValues): PromiseInterface
         $continue = false;
         if ($toReject === 0 && !$reasons) {
             $reject(new Exception\LengthException(
-                'Must contain at least 1 item but contains only 0 items.'
+                'Must contain at least 1 item but contains only 0 items.',
             ));
         } elseif ($toReject === 0) {
             $reject(new CompositeException(
                 $reasons,
-                'All promises rejected.'
+                'All promises rejected.',
             ));
         }
     }, $cancellationQueue);
@@ -300,6 +300,7 @@ function _checkTypehint(callable $callback, \Throwable $reason): bool
             break;
         case $type instanceof \ReflectionIntersectionType:
             $isTypeUnion = false;
+            // no break
         case $type instanceof \ReflectionUnionType:
             $types = $type->getTypes();
             break;

@@ -37,7 +37,8 @@
     "require-dev": {
         "phpstan/phpstan": "1.12.28",
         "phpunit/phpunit": "^9.6",
-        "rector/rector": "^1.2"
+        "rector/rector": "^1.2",
+        "spiral/code-style": "^2.2"
     },
     "autoload": {
         "psr-4": {
@@ -65,6 +66,7 @@
         "sort-packages": true
     },
     "scripts": {
+        "cs:fix": "php-cs-fixer fix -v",
         "stan": "phpstan",
         "test": "phpunit --color=always --testdox",
         "refactor": "rector process --config=rector.php",

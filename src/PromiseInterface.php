@@ -110,8 +110,6 @@ interface PromiseInterface
      *
      * Once a promise is settled (either fulfilled or rejected), calling `cancel()` on
      * a promise has no effect.
-     *
-     * @return void
      */
     public function cancel(): void;
 

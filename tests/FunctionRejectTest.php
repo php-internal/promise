@@ -2,14 +2,14 @@
 
 namespace React\Promise;
 
-use Exception;
-
 class FunctionRejectTest extends TestCase
 {
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldRejectAnException(): void
     {
-        $exception = new Exception();
+        $exception = new \Exception();
 
         $mock = $this->createCallableMock();
         $mock

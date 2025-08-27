@@ -13,16 +13,6 @@ final class CancellationQueue
     /** @var object[] */
     private $queue = [];
 
-    public function __invoke(): void
-    {
-        if ($this->started) {
-            return;
-        }
-
-        $this->started = true;
-        $this->drain();
-    }
-
     public function enqueue(mixed $cancellable): void
     {
         if (!\is_object($cancellable) || !\method_exists($cancellable, 'then') || !\method_exists($cancellable, 'cancel')) {
@@ -31,9 +21,19 @@ final class CancellationQueue
 
         $length = \array_push($this->queue, $cancellable);
 
-        if ($this->started && 1 === $length) {
+        if ($this->started && $length === 1) {
             $this->drain();
         }
+    }
+
+    public function __invoke(): void
+    {
+        if ($this->started) {
+            return;
+        }
+
+        $this->started = true;
+        $this->drain();
     }
 
     private function drain(): void

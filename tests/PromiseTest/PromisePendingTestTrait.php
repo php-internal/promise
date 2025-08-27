@@ -9,7 +9,9 @@ trait PromisePendingTestTrait
 {
     abstract public function getPromiseTestAdapter(?callable $canceller = null): PromiseAdapterInterface;
 
-    /** @test */
+    /**
+     * @test
+     */
     public function thenShouldReturnAPromiseForPendingPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -17,7 +19,9 @@ trait PromisePendingTestTrait
         self::assertInstanceOf(PromiseInterface::class, $adapter->promise()->then());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function thenShouldReturnAllowNullForPendingPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -25,7 +29,9 @@ trait PromisePendingTestTrait
         self::assertInstanceOf(PromiseInterface::class, $adapter->promise()->then(null, null));
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function catchShouldNotInvokeRejectionHandlerForPendingPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();
@@ -34,7 +40,9 @@ trait PromisePendingTestTrait
         $adapter->promise()->catch($this->expectCallableNever());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function finallyShouldReturnAPromiseForPendingPromise(): void
     {
         $adapter = $this->getPromiseTestAdapter();

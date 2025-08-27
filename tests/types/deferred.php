@@ -1,6 +1,7 @@
 <?php
 
 use React\Promise\Deferred;
+
 use function PHPStan\Testing\assertType;
 
 $deferredA = new Deferred();
@@ -26,12 +27,12 @@ assertType('React\Promise\PromiseInterface<int>', $deferredB->promise());
 
 // invalid number of arguments passed to $canceller
 /** @phpstan-ignore-next-line */
-$deferred = new Deferred(function ($a, $b, $c): void { });
+$deferred = new Deferred(function ($a, $b, $c): void {});
 assertType('React\Promise\Deferred<mixed>', $deferred);
 
 // invalid types for arguments of $canceller
 /** @phpstan-ignore-next-line */
-$deferred = new Deferred(function (int $a, string $b): void { });
+$deferred = new Deferred(function (int $a, string $b): void {});
 assertType('React\Promise\Deferred<mixed>', $deferred);
 
 // invalid number of arguments passed to $resolve

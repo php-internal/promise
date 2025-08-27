@@ -15,6 +15,8 @@ interface PromiseAdapterInterface
     public function promise(): PromiseInterface;
 
     public function resolve(mixed $value): void;
+
     public function reject(): void;
+
     public function settle(): void;
 }

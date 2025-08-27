@@ -2,8 +2,6 @@
 
 namespace React\Promise\Internal;
 
-use Exception;
-use LogicException;
 use React\Promise\PromiseAdapter\CallbackPromiseAdapter;
 use React\Promise\PromiseTest\PromiseRejectedTestTrait;
 use React\Promise\PromiseTest\PromiseSettledTestTrait;
@@ -11,8 +9,8 @@ use React\Promise\TestCase;
 
 class RejectedPromiseTest extends TestCase
 {
-    use PromiseSettledTestTrait,
-        PromiseRejectedTestTrait;
+    use PromiseSettledTestTrait;
+    use PromiseRejectedTestTrait;
 
     /**
      * @return CallbackPromiseAdapter<never>
@@ -25,13 +23,13 @@ class RejectedPromiseTest extends TestCase
         return new CallbackPromiseAdapter([
             'promise' => function () use (&$promise) {
                 if (!$promise) {
-                    throw new LogicException('RejectedPromise must be rejected before obtaining the promise');
+                    throw new \LogicException('RejectedPromise must be rejected before obtaining the promise');
                 }
 
                 return $promise;
             },
             'resolve' => function (): void {
-                throw new LogicException('You cannot call resolve() for React\Promise\RejectedPromise');
+                throw new \LogicException('You cannot call resolve() for React\Promise\RejectedPromise');
             },
             'reject' => function (\Throwable $reason) use (&$promise): void {
                 if (!$promise) {
@@ -40,8 +38,8 @@ class RejectedPromiseTest extends TestCase
             },
             'settle' => function ($reason = '') use (&$promise): void {
                 if (!$promise) {
-                    if (!$reason instanceof Exception) {
-                        $reason = new Exception((string) $reason);
+                    if (!$reason instanceof \Exception) {
+                        $reason = new \Exception((string) $reason);
                     }
 
                     $promise = new RejectedPromise($reason);

@@ -2,7 +2,6 @@
 
 namespace React\Promise;
 
-use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
@@ -35,7 +34,9 @@ class TestCase extends BaseTestCase
         return $mock;
     }
 
-    /** @return MockObject&callable */
+    /**
+     * @return MockObject&callable
+     */
     protected function createCallableMock(): MockObject
     {
         $builder = $this->getMockBuilder(\stdClass::class);

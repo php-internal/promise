@@ -13,9 +13,7 @@ class CallbackPromiseAdapter implements PromiseAdapterInterface
     /**
      * @param callable[] $callbacks
      */
-    public function __construct(private array $callbacks)
-    {
-    }
+    public function __construct(private array $callbacks) {}
 
     /**
      * @return PromiseInterface<T>
