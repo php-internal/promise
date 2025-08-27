@@ -24,7 +24,9 @@ jobs:
           coverage: xdebug
           ini-file: development
       - run: composer install
-      - run: composer test:cc
+      - run: composer test:arch
+      - run: composer test:unit
+      - run: composer test:feat
 
   PHPStan:
     name: PHPStan (PHP ${{ matrix.php }})
