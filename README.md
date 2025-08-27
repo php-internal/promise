@@ -6,7 +6,7 @@ A lightweight implementation of [CommonJS Promises/A][CommonJS Promises/A] for P
 > This is a fork of [reactphp/promise][reactphp/promise] with the following improvements:
 > - PHP 8.1+ compatibility
 > - `declare(strict_types=1);` in all files
-> - `@yield` annotations in promise interfaces
+> - `@yield` annotation in the PromiseInterface
 > - Enhanced type annotations
 > - Replaces `react/promise` v2
 
@@ -22,6 +22,20 @@ composer require internal/promise
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/internal/promise.svg?style=flat-square&logo=packagist)](https://packagist.org/packages/internal/promise)
 [![License](https://img.shields.io/packagist/l/internal/promise.svg?style=flat-square)](LICENSE.md)
 [![Total Downloads](https://img.shields.io/packagist/dt/internal/promise.svg?style=flat-square)](https://packagist.org/packages/buggregator/trap)
+
+## Tests
+
+To run the test suite, go to the project root and run:
+
+```bash
+composer test
+```
+
+On top of this, Psalm is used to ensure type safety across the project:
+
+```bash
+composer psalm
+```
 
 ## Credits
 
