@@ -15,11 +15,6 @@ jobs:
           - 8.3
           - 8.2
           - 8.1
-          - 8.0
-          - 7.4
-          - 7.3
-          - 7.2
-          - 7.1
     steps:
       - uses: actions/checkout@v5
       - uses: shivammathur/setup-php@v2
@@ -43,10 +38,6 @@ jobs:
           - 8.3
           - 8.2
           - 8.1
-          - 8.0
-          - 7.4
-          - 7.3
-          - 7.2
     steps:
       - uses: actions/checkout@v5
       - uses: shivammathur/setup-php@v2
