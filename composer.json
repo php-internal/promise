@@ -64,7 +64,7 @@
         "sort-packages": true
     },
     "scripts": {
-        "stan": "stan",
+        "stan": "phpstan",
         "test": "phpunit --color=always --testdox",
         "test:cc": [
             "@putenv XDEBUG_MODE=coverage",

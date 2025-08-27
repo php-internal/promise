@@ -249,17 +249,20 @@ function any(iterable $promisesOrValues): PromiseInterface
  * [`finally()` method](#promiseinterfacefinally).
  * See also the [`reject()` function](#reject) for more details.
  *
- * @param callable(\Throwable):void|null $callback
- * @return callable(\Throwable):void|null
+ * @param callable(\Throwable):mixed|null $callback
+ * @return callable(\Throwable):mixed|null
  */
 function set_rejection_handler(?callable $callback): ?callable
 {
     static $current = null;
     $previous = $current;
     $current = $callback;
+    RejectedPromise::setRejectionHandler($current);
 
     return $previous;
 }
+
+set_rejection_handler(static fn(\Throwable $reason) => \error_log('Unhandled promise rejection with ' . $reason));
 
 /**
  * @internal

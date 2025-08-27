@@ -14,44 +14,35 @@ use function React\Promise\set_rejection_handler;
  */
 final class RejectedPromise implements PromiseInterface
 {
-    /** @var \Throwable */
-    private $reason;
+    private \Throwable $reason;
+    private bool $handled = false;
+    private static ?\Closure $rejectionHandler = null;
 
-    /** @var bool */
-    private $handled = false;
-
-    /**
-     * @param \Throwable $reason
-     */
     public function __construct(\Throwable $reason)
     {
         $this->reason = $reason;
     }
 
+    public static function setRejectionHandler(?callable $handler): void
+    {
+        self::$rejectionHandler = $handler === null ? null : $handler(...);
+    }
+
     /** @throws void */
     public function __destruct()
     {
-        if ($this->handled) {
-            return;
-        }
-
-        $handler = set_rejection_handler(null);
-        if ($handler === null) {
-            $message = 'Unhandled promise rejection with ' . $this->reason;
-
-            \error_log($message);
+        if ($this->handled || self::$rejectionHandler === null) {
             return;
         }
 
         try {
-            $handler($this->reason);
+            (self::$rejectionHandler)($this->reason);
         } catch (\Throwable $e) {
             \preg_match('/^([^:\s]++)(.*+)$/sm', (string) $e, $match);
             \assert(isset($match[1], $match[2]));
             $message = 'Fatal error: Uncaught ' . $match[1] . ' from unhandled promise rejection handler' . $match[2];
 
             \error_log($message);
-            exit(255);
         }
     }
 
