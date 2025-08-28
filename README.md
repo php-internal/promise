@@ -3,13 +3,22 @@
 A lightweight implementation of [CommonJS Promises/A][CommonJS Promises/A] for PHP.
 
 > [!NOTE]
-> This is a fork of [reactphp/promise][reactphp/promise] with the following improvements:
-> - PHP 8.1+
-> - `declare(strict_types=1);` in all the PHP files
+> This is a fork of [reactphp/promise][reactphp/promise].
+>
+> Improvements over original reactphp/promise:
+> 
+> - PHP 8.1+ compatibility
+> - `declare(strict_types=1);` in all PHP files
 > - `@yield` annotation in the PromiseInterface
-> - Replaces `react/promise` v3
-> - Make rejection handler reusable. `error_log()` is still used by default.
+>
+> Version 3.x specific:
+> - Replaces `react/promise` v3 in Composer
+> - Rejection handler is reusable now. `error_log()` is still used by default.
 > - Removed `exit(255)` from RejectionPromise.
+>
+> Version 2.x specific:
+> - Replaces `react/promise` v2 in Composer
+> - Enhanced type annotations
 
 ## Install
 
