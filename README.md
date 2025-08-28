@@ -55,3 +55,5 @@ Also, large parts of the [documentation][documentation] have been ported from th
 [when.js]: https://github.com/cujojs/when
 [Brian Cavalier]: https://github.com/briancavalier
 [reactphp/promise]: https://github.com/reactphp/promise
+[Wiki]: https://github.com/cujojs/when/wiki
+[API docs]: https://github.com/cujojs/when/blob/master/docs/api.md
