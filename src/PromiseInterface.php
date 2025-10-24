@@ -8,6 +8,7 @@ namespace React\Promise;
  * @note This is a stub interface for better IDE support.
  *
  * @yield T
+ * @psalm-yield T
  * @template-covariant T
  */
 interface PromiseInterface
