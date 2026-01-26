@@ -21,7 +21,7 @@ composer require internal/promise
 [![PHP](https://img.shields.io/packagist/php-v/internal/promise.svg?style=flat-square&logo=php)](https://packagist.org/packages/internal/promise)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/internal/promise.svg?style=flat-square&logo=packagist)](https://packagist.org/packages/internal/promise)
 [![License](https://img.shields.io/packagist/l/internal/promise.svg?style=flat-square)](LICENSE.md)
-[![Total Downloads](https://img.shields.io/packagist/dt/internal/promise.svg?style=flat-square)](https://packagist.org/packages/buggregator/trap)
+[![Total Downloads](https://img.shields.io/packagist/dt/internal/promise.svg?style=flat-square)](https://packagist.org/packages/internal/promise)
 
 ## Tests
 
